@@ -38,12 +38,13 @@ import {
 
 // Firebase Configuration
 const firebaseConfig = {
-    apiKey: window.FIREBASE_API_KEY || "YOUR_API_KEY",
-    authDomain: window.FIREBASE_AUTH_DOMAIN || "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: window.FIREBASE_PROJECT_ID || "YOUR_PROJECT_ID",
-    storageBucket: window.FIREBASE_STORAGE_BUCKET || "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: window.FIREBASE_MESSAGING_SENDER_ID || "YOUR_MESSAGING_SENDER_ID",
-    appId: window.FIREBASE_APP_ID || "YOUR_APP_ID"
+    apiKey: "AIzaSyB1ccnYtBwYYELE_JYr3AlSVzYf3KRxPU0",
+    authDomain: "vanmod-website.firebaseapp.com",
+    projectId: "vanmod-website",
+    storageBucket: "vanmod-website.firebasestorage.app",
+    messagingSenderId: "706013336903",
+    appId: "1:706013336903:web:70053ec43cf8a8c03c6862",
+    measurementId: "G-LWKVY3WQK2"
 };
 
 // Initialize Firebase

@@ -3,13 +3,18 @@
 
 // ==================== LOGIN FORM ====================
 function initLoginForm() {
-    const loginForm = document.querySelector('form');
+    const loginForm = document.getElementById('login-form') || document.querySelector('form');
     const errorMessage = document.getElementById('error-message');
     
-    if (!loginForm) return;
+    if (!loginForm) {
+        console.error('Login form not found!');
+        return;
+    }
     
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        console.log('Form submitted!'); // Debug
         
         // Hide error message
         if (errorMessage) {
@@ -19,6 +24,9 @@ function initLoginForm() {
         // Get form values
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        
+        console.log('Email:', email); // Debug
+        console.log('Attempting login...'); // Debug
         
         // Show loading state
         const submitButton = loginForm.querySelector('button[type="submit"]');
@@ -34,17 +42,24 @@ function initLoginForm() {
             // Attempt login
             const result = await VANMOD.adminLogin(email, password);
             
+            console.log('Login result:', result); // Debug
+            
             if (result.success) {
                 // Success - redirect to dashboard
+                console.log('Login successful! Redirecting...'); // Debug
                 showSuccessAnimation();
                 setTimeout(() => {
                     window.location.href = 'dashbordadmin.html';
                 }, 1500);
             } else {
                 // Show error
+                console.error('Login failed:', result.error); // Debug
                 if (errorMessage) {
                     errorMessage.classList.remove('hidden');
-                    errorMessage.querySelector('p').textContent = result.error || 'INVALID ADMIN CREDENTIALS.';
+                    const errorText = errorMessage.querySelector('p');
+                    if (errorText) {
+                        errorText.textContent = result.error || 'INVALID ADMIN CREDENTIALS.';
+                    }
                 }
                 submitButton.disabled = false;
                 submitButton.innerHTML = originalText;
@@ -53,7 +68,10 @@ function initLoginForm() {
             console.error('Login error:', error);
             if (errorMessage) {
                 errorMessage.classList.remove('hidden');
-                errorMessage.querySelector('p').textContent = 'SYSTEM ERROR. PLEASE TRY AGAIN.';
+                const errorText = errorMessage.querySelector('p');
+                if (errorText) {
+                    errorText.textContent = 'SYSTEM ERROR. PLEASE TRY AGAIN.';
+                }
             }
             submitButton.disabled = false;
             submitButton.innerHTML = originalText;
