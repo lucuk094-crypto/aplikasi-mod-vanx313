@@ -44,7 +44,5 @@ yarn-error.log*
 .tmp/
 .temp/
 
-# Config (keep example files only)
-config/firebaseConfig.js
-
+# Vercel
 .vercel
