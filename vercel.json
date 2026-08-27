@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "name": "vanmod-website",
   "builds": [
     {
-      "src": "*.html",
+      "src": "**/*.html",
       "use": "@vercel/static"
     }
   ],
@@ -13,12 +12,20 @@
       "dest": "/home.html"
     },
     {
+      "src": "/index.html",
+      "dest": "/home.html"
+    },
+    {
       "src": "/admin",
       "dest": "/adminlogin.html"
     },
     {
-      "src": "/(.*).html",
-      "dest": "/$1.html"
+      "src": "/dashboard",
+      "dest": "/dashbordadmin.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
