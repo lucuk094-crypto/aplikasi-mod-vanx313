@@ -1,0 +1,36 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to validate image file
+    function isValidImage() {
+      return request.resource.size < 2 * 1024 * 1024 // 2MB max
+          && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Icons folder - read public, write admin only with validation
+    match /icons/{iconId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidImage();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Screenshots folder - read public, write admin only with validation
+    match /screenshots/{screenshotId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidImage();
+      allow delete: if isAuthenticated();
+    }
+    
+    // APK files folder - read public, write admin only
+    match /apks/{apkId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+  }
+}

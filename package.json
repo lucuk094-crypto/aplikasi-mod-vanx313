@@ -1,0 +1,26 @@
+{
+  "name": "vanmod-web-app",
+  "version": "1.0.0",
+  "description": "VAN//MOD - High-End Brutalist Mod Ecosystem",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "vanmod",
+    "mods",
+    "apps",
+    "games",
+    "tools"
+  ],
+  "author": "VAN//MOD Team",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "firebase": "^10.7.1"
+  }
+}

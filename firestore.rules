@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is admin (optional: add admin claim check)
+    function isAdmin() {
+      return isAuthenticated();
+      // Advanced: check custom claims
+      // return isAuthenticated() && request.auth.token.admin == true;
+    }
+    
+    // Apps collection - read public, write admin only
+    match /apps/{appId} {
+      allow read: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Games collection - read public, write admin only
+    match /games/{gameId} {
+      allow read: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Tools collection - read public, write admin only
+    match /tools/{toolId} {
+      allow read: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Contacts collection - create public, read/update/delete admin only
+    match /contacts/{contactId} {
+      allow read: if isAdmin();
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Stats collection - read public, write admin only
+    match /stats/{statId} {
+      allow read: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

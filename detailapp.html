@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>// VAN//MOD - SPOTIFY APP DETAIL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#b2f800",
+                      "error-container": "#93000a",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed": "#131f00",
+                      "primary": "#ffffff",
+                      "on-surface": "#e0e5cf",
+                      "inverse-surface": "#e0e5cf",
+                      "on-secondary-fixed": "#1a1b22",
+                      "surface-container-low": "#191d10",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#486800",
+                      "on-tertiary-fixed": "#0f1c2b",
+                      "inverse-on-surface": "#2d3223",
+                      "on-tertiary-fixed-variant": "#3a4858",
+                      "background": "#101508",
+                      "on-secondary-container": "#b4b4bd",
+                      "surface-tint": "#9bd900",
+                      "surface-variant": "#323728",
+                      "tertiary-fixed": "#d6e4f8",
+                      "tertiary": "#ffffff",
+                      "on-surface-variant": "#c2caad",
+                      "on-primary-fixed-variant": "#364e00",
+                      "on-tertiary": "#243141",
+                      "on-tertiary-container": "#586577",
+                      "on-secondary": "#2f3037",
+                      "tertiary-fixed-dim": "#bac8dc",
+                      "secondary-fixed-dim": "#c6c6cf",
+                      "primary-fixed": "#b2f800",
+                      "secondary": "#c6c6cf",
+                      "surface-container-highest": "#323728",
+                      "outline-variant": "#424a33",
+                      "on-error": "#690005",
+                      "on-primary": "#243600",
+                      "on-secondary-fixed-variant": "#45464e",
+                      "secondary-container": "#45464e",
+                      "surface-container-lowest": "#0b1005",
+                      "secondary-fixed": "#e2e1eb",
+                      "surface-bright": "#363b2c",
+                      "primary-fixed-dim": "#9bd900",
+                      "on-background": "#e0e5cf",
+                      "surface-container": "#1d2114",
+                      "surface-container-high": "#272c1d",
+                      "surface-dim": "#101508",
+                      "tertiary-container": "#d6e4f8",
+                      "outline": "#8c9479",
+                      "surface": "#101508",
+                      "on-primary-container": "#4d6e00"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "3xl": "64px",
+                      "margin-mobile": "16px",
+                      "md": "16px",
+                      "margin-desktop": "40px",
+                      "base": "4px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "2xl": "48px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "headline-sm": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #080808;
+            color: #ffffff;
+        }
+        .neo-brutal-btn {
+            box-shadow: 4px 4px 0px 0px #b2f800;
+            transition: all 0.2s ease-in-out;
+        }
+        .neo-brutal-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #b2f800;
+        }
+        .neo-brutal-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #b2f800;
+        }
+        .neo-brutal-card {
+            border: 2px solid #1f1f1f;
+            background-color: #111111;
+        }
+        
+        .divider-slash {
+            color: #b2f800;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+      </style>
+</head>
+<body class="bg-background text-primary font-body-md min-h-screen flex flex-col">
+<!-- Top Navigation from JSON (Context: Transactional/Detail Page, so we hide main nav items, keeping only back/brand) -->
+<nav class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b-2 border-outline-variant flex justify-between items-center px-margin-desktop h-20 mx-auto">
+<div class="flex items-center gap-md">
+<button class="text-primary hover:text-primary-container transition-colors active:scale-95">
+<span class="material-symbols-outlined font-display-lg text-[32px]" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="font-display-lg text-display-lg font-black text-primary tracking-tighter cursor-pointer">
+                VAN<span class="text-primary-container">//</span>MOD
+            </div>
+</div>
+<div class="flex gap-md">
+<button class="text-primary hover:text-primary-container transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[28px]" data-icon="dark_mode">dark_mode</span>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-3xl px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto w-full mt-2xl">
+<!-- App Header Section -->
+<section class="flex flex-col md:flex-row gap-xl items-start mb-2xl">
+<!-- App Icon -->
+<div class="w-32 h-32 md:w-48 md:h-48 flex-shrink-0 neo-brutal-card border-2 border-primary overflow-hidden relative">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" data-alt="High quality, brutalist stylized app icon for Spotify. Dark mode aesthetic with sharp contrasting neon green highlights. The icon sits perfectly centered in a heavy black container. Deep shadows and high contrast. Premium digital craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9mBOWxf8pLpzSkzMw5KP5Znjyx5M-H1pucUIbYnORZUgYWeexl-HMDfzUsYKPoRyvDelend_62fRnA65LJ7SXGB60rxWwCizLOJZ-CQG_gxQcM8K4JWt3xzps8MSxtQj2qYPQwgkYvFRduhE-bW3Ir_59bbPoT834P5Vy4jxPfRJ4bZHi4PEhasWs_aU_zDtgcfSsqD5hzMSiSVsL3WBlyDCjeLfrdnsPrbiySfYe3CFV-J0iMk0r4g"/>
+</div>
+<!-- App Info & Actions -->
+<div class="flex flex-col justify-between h-full w-full">
+<div>
+<h1 class="font-display-lg text-display-lg font-black tracking-tighter uppercase flex items-center gap-sm">
+<span class="divider-slash">//</span> SPOTIFY
+                    </h1>
+<div class="flex items-center gap-md mt-sm mb-lg">
+<span class="bg-surface-variant text-on-surface-variant px-sm py-xs font-label-sm text-label-sm uppercase border border-outline-variant">MUSIC</span>
+<div class="flex items-center gap-xs text-primary-container font-label-md text-label-md">
+<span class="material-symbols-outlined" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+                            4.8
+                        </div>
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase">12.4K REVIEWS</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-md mt-auto">
+<button class="bg-primary-container text-on-primary-fixed border-2 border-primary-container font-label-md text-label-md uppercase tracking-wider py-md px-xl flex items-center justify-center gap-sm neo-brutal-btn w-full sm:w-auto">
+                        DOWNLOAD APK
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="bg-transparent text-primary border-2 border-primary font-label-md text-label-md uppercase tracking-wider py-md px-xl hover:bg-surface-container-high transition-colors flex justify-center items-center gap-sm w-full sm:w-auto">
+<span class="material-symbols-outlined" data-icon="bookmark_add">bookmark_add</span>
+                        SAVE
+                    </button>
+</div>
+</div>
+</section>
+<!-- Screenshots Gallery -->
+<section class="mb-2xl">
+<h2 class="font-headline-sm text-headline-sm font-bold uppercase mb-md flex items-center gap-sm">
+<span class="divider-slash">//</span> SCREENSHOTS
+            </h2>
+<div class="flex gap-md overflow-x-auto scrollbar-hide pb-md snap-x">
+<!-- Screenshot 1 -->
+<div class="snap-center shrink-0 w-[240px] md:w-[320px] aspect-[9/16] neo-brutal-card overflow-hidden">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" data-alt="High contrast, dark mode UI screenshot of a music streaming app. Brutalist design elements, sharp borders, and neon green highlights showing a currently playing song interface. Professional, sleek, and high-end aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbzlBpMjqAjL0fJk7lxEpr25s-5W31QujUAS_PhuW7rik5he0BD_tr99GC9YeK3GawbagA4LiJgPp-yWU4frwHxFyG3Tl1E-Ny2ca7fqKSNDZgxc_TCobyNVo2_jnKjQVjhgJLrXxAZYodc4I71M0gbPYyv5RbK7Vsdza1bQdyGV30-xVauaiiGGVfFyuc6J9FmKipCEjKgpHwuIslzCOjuTWDimHvpf-CS5h_kHur72xFd8C8gmGtcA"/>
+</div>
+<!-- Screenshot 2 -->
+<div class="snap-center shrink-0 w-[240px] md:w-[320px] aspect-[9/16] neo-brutal-card overflow-hidden">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" data-alt="High contrast, dark mode UI screenshot of a music streaming app playlist view. Heavy typography, brutalist grid layout, neon green accents highlighting interactive elements. Deep blacks and stark whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCak8kBZ7kNlCwhNeaSEmFjOHdxy78DKAk-oi8iah07hPya5xhHdA3ohmFIYelksLHi9QUFBpN1m6BqEzBiZQC2PJY3Ki5rEacIkRUkuOynu95nz81RiBWsktoaWxMFNHXZsCHz5Cm_8mPPvZtqLPNmhYkOVR08224dGgy9WTvpy1OIyO_d3Kh5FKkobKr21S34CJWEX4yzWT6hw7gJfPicbYZDAIZ9F1mywxCd36jwmZYr7-cEP-GISw"/>
+</div>
+<!-- Screenshot 3 -->
+<div class="snap-center shrink-0 w-[240px] md:w-[320px] aspect-[9/16] neo-brutal-card overflow-hidden">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" data-alt="High contrast, dark mode UI screenshot of a music streaming app search interface. Sharp edges, neon green search bar focus state, high-end neo-brutalism design style. Premium underground marketplace vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC89IRgUvj87jp2snuIWBFP593eAL4O_vFGb-BMHg8rs5xv3zNCNJJpThup9N_0xh_JCr6XLfThsbg2USVlvPCgChPnsoCucZFegU6yQbPZNwRp4XEtjnvfzJMXopJwtpcZJXmwtgYQplkHUUfjjAjOQvWyLvZs-pNCjpxSYYIgm9TVSRA_cKjCFqwnn8gma4HuvxH2GAfi5e4BvPOHoll1rxFUlhug5WFxODnjBpIuUMqNyjfxhEgvkA"/>
+</div>
+<!-- Screenshot 4 -->
+<div class="snap-center shrink-0 w-[240px] md:w-[320px] aspect-[9/16] neo-brutal-card overflow-hidden">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" data-alt="High contrast, dark mode UI screenshot of a music streaming app settings page. Detailed toggles with neon green active states, aggressive 2px borders, raw and authentic Gen-Z aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwerELZa2zjiUrTncm5jGqlsZOO2QiyTG6z_u_8imkjwFPqE0x9JNVLkz6z5td2T3q2Toh7ni5SLHfnH9S1vJpQLWZ9OJ3gVvnA5mGTdCDF45_kZ0kzpYLYVGsen93mFoN6zBKt0GRZssbMtqgSWYQabugcTJ-U_ktPtA8HIbVCF67p2d1QjovSLa-x3W21Yzt-QO3sn0eshJlJhDGkVH3bAAxINn5YYVHHXh42cgk9Lttv86zlJqmIA"/>
+</div>
+</div>
+</section>
+<!-- App Details & Features Bento Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-xl mb-2xl">
+<!-- App Information -->
+<div class="neo-brutal-card p-lg flex flex-col gap-md lg:col-span-1">
+<h2 class="font-headline-sm text-headline-sm font-bold uppercase border-b-2 border-outline-variant pb-sm flex items-center gap-sm">
+<span class="divider-slash">//</span> APP INFO
+                </h2>
+<div class="flex justify-between items-center py-xs border-b border-surface-variant">
+<span class="text-on-surface-variant font-label-md text-label-md">VERSION</span>
+<span class="font-body-md font-bold">8.8.96.364</span>
+</div>
+<div class="flex justify-between items-center py-xs border-b border-surface-variant">
+<span class="text-on-surface-variant font-label-md text-label-md">SIZE</span>
+<span class="font-body-md font-bold">42 MB</span>
+</div>
+<div class="flex justify-between items-center py-xs border-b border-surface-variant">
+<span class="text-on-surface-variant font-label-md text-label-md">ANDROID</span>
+<span class="font-body-md font-bold">5.0+</span>
+</div>
+<div class="flex justify-between items-center py-xs border-b border-surface-variant">
+<span class="text-on-surface-variant font-label-md text-label-md">UPDATED</span>
+<span class="font-body-md font-bold">OCT 24, 2024</span>
+</div>
+<div class="flex justify-between items-center py-xs mt-auto">
+<span class="text-on-surface-variant font-label-md text-label-md">MOD STATUS</span>
+<span class="text-primary-container font-label-md text-label-md uppercase font-bold px-sm py-xs border border-primary-container">VERIFIED SECURE</span>
+</div>
+</div>
+<!-- MOD Features & Description -->
+<div class="neo-brutal-card p-lg flex flex-col gap-lg lg:col-span-2">
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold uppercase border-b-2 border-outline-variant pb-sm flex items-center gap-sm mb-md text-primary-container">
+<span class="divider-slash">//</span> MOD FEATURES
+                    </h2>
+<ul class="grid grid-cols-1 sm:grid-cols-2 gap-md font-body-md">
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_box" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_box</span>
+                            PREMIUM UNLOCKED
+                        </li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_box" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_box</span>
+                            NO ADS
+                        </li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_box" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_box</span>
+                            UNLIMITED SKIPS
+                        </li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_box" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_box</span>
+                            EXTREME AUDIO QUALITY
+                        </li>
+</ul>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold uppercase border-b-2 border-outline-variant pb-sm flex items-center gap-sm mb-md">
+<span class="divider-slash">//</span> ABOUT THIS APP
+                    </h2>
+<div class="relative">
+<p class="font-body-md text-on-surface-variant line-clamp-3" id="app-description">
+                            Experience music without limits. This modified version of Spotify grants you full access to premium features without the subscription cost. Dive into millions of songs, ad-free listening, unlimited skips, and high-fidelity audio options. The interface remains clean, intuitive, and perfectly synced with the brutalist aesthetic of your device. We have carefully bypassed restrictions to ensure a seamless, high-end auditory experience. Stay updated with the latest tracks, create your ultimate playlists, and enjoy the underground rhythm of unrestricted access.
+                        </p>
+<button class="text-primary mt-sm font-label-md text-label-md uppercase underline hover:text-primary-container transition-colors" onclick="document.getElementById('app-description').classList.toggle('line-clamp-3')">READ MORE</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer from JSON -->
+<footer class="w-full py-2xl px-margin-desktop bg-background border-t-2 border-outline-variant grid grid-cols-1 md:grid-cols-3 gap-xl mt-3xl">
+<div class="font-display-lg text-display-lg font-black text-primary-container">
+            VAN<span class="text-primary">//</span>MOD
+        </div>
+<div class="flex flex-col gap-sm justify-center md:items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">© 2024 VAN//MOD. ALL RIGHTS RESERVED. // HIGH-END BRUTALIST ECOSYSTEM</span>
+</div>
+<div class="flex flex-col md:items-end gap-sm justify-center">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">API Documentation</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Contact Support</a>
+</div>
+</footer>
+
+<!-- Firebase and App Scripts -->
+<script type="module" src="src/js/app.js"></script>
+<script type="module" src="src/js/detailApp.js"></script>
+</body></html>

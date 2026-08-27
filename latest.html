@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VAN//MOD - Latest Deployments</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config from Brand Anchors -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#b2f800",
+                    "surface-dim": "#101508",
+                    "on-tertiary-fixed-variant": "#3a4858",
+                    "on-surface-variant": "#c2caad",
+                    "surface-container-lowest": "#0b1005",
+                    "on-tertiary-fixed": "#0f1c2b",
+                    "outline": "#8c9479",
+                    "background": "#101508",
+                    "on-secondary-fixed": "#1a1b22",
+                    "on-primary-fixed-variant": "#364e00",
+                    "on-tertiary": "#243141",
+                    "surface-container-highest": "#323728",
+                    "secondary": "#c6c6cf",
+                    "surface-bright": "#363b2c",
+                    "on-primary": "#243600",
+                    "primary-fixed-dim": "#9bd900",
+                    "on-secondary-container": "#b4b4bd",
+                    "on-surface": "#e0e5cf",
+                    "secondary-container": "#45464e",
+                    "on-error": "#690005",
+                    "primary-fixed": "#b2f800",
+                    "tertiary-fixed": "#d6e4f8",
+                    "on-tertiary-container": "#586577",
+                    "inverse-on-surface": "#2d3223",
+                    "inverse-surface": "#e0e5cf",
+                    "on-primary-fixed": "#131f00",
+                    "error-container": "#93000a",
+                    "surface-variant": "#323728",
+                    "inverse-primary": "#486800",
+                    "error": "#ffb4ab",
+                    "secondary-fixed": "#e2e1eb",
+                    "tertiary": "#ffffff",
+                    "primary": "#ffffff",
+                    "on-background": "#e0e5cf",
+                    "on-secondary": "#2f3037",
+                    "surface-container-low": "#191d10",
+                    "surface-container-high": "#272c1d",
+                    "on-primary-container": "#4d6e00",
+                    "secondary-fixed-dim": "#c6c6cf",
+                    "outline-variant": "#424a33",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#45464e",
+                    "tertiary-fixed-dim": "#bac8dc",
+                    "surface-container": "#1d2114",
+                    "surface": "#101508",
+                    "tertiary-container": "#d6e4f8",
+                    "surface-tint": "#9bd900"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "2xl": "48px",
+                    "3xl": "64px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        /* Brutalist Grid Overlay */
+        .brutalist-grid {
+            background-image: 
+                linear-gradient(to right, rgba(140, 148, 121, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(140, 148, 121, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        
+        /* High-End Brutalist Hover Effects */
+        .brutalist-card {
+            transition: all 0.2s ease-out;
+        }
+        .brutalist-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 4px 4px 0px 0px #b2f800; /* primary-container */
+            border-color: #b2f800;
+        }
+        
+        .brutalist-btn {
+            transition: all 0.2s ease-out;
+        }
+        .brutalist-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px 0px #b2f800;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen brutalist-grid antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar Component -->
+<nav class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b-2 border-outline-variant flex justify-between items-center px-margin-desktop h-20 mx-auto">
+<div class="font-display-lg text-display-lg font-black text-primary tracking-tighter">
+            VAN//MOD
+        </div>
+<div class="hidden md:flex space-x-lg font-label-md text-label-md uppercase tracking-wider">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-md py-sm rounded-DEFAULT" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-md py-sm rounded-DEFAULT" href="#">Apps</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-md py-sm rounded-DEFAULT" href="#">Games</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-md py-sm rounded-DEFAULT" href="#">Tools</a>
+<a class="text-primary border-b-2 border-primary-container pb-1 hover:bg-surface-container-highest/50 transition-all duration-200 px-md py-sm" href="#">Latest</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-md py-sm rounded-DEFAULT" href="#">Popular</a>
+</div>
+<div class="flex items-center space-x-md">
+<!-- Search Bar (on_right) -->
+<div class="relative hidden sm:block">
+<input class="bg-surface-container-lowest border-2 border-outline-variant text-on-background font-label-md uppercase px-md py-sm focus:border-primary-container focus:ring-0 outline-none w-64 placeholder-on-surface-variant" placeholder="SEARCH // DEPLOYMENTS" type="text"/>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-sm hover:bg-surface-container-highest/50 rounded-full">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="pt-3xl px-margin-mobile md:px-margin-desktop pb-3xl max-w-7xl mx-auto mt-2xl">
+<!-- Header -->
+<header class="mb-2xl border-b-2 border-outline-variant pb-md flex flex-col md:flex-row justify-between items-end gap-md">
+<div>
+<h1 class="font-display-lg text-display-lg font-black text-primary uppercase tracking-tighter">
+<span class="text-primary-container">//</span> LATEST DEPLOYMENTS
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-sm max-w-2xl">
+                    REAL-TIME FEED OF RECENTLY UPLOADED ASSETS TO THE VAN//MOD ECOSYSTEM. VERIFIED AND READY FOR DOWNLOAD.
+                </p>
+</div>
+<div class="flex items-center space-x-sm bg-surface-container-lowest border-2 border-outline-variant p-sm font-label-md text-label-md">
+<span class="text-on-surface-variant">SYSTEM STATUS:</span>
+<span class="text-primary-container flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse inline-block"></span> OPTIMAL</span>
+</div>
+</header>
+<!-- Filters / Terminal Actions -->
+<div class="flex flex-wrap gap-md mb-xl">
+<button class="bg-primary-container text-on-primary-container font-label-md text-label-md uppercase px-lg py-sm border-2 border-primary-container brutalist-btn">
+                ALL SYSTEMS
+            </button>
+<button class="bg-surface-container-lowest text-primary font-label-md text-label-md uppercase px-lg py-sm border-2 border-outline-variant hover:border-primary-container brutalist-btn">
+                APPS
+            </button>
+<button class="bg-surface-container-lowest text-primary font-label-md text-label-md uppercase px-lg py-sm border-2 border-outline-variant hover:border-primary-container brutalist-btn">
+                GAMES
+            </button>
+<button class="bg-surface-container-lowest text-primary font-label-md text-label-md uppercase px-lg py-sm border-2 border-outline-variant hover:border-primary-container brutalist-btn">
+                TOOLS
+            </button>
+</div>
+<!-- Deployments Grid (Bento/List Hybrid) -->
+<div class="flex flex-col gap-xl">
+<!-- Item 1: App -->
+<article class="bg-surface-container-low border-2 border-outline-variant brutalist-card relative overflow-hidden group">
+<div class="grid grid-cols-1 md:grid-cols-12">
+<!-- Image Area -->
+<div class="md:col-span-4 h-48 md:h-auto border-b-2 md:border-b-0 md:border-r-2 border-outline-variant relative">
+<div class="bg-cover bg-center w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A highly detailed, neon-lit cyberpunk application interface showing complex data visualization, with glowing green and stark white lines on a deep obsidian black background. The UI looks futuristic, high-tech, and brutalist. Sharp geometry and dense information." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuALM8yQFr4a8cBSkBfzyB-jlqiYiBKd4k81UXfCb_tEv2kN3ACcBBlvhUJhkrHxAaCIT6RTsqwhITYN7mZEd530T_066eCzOBOYchIMhGF8W4kYpBrBJil7laiFLQaHu95tcnGQnQ-Q9ZpkW2dGcz7oNm6pb18UWjthTAATf8ToCQHN0uDbczP2Tcy8H_mNMoeANd_mxbsQfrJi3JR32yjy8dvxlmb1dtE1vmEmyLeFXa6i_M5iSppgQA')"></div>
+<div class="absolute top-sm left-sm bg-primary-container text-on-primary-container font-label-sm text-label-sm px-sm py-xs uppercase font-bold">
+                            JUST IN
+                        </div>
+</div>
+<!-- Content Area -->
+<div class="md:col-span-8 p-lg flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<span class="bg-surface-bright text-on-surface font-label-sm text-label-sm px-sm py-xs uppercase border border-outline-variant">APP</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 15 MINS AGO
+                                    </span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary-container transition-colors">download</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary uppercase mb-xs group-hover:text-primary-container transition-colors">
+                                NEON//TERMINAL v4.2
+                            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md max-w-xl">
+                                Advanced command-line interface replacement for power users. Features real-time system monitoring, custom shader support, and brutalist theming capabilities out of the box.
+                            </p>
+</div>
+<!-- Stats Bar -->
+<div class="flex flex-wrap gap-lg border-t-2 border-outline-variant pt-md mt-auto">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">VERSION</span>
+<span class="font-label-md text-label-md text-primary">v4.2.0-rc1</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">SIZE</span>
+<span class="font-label-md text-label-md text-primary">124 MB</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">ARCHITECTURE</span>
+<span class="font-label-md text-label-md text-primary">x64 / ARM64</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Item 2: Game -->
+<article class="bg-surface-container-low border-2 border-outline-variant brutalist-card relative overflow-hidden group">
+<div class="grid grid-cols-1 md:grid-cols-12">
+<div class="md:col-span-4 h-48 md:h-auto border-b-2 md:border-b-0 md:border-r-2 border-outline-variant relative">
+<div class="bg-cover bg-center w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A gritty, high-contrast screenshot of a brutalist sci-fi racing game. Angular vehicles speeding through a concrete megastructure lit by harsh white and acid green lights. Deep shadows, industrial aesthetic, intense speed blur." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAZT40KnXDIU7uY_f7zMLjgKn5YlqiCC1No1jkvS09EyHJipkelI75kIRM5Mu3xtB0D-4jN7rYPw1u3HkVzgoBhPiFWBJIb2XUE3V17PulGcevfy7nJEQH1mL-aXhBW_1tmf1l_hwI5Q0cW43ICZl2VKQkAxa2YUqov4IwSPQcJU56OeXd8P32KekCuebXWUExrCsx8685GLMkYEATr4RDUbe4Mrw3bi9NDLxCtXgWWobCQwc8-K1ybZA')"></div>
+<div class="absolute top-sm left-sm bg-primary-container text-on-primary-container font-label-sm text-label-sm px-sm py-xs uppercase font-bold">
+                            NEW
+                        </div>
+</div>
+<div class="md:col-span-8 p-lg flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<span class="bg-inverse-surface text-inverse-on-surface font-label-sm text-label-sm px-sm py-xs uppercase border border-outline-variant">GAME</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 2 HOURS AGO
+                                    </span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary-container transition-colors">download</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary uppercase mb-xs group-hover:text-primary-container transition-colors">
+                                CONCRETE DRIFTER // ZERO
+                            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md max-w-xl">
+                                High-speed brutalist racing experience. Navigate procedurally generated concrete megastructures in anti-gravity vehicles. No forgiving mechanics, pure skill required.
+                            </p>
+</div>
+<div class="flex flex-wrap gap-lg border-t-2 border-outline-variant pt-md mt-auto">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">VERSION</span>
+<span class="font-label-md text-label-md text-primary">1.0.4 (Hotfix)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">SIZE</span>
+<span class="font-label-md text-label-md text-primary">4.2 GB</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">ENGINE</span>
+<span class="font-label-md text-label-md text-primary">UNREAL 5</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Item 3: Tool -->
+<article class="bg-surface-container-low border-2 border-outline-variant brutalist-card relative overflow-hidden group">
+<div class="grid grid-cols-1 md:grid-cols-12">
+<div class="md:col-span-4 h-48 md:h-auto border-b-2 md:border-b-0 md:border-r-2 border-outline-variant relative bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[80px] text-outline-variant group-hover:text-primary-container transition-colors duration-500">memory</span>
+<!-- No image here, just an icon to break up the pattern, showing tool nature -->
+</div>
+<div class="md:col-span-8 p-lg flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<span class="bg-surface-dim text-on-surface font-label-sm text-label-sm px-sm py-xs uppercase border border-outline-variant">TOOL</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span> DEPLOYED: TODAY
+                                    </span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary-container transition-colors">download</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary uppercase mb-xs group-hover:text-primary-container transition-colors">
+                                VRAM // ALLOCATOR PRO
+                            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md max-w-xl">
+                                Aggressive VRAM management utility for heavy 3D workloads and local AI deployment. Forces strict memory limits on background processes to prioritize active render contexts.
+                            </p>
+</div>
+<div class="flex flex-wrap gap-lg border-t-2 border-outline-variant pt-md mt-auto">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">VERSION</span>
+<span class="font-label-md text-label-md text-primary">2.1.0</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">SIZE</span>
+<span class="font-label-md text-label-md text-primary">12 MB</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">TYPE</span>
+<span class="font-label-md text-label-md text-primary">SYSTEM UTILITY</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Load More -->
+<div class="mt-2xl flex justify-center border-t-2 border-outline-variant pt-xl">
+<button class="bg-transparent text-primary font-label-md text-label-md uppercase px-2xl py-md border-2 border-primary hover:bg-primary hover:text-background transition-colors brutalist-btn flex items-center gap-sm">
+<span class="material-symbols-outlined">sync</span> LOAD OLDER DEPLOYMENTS
+            </button>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-2xl px-margin-desktop bg-background border-t-2 border-outline-variant mt-3xl grid grid-cols-1 md:grid-cols-3 gap-xl">
+<div class="flex flex-col gap-sm">
+<div class="font-display-lg text-display-lg font-black text-primary-container tracking-tighter">
+                VAN//MOD
+            </div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+                © 2024 VAN//MOD. ALL RIGHTS RESERVED. // HIGH-END BRUTALIST ECOSYSTEM
+            </p>
+</div>
+<div class="flex flex-col gap-md md:col-span-2 md:items-end">
+<div class="flex flex-wrap gap-lg font-label-sm text-label-sm uppercase tracking-widest">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:text-primary-fixed-dim cursor-pointer" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:text-primary-fixed-dim cursor-pointer" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:text-primary-fixed-dim cursor-pointer" href="#">API Documentation</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:text-primary-fixed-dim cursor-pointer" href="#">Contact Support</a>
+</div>
+<div class="mt-auto flex items-center gap-xs text-on-surface-variant opacity-50">
+<span class="material-symbols-outlined text-[16px]">terminal</span> SYSTEM VER 9.2.1
+            </div>
+</div>
+</footer>
+</body></html>
