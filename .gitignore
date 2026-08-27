@@ -46,3 +46,5 @@ yarn-error.log*
 
 # Config (keep example files only)
 config/firebaseConfig.js
+
+.vercel
