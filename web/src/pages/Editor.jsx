@@ -3,7 +3,8 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { COLLECTIONS, COLLECTION_LABELS } from '../config.js';
 import { useAuth } from '../lib/auth.jsx';
 import { useStore } from '../lib/store.jsx';
-import { ArrowLeft, Check } from '../components/icons.jsx';
+import { cleanName, uploadFile } from '../lib/storage.js';
+import { ArrowLeft, Check, Upload } from '../components/icons.jsx';
 import { Kicker, NetworkIcon } from '../components/ui.jsx';
 
 const BLANK = {
@@ -25,6 +26,33 @@ const BLANK = {
   tags: '',
 };
 
+function UploadRow({ id, accept, multiple, label, state, onPick }) {
+  return (
+    <div className="upload-row">
+      <label className="btn btn-line btn-sm upload-btn" htmlFor={id}>
+        <Upload size={14} /> {label}
+      </label>
+      <input
+        id={id}
+        type="file"
+        accept={accept}
+        multiple={multiple}
+        hidden
+        onChange={onPick}
+      />
+      {state && !state.error && (
+        <>
+          <div className="upload-progress">
+            <i style={{ width: `${state.pct || 0}%` }} />
+          </div>
+          <span className="upload-pct">{state.pct || 0}%</span>
+        </>
+      )}
+      {state?.error && <span className="form-error">{state.error}</span>}
+    </div>
+  );
+}
+
 export default function Editor() {
   const { collection, id } = useParams();
   const isEdit = Boolean(id);
@@ -37,6 +65,10 @@ export default function Editor() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [missing, setMissing] = useState(false);
+  const [upIcon, setUpIcon] = useState(null);
+  const [upFile, setUpFile] = useState(null);
+  const [upShots, setUpShots] = useState(null);
+  const [uploading, setUploading] = useState(0);
 
   useEffect(() => {
     if (!isEdit || !ready || loaded) return;
@@ -79,15 +111,115 @@ export default function Editor() {
     setForm((f) => ({ ...f, [k]: v }));
   }
 
+  async function handleIcon(e) {
+    const f = e.target.files?.[0];
+    e.target.value = '';
+    if (!f) return;
+    if (!f.type.startsWith('image/')) {
+      setUpIcon({ error: 'Pilih file gambar.' });
+      return;
+    }
+    if (f.size > 2 * 1024 * 1024) {
+      setUpIcon({ error: 'Ukuran icon maksimal 2MB.' });
+      return;
+    }
+    setUpIcon({ pct: 0 });
+    setUploading((n) => n + 1);
+    try {
+      const url = await uploadFile(
+        `icons/${Date.now()}-${cleanName(f.name)}`,
+        f,
+        (pct) => setUpIcon({ pct })
+      );
+      set('icon', url);
+      setUpIcon({ pct: 100 });
+    } catch {
+      setUpIcon({ error: 'Upload gagal. Coba lagi.' });
+    } finally {
+      setUploading((n) => n - 1);
+    }
+  }
+
+  async function handleFile(e) {
+    const f = e.target.files?.[0];
+    e.target.value = '';
+    if (!f) return;
+    setUpFile({ pct: 0 });
+    setUploading((n) => n + 1);
+    try {
+      const url = await uploadFile(
+        `apks/${Date.now()}-${cleanName(f.name)}`,
+        f,
+        (pct) => setUpFile({ pct })
+      );
+      set('file', url);
+      setUpFile({ pct: 100 });
+    } catch {
+      setUpFile({ error: 'Upload gagal. Coba lagi.' });
+    } finally {
+      setUploading((n) => n - 1);
+    }
+  }
+
+  async function handleShots(e) {
+    const files = [...(e.target.files || [])];
+    e.target.value = '';
+    if (files.length === 0) return;
+    const valid = files.filter(
+      (f) => f.type.startsWith('image/') && f.size <= 2 * 1024 * 1024
+    );
+    if (valid.length === 0) {
+      setUpShots({ error: 'Pilih gambar (maks 2MB per file).' });
+      return;
+    }
+    if (valid.length < files.length) {
+      setUpShots({ error: 'Sebagian file dilewati (bukan gambar / > 2MB).' });
+    }
+    setUploading((n) => n + 1);
+    try {
+      const urls = [];
+      for (let i = 0; i < valid.length; i++) {
+        const f = valid[i];
+        setUpShots({
+          pct: Math.round((i / valid.length) * 100),
+        });
+        const url = await uploadFile(
+          `screenshots/${Date.now()}-${i}-${cleanName(f.name)}`,
+          f,
+          (pct) =>
+            setUpShots({
+              pct: Math.round(((i + pct / 100) / valid.length) * 100),
+            })
+        );
+        urls.push(url);
+      }
+      setUpShots({ pct: 100 });
+      setForm((prev) => ({
+        ...prev,
+        screenshots: [prev.screenshots.trim(), ...urls]
+          .filter(Boolean)
+          .join('\n'),
+      }));
+    } catch {
+      setUpShots({ error: 'Sebagian upload gagal. Coba lagi.' });
+    } finally {
+      setUploading((n) => n - 1);
+    }
+  }
+
   async function submit(e) {
     e.preventDefault();
     setError('');
+    if (uploading > 0) {
+      setError('Tunggu upload selesai dulu.');
+      return;
+    }
     if (!form.name.trim()) {
       setError('Nama wajib diisi.');
       return;
     }
     if (!form.file.trim()) {
-      setError('Link file APK wajib diisi.');
+      setError('Link file APK wajib diisi (tempel link atau upload).');
       return;
     }
     if (form.icon && !/^https?:\/\//i.test(form.icon.trim())) {
@@ -178,6 +310,13 @@ export default function Editor() {
               placeholder="https://…/icon.png"
             />
           </label>
+          <UploadRow
+            id="up-icon"
+            accept="image/*"
+            label="Upload Icon"
+            state={upIcon}
+            onPick={handleIcon}
+          />
           {form.icon.trim() && (
             <div className="url-preview">
               <NetworkIcon url={form.icon.trim()} size={52} />
@@ -193,9 +332,17 @@ export default function Editor() {
               placeholder="https://…/app-mod.apk"
             />
             <span className="hint">
-              Tempel URL langsung (MediaFire, Google Drive direct, dll).
+              Tempel URL langsung (MediaFire, Drive, dll) atau upload file
+              APK di bawah.
             </span>
           </label>
+          <UploadRow
+            id="up-file"
+            accept=".apk"
+            label="Upload APK"
+            state={upFile}
+            onPick={handleFile}
+          />
           <label>
             Deskripsi
             <textarea
@@ -310,13 +457,24 @@ export default function Editor() {
               placeholder={'https://…/shot1.jpg\nhttps://…/shot2.jpg'}
             />
           </label>
+          <UploadRow
+            id="up-shots"
+            accept="image/*"
+            multiple
+            label="Upload Screenshot"
+            state={upShots}
+            onPick={handleShots}
+          />
 
+          {uploading > 0 && (
+            <div className="hint">Mengunggah file… tombol simpan aktif setelah selesai.</div>
+          )}
           {error && <div className="form-error">{error}</div>}
           <div className="form-row">
             <Link className="btn btn-line" to="/admin/dashboard">
               <ArrowLeft size={16} /> Batal
             </Link>
-            <button className="btn btn-lime" disabled={busy}>
+            <button className="btn btn-lime" disabled={busy || uploading > 0}>
               {busy ? (
                 'Menyimpan…'
               ) : (
