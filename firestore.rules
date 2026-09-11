@@ -6,11 +6,13 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Helper function to check if user is admin (optional: add admin claim check)
+    // Admin = HANYA email terdaftar di bawah. Kalau mau tambah admin,
+    // daftarkan di sini + samakan dengan ADMIN_EMAILS di web/src/config.js
+    // dan adminEmails di app/lib/config/app_config.dart.
     function isAdmin() {
-      return isAuthenticated();
-      // Advanced: check custom claims
-      // return isAuthenticated() && request.auth.token.admin == true;
+      return isAuthenticated() &&
+        (request.auth.token.email == 'admin@vanmod.store' ||
+         request.auth.token.email == 'vanxmod313@gmail.com');
     }
 
     // Public visitors may only bump stats fields (download counter,
