@@ -10,6 +10,13 @@ import { initFx } from './lib/fx.js';
 
 initFx();
 
+// Daftarkan service worker (PWA: cache + halaman offline).
+if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
