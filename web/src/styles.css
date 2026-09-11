@@ -1366,3 +1366,27 @@ body::after {
   .catnav { top: 62px; }
   .catnav-label { display: none; }
 }
+
+/* ============================================================
+   Latar: grid garis kotak-kotak (tanpa bias warna)
+   ============================================================ */
+/* Matikan bias warna: gradasi badan, blob, dan spotlight. */
+body { background: var(--bg); }
+.app::before { display: none; }
+body::after { display: none; }
+
+/* Grid dua lapis: kotak kecil 40px + garis besar tiap 200px. */
+body::before {
+  background-image:
+    linear-gradient(rgba(178, 248, 0, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(178, 248, 0, 0.12) 1px, transparent 1px),
+    linear-gradient(rgba(178, 248, 0, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(178, 248, 0, 0.055) 1px, transparent 1px);
+  background-size: 200px 200px, 200px 200px, 40px 40px, 40px 40px;
+  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  animation: grid-drift 14s linear infinite;
+}
+@keyframes grid-drift {
+  to { background-position: 200px 200px, 200px 200px, 40px 40px, 40px 40px; }
+}
