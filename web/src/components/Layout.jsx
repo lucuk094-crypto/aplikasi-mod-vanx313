@@ -11,10 +11,8 @@ import { useWishlist } from '../lib/wishlist.jsx';
 import AuthModal from './AuthModal.jsx';
 import {
   ArrowLeft,
-  Award,
   BadgeCheck,
   ChevronDown,
-  Gamepad,
   Globe,
   Heart,
   Home,
@@ -22,22 +20,14 @@ import {
   Menu,
   Search,
   Shield,
-  Sliders,
-  Smartphone,
   User,
   VLogo,
   X,
-  Zap,
 } from './icons.jsx';
 
 const NAV = [
   { to: '/', label: 'Beranda', end: true, Icon: Home },
-  { to: '/browse/games', label: 'Game', Icon: Gamepad },
-  { to: '/browse/apps', label: 'Aplikasi', Icon: Smartphone },
-  { to: '/browse/tools', label: 'Tools', Icon: Sliders },
   { to: '/stream', label: 'Stream', Icon: Globe },
-  { to: '/latest', label: 'Latest', Icon: Zap },
-  { to: '/popular', label: 'Popular', Icon: Award },
 ];
 
 // Logo brand: foto dari /logo.jpeg, otomatis fallback ke logo V bila belum ada.
