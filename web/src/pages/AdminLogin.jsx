@@ -58,7 +58,7 @@ export default function AdminLogin() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="admin@vanmod.store"
+            placeholder="vanxmod313@gmail.com"
             autoComplete="email"
           />
         </label>
