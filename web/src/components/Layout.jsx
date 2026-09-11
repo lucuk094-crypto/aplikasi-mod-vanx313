@@ -15,6 +15,7 @@ import {
   BadgeCheck,
   ChevronDown,
   Gamepad,
+  Globe,
   Heart,
   Home,
   LogOut,
@@ -34,6 +35,7 @@ const NAV = [
   { to: '/browse/games', label: 'Game', Icon: Gamepad },
   { to: '/browse/apps', label: 'Aplikasi', Icon: Smartphone },
   { to: '/browse/tools', label: 'Tools', Icon: Sliders },
+  { to: '/stream', label: 'Stream', Icon: Globe },
   { to: '/latest', label: 'Latest', Icon: Zap },
   { to: '/popular', label: 'Popular', Icon: Award },
 ];
