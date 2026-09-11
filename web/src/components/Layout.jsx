@@ -201,16 +201,17 @@ export default function Layout() {
           </div>
         </div>
 
-        {pathname !== '/' && (
-          <div className="backbar">
-            <div className="container backbar-in">
-              <button className="backbtn" onClick={goBack}>
-                <ArrowLeft size={16} /> Kembali
-              </button>
-            </div>
-          </div>
-        )}
       </header>
+
+      {pathname !== '/' && (
+        <div className="backbar">
+          <div className="container backbar-in">
+            <button className="backbtn" onClick={goBack}>
+              <ArrowLeft size={16} /> Kembali
+            </button>
+          </div>
+        </div>
+      )}
 
       <main className="container main page" key={pathname}>
         <Outlet />

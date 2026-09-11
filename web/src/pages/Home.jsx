@@ -67,6 +67,23 @@ export default function Home() {
 
   return (
     <>
+      <nav className="quicknav" aria-label="Navigasi kategori">
+        <Link to="/browse/apps">
+          <Smartphone size={16} /> Aplikasi
+        </Link>
+        <Link to="/browse/games">
+          <Gamepad size={16} /> Game
+        </Link>
+        <Link to="/browse/tools">
+          <Sliders size={16} /> Tools
+        </Link>
+        <Link to="/latest">
+          <Zap size={16} /> Latest
+        </Link>
+        <Link to="/popular">
+          <Award size={16} /> Popular
+        </Link>
+      </nav>
       <div className="hero">
         <div className="hero-copy">
           <Kicker>// OFFICIAL MOD STORE</Kicker>

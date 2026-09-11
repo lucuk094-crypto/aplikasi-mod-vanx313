@@ -62,29 +62,32 @@ export default function Browse() {
         <ErrorState message={error} onRetry={refresh} />
       ) : (
         <>
-          <div className="chips sticky-chips">
-            <button
-              className={cat === '' ? 'chip on' : 'chip'}
-              onClick={() => {
-                setCat('');
-                setVisible(PAGE_STEP);
-              }}
-            >
-              Semua
-            </button>
-            {cats.map((c) => (
+          <nav className="catnav" aria-label="Navigasi kategori">
+            <span className="catnav-label">KATEGORI</span>
+            <div className="catnav-items">
               <button
-                key={c}
-                className={cat === c ? 'chip on' : 'chip'}
+                className={cat === '' ? 'catnav-item on' : 'catnav-item'}
                 onClick={() => {
-                  setCat(c);
+                  setCat('');
                   setVisible(PAGE_STEP);
                 }}
               >
-                {c}
+                Semua
               </button>
-            ))}
-          </div>
+              {cats.map((c) => (
+                <button
+                  key={c}
+                  className={cat === c ? 'catnav-item on' : 'catnav-item'}
+                  onClick={() => {
+                    setCat(c);
+                    setVisible(PAGE_STEP);
+                  }}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          </nav>
 
           <div className="toolbar">
             <span className="count">
