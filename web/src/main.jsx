@@ -5,6 +5,7 @@ import App from './App.jsx';
 import { AuthProvider } from './lib/auth.jsx';
 import { StoreProvider } from './lib/store.jsx';
 import { WishlistProvider } from './lib/wishlist.jsx';
+import { NotifyProvider } from './lib/notify.jsx';
 import './styles.css';
 import { initFx } from './lib/fx.js';
 
@@ -23,7 +24,9 @@ createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <StoreProvider>
           <WishlistProvider>
-            <App />
+            <NotifyProvider>
+              <App />
+            </NotifyProvider>
           </WishlistProvider>
         </StoreProvider>
       </AuthProvider>

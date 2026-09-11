@@ -2078,3 +2078,181 @@ a.neo:hover {
     text-align: center;
   }
 }
+
+/* ---------- Notifikasi, mengetik & DM ---------- */
+.notify-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 200;
+  max-width: min(92vw, 420px);
+  background: var(--ink);
+  color: #fff7e8;
+  border: 2.5px solid var(--lime);
+  border-radius: 12px;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.35);
+  padding: 11px 16px;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.notify-toast.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.typing-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--muted);
+  padding: 6px 14px;
+}
+.typing-dots { display: inline-flex; gap: 3px; }
+.typing-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: tblink 1.2s infinite;
+}
+.typing-dots i:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tblink {
+  0%, 60%, 100% { opacity: 0.3; }
+  30% { opacity: 1; }
+}
+.dm-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--deep);
+  text-decoration: none;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: #fff;
+  margin-left: 8px;
+}
+.dm-link b {
+  background: var(--danger);
+  color: #fff;
+  font-size: 11px;
+  border-radius: 999px;
+  min-width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+.dm-wrap {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 14px;
+  margin-top: 16px;
+  align-items: start;
+}
+.dm-list { overflow: hidden; }
+.dm-list-head {
+  padding: 12px 14px;
+  border-bottom: 2px solid var(--ink);
+  font-weight: 800;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+}
+.dm-thread {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1.5px solid var(--line);
+  padding: 11px 12px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+}
+.dm-thread:last-child { border-bottom: none; }
+.dm-thread:hover { background: var(--surface2); }
+.dm-thread.on { background: var(--lime-soft); }
+.dm-avatar {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--lime-ink);
+  border: 2px solid var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+.dm-thread-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.dm-thread-body strong {
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dm-thread-body span {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dm-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--danger);
+  display: inline-block;
+}
+.dm-time {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  flex: none;
+}
+.dm-chat {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+}
+.dm-chat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--ink);
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+}
+.dm-msgs { height: min(50vh, 440px); }
+.dm-back { display: none; }
+@media (max-width: 860px) {
+  .dm-wrap { grid-template-columns: 1fr; }
+  .dm-back { display: inline-flex; }
+  .dm-wrap.chatting .dm-list { display: none; }
+  .dm-wrap:not(.chatting) .dm-chat { display: none; }
+}

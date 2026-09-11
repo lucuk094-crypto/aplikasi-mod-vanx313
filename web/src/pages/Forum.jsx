@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   collection,
   limit,
@@ -14,6 +15,12 @@ import {
   sendChatMessage,
   uploadChatImage,
 } from '../lib/chat.js';
+import {
+  clearTyping,
+  touchTyping,
+  watchTyping,
+} from '../lib/presence.js';
+import { markForumSeen, useNotify } from '../lib/notify.jsx';
 import { Kicker } from '../components/ui.jsx';
 import { ImageIcon, Send, X } from '../components/icons.jsx';
 
@@ -45,7 +52,9 @@ function dayLabel(d) {
 }
 
 export default function Forum() {
-  const { user, isAuthed, isAdmin } = useAuth();
+  const { user, isAuthed, isAdmin, displayName } = useAuth();
+  const { dmUnread } = useNotify();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -58,6 +67,7 @@ export default function Forum() {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [flashId, setFlashId] = useState('');
+  const [typing, setTyping] = useState([]);
   const listRef = useRef(null);
   const fileRef = useRef(null);
   const msgRefs = useRef({});
@@ -77,6 +87,7 @@ export default function Forum() {
         list.sort((a, b) => dateOf(a) - dateOf(b));
         setMessages(list);
         setLoading(false);
+        markForumSeen();
       },
       () => {
         setError('Gagal memuat forum. Periksa koneksi lalu refresh.');
@@ -85,6 +96,18 @@ export default function Forum() {
     );
     return unsub;
   }, []);
+
+  // Pantau siapa yang sedang mengetik di forum.
+  useEffect(() => {
+    return watchTyping(null, setTyping);
+  }, []);
+
+  // Bersihkan status mengetik saat keluar halaman.
+  useEffect(() => {
+    return () => {
+      if (user) clearTyping(user.uid, null);
+    };
+  }, [user]);
 
   function onScroll() {
     const el = listRef.current;
@@ -113,6 +136,13 @@ export default function Forum() {
     setTimeout(() => setFlashId(''), 1400);
   }
 
+  function onType(v) {
+    setText(v);
+    if (user && v.trim()) {
+      touchTyping(user.uid, displayName || 'Anonim', null);
+    }
+  }
+
   async function handleSend() {
     if (sending || uploading) return;
     const t = text.trim();
@@ -123,6 +153,7 @@ export default function Forum() {
       setText('');
       setImageUrl('');
       setReplyTo(null);
+      clearTyping(user.uid, null);
     } catch (e) {
       setError(e.message || 'Gagal mengirim pesan.');
     } finally {
@@ -187,10 +218,20 @@ export default function Forum() {
     }
   }
 
+  function chatPrivate(m) {
+    setMenuId(null);
+    navigate(
+      `/dm?to=${m.uid}&name=${encodeURIComponent(
+        m.name || 'Anonim'
+      )}&email=${encodeURIComponent(m.email || '')}`
+    );
+  }
+
   function openAuth() {
     window.dispatchEvent(new Event('vanmod:open-auth'));
   }
 
+  const othersTyping = typing.filter((t) => t.uid !== (user && user.uid));
   let lastDay = '';
 
   return (
@@ -217,6 +258,9 @@ export default function Forum() {
           <span className="live-dot" />
           <strong>Obrolan Umum</strong>
           <span className="forum-count">{messages.length} pesan</span>
+          <Link to="/dm" className="dm-link">
+            💬 Pesan Saya{dmUnread > 0 && <b>{dmUnread}</b>}
+          </Link>
         </div>
 
         <div className="forum-list" ref={listRef} onScroll={onScroll}>
@@ -286,6 +330,11 @@ export default function Forum() {
                                 ⧉ Salin
                               </button>
                             )}
+                            {!own && user && (
+                              <button onClick={() => chatPrivate(m)}>
+                                💬 Chat Privat
+                              </button>
+                            )}
                             {canDelete && (
                               <button
                                 className="danger"
@@ -337,6 +386,17 @@ export default function Forum() {
             })
           )}
         </div>
+
+        {othersTyping.length > 0 && (
+          <div className="typing-row">
+            <span className="typing-dots">
+              <i />
+              <i />
+              <i />
+            </span>
+            {othersTyping.map((t) => t.name).join(', ')} sedang mengetik…
+          </div>
+        )}
 
         {error && <div className="forum-error">{error}</div>}
 
@@ -393,7 +453,7 @@ export default function Forum() {
               </button>
               <input
                 value={text}
-                onChange={(e) => setText(e.target.value)}
+                onChange={(e) => onType(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();

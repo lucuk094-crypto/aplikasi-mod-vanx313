@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { useAuth } from '../lib/auth.jsx';
 import { useWishlist } from '../lib/wishlist.jsx';
+import { useNotify } from '../lib/notify.jsx';
 import AuthModal from './AuthModal.jsx';
 import {
   ArrowLeft,
@@ -18,6 +19,7 @@ import {
   Home,
   LogOut,
   Menu,
+  MessageCircle,
   Search,
   Shield,
   User,
@@ -55,6 +57,7 @@ function BrandMark({ size = 34 }) {
 export default function Layout() {
   const { isAuthed, isAdmin, displayName, signOut } = useAuth();
   const { count } = useWishlist();
+  const { dmUnread } = useNotify();
   const [showAuth, setShowAuth] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -136,6 +139,15 @@ export default function Layout() {
             >
               <Heart size={19} />
               {count > 0 && <span className="count">{count}</span>}
+            </button>
+            <button
+              className="icon-btn"
+              title="Pesan"
+              aria-label="Pesan"
+              onClick={() => navigate('/dm')}
+            >
+              <MessageCircle size={19} />
+              {dmUnread > 0 && <span className="count">{dmUnread}</span>}
             </button>
             {isAuthed ? (
               <div className="account">
