@@ -11,8 +11,7 @@ service cloud.firestore {
     // dan adminEmails di app/lib/config/app_config.dart.
     function isAdmin() {
       return isAuthenticated() &&
-        (request.auth.token.email == 'admin@vanmod.store' ||
-         request.auth.token.email == 'vanxmod313@gmail.com');
+        request.auth.token.email == 'vanxmod313@gmail.com';
     }
 
     // Public visitors may only bump stats fields (download counter,

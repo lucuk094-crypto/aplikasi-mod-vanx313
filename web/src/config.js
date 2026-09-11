@@ -14,7 +14,7 @@ export const firebaseConfig = {
 // PENTING: daftarkan email admin di sini untuk membuka Admin Panel.
 // 1. Buat user di Firebase Console → Authentication → Add user.
 // 2. Masukkan emailnya ke daftar ini. Selesai.
-export const ADMIN_EMAILS = ['admin@vanmod.store', 'vanxmod313@gmail.com'];
+export const ADMIN_EMAILS = ['vanxmod313@gmail.com'];
 
 export const COLLECTIONS = ['apps', 'games', 'tools'];
 

@@ -35,7 +35,6 @@ class AppConfig {
   // membuka Admin Panel di aplikasi. Untuk keamanan penuh, batasi juga di
   // firestore.rules (lihat app/README.md bagian "Keamanan Admin").
   static const List<String> adminEmails = [
-    'admin@vanmod.store',
     'vanxmod313@gmail.com',
   ];
 
