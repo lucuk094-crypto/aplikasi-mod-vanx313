@@ -19,6 +19,7 @@ import {
   NetworkIcon,
   SkeletonList,
 } from '../components/ui.jsx';
+import { StatsCharts } from '../components/Stats.jsx';
 
 export default function Dashboard() {
   const { isAdmin, authLoading, signOut } = useAuth();
@@ -108,6 +109,8 @@ export default function Dashboard() {
           <div className="sl">Total Unduhan</div>
         </div>
       </div>
+
+      <StatsCharts all={all} items={items} />
 
       <div className="searchbar" style={{ marginTop: 4 }}>
         <input

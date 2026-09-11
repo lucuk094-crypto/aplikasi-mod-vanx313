@@ -11,6 +11,7 @@ import Wishlist from './pages/Wishlist.jsx';
 import Contact from './pages/Contact.jsx';
 import About from './pages/About.jsx';
 import Guide from './pages/Guide.jsx';
+import Profil from './pages/Profil.jsx';
 import AdminLogin from './pages/AdminLogin.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Editor from './pages/Editor.jsx';
@@ -51,6 +52,8 @@ function useDocumentTitle() {
       title = 'Tentang — VAN MOD';
     } else if (seg[0] === 'panduan') {
       title = 'Panduan Install — VAN MOD';
+    } else if (seg[0] === 'profil') {
+      title = 'Profil — VAN MOD';
     } else if (seg[0] === 'admin') {
       title = 'Admin — VAN MOD';
     }
@@ -75,6 +78,7 @@ export default function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="about" element={<About />} />
           <Route path="panduan" element={<Guide />} />
+          <Route path="profil" element={<Profil />} />
           <Route path="admin" element={<AdminLogin />} />
           <Route path="admin/dashboard" element={<Dashboard />} />
           <Route path="admin/inbox" element={<Inbox />} />

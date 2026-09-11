@@ -154,6 +154,9 @@ export default function Layout() {
                       onClick={() => setMenuOpen(false)}
                     />
                     <div className="menu" role="menu">
+                      <Link to="/profil">
+                        <User size={15} /> Profil Saya
+                      </Link>
                       {isAdmin && (
                         <Link to="/admin/dashboard">
                           <Shield size={15} /> Admin Panel

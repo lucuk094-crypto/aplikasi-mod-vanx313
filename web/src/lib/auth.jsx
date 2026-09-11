@@ -53,6 +53,7 @@ export function AuthProvider({ children }) {
     return {
       user,
       init,
+      authLoading: init,
       isAuthed: !!user,
       isAdmin,
       displayName: user?.displayName || (user?.email ? user.email.split('@')[0] : ''),

@@ -65,8 +65,23 @@ export default function Detail() {
   }
 
   async function share() {
+    const shareUrl = window.location.href;
+    const shareTitle = item?.name || 'VAN MOD';
+    // HP modern: pakai panel share bawaan (WhatsApp, Telegram, dll).
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: `Coba ${shareTitle} di VAN MOD`,
+          url: shareUrl,
+        });
+      } catch {
+        // User membatalkan — diam saja.
+      }
+      return;
+    }
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(shareUrl);
       showToast('Link disalin ke clipboard.');
     } catch {
       showToast('Gagal menyalin link.');
