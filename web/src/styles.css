@@ -1780,3 +1780,33 @@ a.neo:hover {
 .footer-grid nav a { color: #b9b2a2; }
 .foot-badges .badge:not(.fill) { color: var(--lime); border-color: var(--lime); }
 .foot-bottom { border-color: #333; color: #8d8778; }
+
+/* Tombol Stream di bar atas — hanya tampil di layar kecil
+   (di desktop Stream sudah ada di .nav), selalu di luar garis tiga. */
+.top-stream {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  background: var(--lime);
+  color: var(--lime-ink);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 7px 13px;
+  box-shadow: var(--sh-sm);
+  white-space: nowrap;
+  text-decoration: none;
+}
+.top-stream:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink);
+}
+@media (max-width: 960px) {
+  .top-stream { display: inline-flex; }
+}
+@media (max-width: 480px) {
+  .top-stream span { display: none; }
+  .top-stream { padding: 7px 9px; }
+}

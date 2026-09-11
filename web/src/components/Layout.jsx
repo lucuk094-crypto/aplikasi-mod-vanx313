@@ -30,6 +30,12 @@ const NAV = [
   { to: '/stream', label: 'Stream', Icon: Globe },
 ];
 
+// Menu garis tiga (mobile): hanya Beranda — Stream sudah nongol
+// langsung di bar atas lewat tombol .top-stream.
+const MOBILE_NAV = [
+  { to: '/', label: 'Beranda', end: true, Icon: Home },
+];
+
 // Logo brand: foto dari /logo.jpeg, otomatis fallback ke logo V bila belum ada.
 function BrandMark({ size = 34 }) {
   const [err, setErr] = useState(false);
@@ -110,6 +116,10 @@ export default function Layout() {
           </nav>
 
           <div className="header-actions">
+            <Link to="/stream" className="top-stream" aria-label="Stream">
+              <Globe size={15} />
+              <span>Stream</span>
+            </Link>
             <button
               className="icon-btn"
               title="Cari"
@@ -182,7 +192,7 @@ export default function Layout() {
 
         <div className={`mobile-nav${mobileOpen ? ' open' : ''}`}>
           <div className="container mobile-nav-grid">
-            {NAV.map((n) => (
+            {MOBILE_NAV.map((n) => (
               <NavLink
                 key={n.to}
                 to={n.to}
