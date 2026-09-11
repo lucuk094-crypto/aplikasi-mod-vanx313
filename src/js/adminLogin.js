@@ -13,77 +13,89 @@ function initLoginForm() {
     
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        console.log('Form submitted!'); // Debug
-        
+
+        if (!window.VANMOD) {
+            showFormError('SYSTEM OFFLINE. PLEASE TRY AGAIN.');
+            return;
+        }
+
         // Hide error message
         if (errorMessage) {
             errorMessage.classList.add('hidden');
         }
-        
+
         // Get form values
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        console.log('Email:', email); // Debug
-        console.log('Attempting login...'); // Debug
-        
+        const email = document.getElementById('email')?.value.trim() || '';
+        const password = document.getElementById('password')?.value || '';
+
+        if (!email || !password) {
+            showFormError('EMAIL AND PASSWORD ARE REQUIRED.');
+            return;
+        }
+
         // Show loading state
         const submitButton = loginForm.querySelector('button[type="submit"]');
-        const originalText = submitButton.innerHTML;
-        submitButton.disabled = true;
-        submitButton.innerHTML = `
-            <span class="relative z-10 flex items-center gap-2">
-                <span class="animate-pulse">AUTHENTICATING...</span>
-            </span>
-        `;
-        
+        const originalText = submitButton ? submitButton.innerHTML : '';
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
+                <span class="relative z-10 flex items-center gap-2">
+                    <span class="animate-pulse">AUTHENTICATING...</span>
+                </span>
+            `;
+        }
+
+        const restoreButton = () => {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+            }
+        };
+
         try {
             // Attempt login
             const result = await VANMOD.adminLogin(email, password);
-            
-            console.log('Login result:', result); // Debug
-            
+
             if (result.success) {
                 // Success - redirect to dashboard
-                console.log('Login successful! Redirecting...'); // Debug
                 showSuccessAnimation();
                 setTimeout(() => {
                     window.location.href = 'dashbordadmin.html';
                 }, 1500);
             } else {
                 // Show error
-                console.error('Login failed:', result.error); // Debug
-                if (errorMessage) {
-                    errorMessage.classList.remove('hidden');
-                    const errorText = errorMessage.querySelector('p');
-                    if (errorText) {
-                        errorText.textContent = result.error || 'INVALID ADMIN CREDENTIALS.';
-                    }
-                }
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalText;
+                showFormError(result.error || 'INVALID ADMIN CREDENTIALS.');
+                restoreButton();
             }
         } catch (error) {
             console.error('Login error:', error);
-            if (errorMessage) {
-                errorMessage.classList.remove('hidden');
-                const errorText = errorMessage.querySelector('p');
-                if (errorText) {
-                    errorText.textContent = 'SYSTEM ERROR. PLEASE TRY AGAIN.';
-                }
-            }
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalText;
+            showFormError('SYSTEM ERROR. PLEASE TRY AGAIN.');
+            restoreButton();
         }
     });
 }
 
+// ==================== FORM ERROR ====================
+function showFormError(message) {
+    const errorMessage = document.getElementById('error-message');
+    if (!errorMessage) {
+        alert(message);
+        return;
+    }
+    errorMessage.classList.remove('hidden');
+    const errorText = errorMessage.querySelector('p');
+    if (errorText) {
+        errorText.textContent = message;
+    }
+}
+
 // ==================== PASSWORD TOGGLE ====================
-function togglePassword() {
+function togglePassword(btn) {
     const passwordInput = document.getElementById('password');
-    const toggleBtn = event.currentTarget;
-    
+    // `this` is passed from the inline handler; fall back to window.event
+    const toggleBtn = btn || (typeof event !== 'undefined' ? event.currentTarget : null);
+    if (!passwordInput || !toggleBtn) return;
+
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
         toggleBtn.textContent = 'HIDE';
@@ -113,6 +125,7 @@ function showSuccessAnimation() {
 
 // ==================== CHECK IF ALREADY LOGGED IN ====================
 function checkExistingAuth() {
+    if (!window.VANMOD) return;
     VANMOD.checkAuthState((user) => {
         if (user) {
             // Already logged in, redirect to dashboard

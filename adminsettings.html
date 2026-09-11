@@ -225,23 +225,23 @@
 <p class="font-label-sm text-label-sm text-on-surface-variant font-mono mt-xs">MANAGEMENT TERMINAL</p>
 </div>
 <div class="flex flex-col flex-grow w-full">
-<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="#">
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="dashbordadmin.html">
 <span class="material-symbols-outlined mr-md text-on-surface-variant group-hover:text-primary">dashboard</span>
                 Dashboard
             </a>
-<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="#">
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="apps.html">
 <span class="material-symbols-outlined mr-md text-on-surface-variant group-hover:text-primary">apps</span>
                 Apps
             </a>
-<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="#">
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="adminsettings.html">
 <span class="material-symbols-outlined mr-md text-on-surface-variant group-hover:text-primary">add_box</span>
                 Add App
             </a>
-<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="#">
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="dashbordadmin.html">
 <span class="material-symbols-outlined mr-md text-on-surface-variant group-hover:text-primary">rate_review</span>
                 Reviews
             </a>
-<a class="flex items-center px-md py-sm bg-primary-container text-on-primary-container font-bold border-l-4 border-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase" href="#">
+<a class="flex items-center px-md py-sm bg-primary-container text-on-primary-container font-bold border-l-4 border-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase" href="adminsettings.html">
 <span class="material-symbols-outlined mr-md text-on-primary-container" style="font-variation-settings: 'FILL' 1;">settings</span>
                 Settings
             </a>
@@ -255,181 +255,127 @@
 <!-- Main Content Canvas -->
 <main class="flex-1 overflow-y-auto bg-[#080808] p-margin-desktop relative">
 <div class="max-w-5xl mx-auto">
-<header class="mb-2xl border-b-2 border-outline-variant pb-md flex justify-between items-end">
+<header class="mb-2xl border-b-2 border-outline-variant pb-md flex flex-col md:flex-row justify-between md:items-end gap-md">
 <div>
-<h2 class="font-display-lg text-display-lg font-black text-primary tracking-tighter uppercase">
-<span class="text-primary-container mr-2">//</span>SETTINGS_SYS
+<h2 id="form-title" class="font-display-lg text-display-lg font-black text-primary tracking-tighter uppercase">
+<span class="text-primary-container mr-2">//</span>ADD_NEW_ENTRY
                     </h2>
-<p class="font-body-md text-body-md text-on-surface-variant font-mono mt-sm">Initialize system parameters and security constraints.</p>
+<p id="form-subtitle" class="font-body-md text-body-md text-on-surface-variant font-mono mt-sm">Deploy a new mod entry to the ecosystem.</p>
 </div>
-<button class="brutalist-btn-primary font-label-md text-label-md uppercase px-xl py-sm font-bold flex items-center">
-<span class="material-symbols-outlined mr-2 text-sm">save</span>
-                    Deploy Changes
+<button onclick="cancelEdit()" class="border-2 border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-md text-label-md uppercase px-xl py-sm font-bold transition-colors">
+                    CANCEL
                 </button>
 </header>
-<div class="grid grid-cols-1 gap-xl">
-<!-- 1. SYSTEM_CONFIGURATION -->
-<section class="brutalist-card p-xl relative overflow-hidden group">
-<div class="absolute top-0 left-0 w-full h-1 bg-surface-variant group-hover:bg-primary-container transition-colors duration-300"></div>
+<!-- Entry type selector -->
+<div class="flex flex-wrap gap-sm mb-xl">
+<button type="button" data-type="apps" class="border-2 border-primary-container text-primary-container px-xl py-sm font-label-md text-label-md uppercase font-bold hover:border-primary transition-colors">APPS</button>
+<button type="button" data-type="games" class="border-2 border-outline-variant text-on-surface-variant px-xl py-sm font-label-md text-label-md uppercase font-bold hover:border-primary hover:text-primary transition-colors">GAMES</button>
+<button type="button" data-type="tools" class="border-2 border-outline-variant text-on-surface-variant px-xl py-sm font-label-md text-label-md uppercase font-bold hover:border-primary hover:text-primary transition-colors">TOOLS</button>
+</div>
+<form id="item-form" class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+<!-- Core info -->
+<section class="brutalist-card p-xl md:col-span-2">
+<h3 class="font-headline-md text-headline-md font-bold text-primary uppercase mb-lg flex items-center">
+<span class="material-symbols-outlined mr-sm text-outline-variant">info</span>
+                        // CORE_INFO
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="flex flex-col md:col-span-2">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-name">Name *</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-name" placeholder="e.g. Spotify Premium Plus" required="" type="text"/>
+</div>
+<div class="flex flex-col md:col-span-2">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-description">Description</label>
+<textarea class="brutalist-input w-full p-sm font-body-md resize-none" id="item-description" placeholder="Full description of the mod..." rows="4"></textarea>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-version">Version</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-version" placeholder="e.g. 8.8.8" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-size">Size</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-size" placeholder="e.g. 45MB" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-category">Category</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-category" placeholder="e.g. Social, Action, Utility" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-mod-type">Mod Type</label>
+<input class="brutalist-input w-full p-sm font-body-md uppercase" id="item-mod-type" placeholder="e.g. PREMIUM, MOD, MODDED" type="text"/>
+</div>
+<div class="flex flex-col md:col-span-2">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-tags">Tags (comma separated)</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-tags" placeholder="e.g. premium, unlocked, ad-free" type="text"/>
+</div>
+</div>
+</section>
+<!-- Technical -->
+<section class="brutalist-card p-xl md:col-span-2">
 <h3 class="font-headline-md text-headline-md font-bold text-primary uppercase mb-lg flex items-center">
 <span class="material-symbols-outlined mr-sm text-outline-variant">memory</span>
-                        // SYSTEM_CONFIGURATION
+                        // TECHNICAL_SPECS
                     </h3>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
-<div class="space-y-lg">
-<!-- Toggle: Global Access -->
-<div class="flex justify-between items-center p-md bg-[#000000] border-2 border-surface-variant">
-<div>
-<span class="font-label-md text-label-md uppercase text-on-background block mb-xs">Global Access Control</span>
-<span class="font-mono text-xs text-on-surface-variant">Enable/disable external API requests.</span>
-</div>
-<div>
-<input checked="" class="toggle-checkbox" id="toggle-access" type="checkbox"/>
-<label class="toggle-label block" for="toggle-access"></label>
-</div>
-</div>
-<!-- Toggle: Maintenance Mode -->
-<div class="flex justify-between items-center p-md bg-[#000000] border-2 border-outline-variant hover:border-[#B7FF00] transition-colors relative">
-<div class="absolute left-0 top-0 h-full w-1 bg-primary-container hidden"></div>
-<div>
-<span class="font-label-md text-label-md uppercase text-primary-container block mb-xs flex items-center">
-<span class="material-symbols-outlined text-sm mr-1">warning</span> Maintenance Mode
-                                    </span>
-<span class="font-mono text-xs text-on-surface-variant">Lockdown system for deployment.</span>
-</div>
-<div>
-<input class="toggle-checkbox" id="toggle-maintenance" type="checkbox"/>
-<label class="toggle-label block" for="toggle-maintenance"></label>
-</div>
-</div>
-</div>
-<div class="space-y-md flex flex-col justify-end">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
 <div class="flex flex-col">
-<label class="font-label-md text-label-md uppercase text-on-background mb-sm">System Language [ISO 639-1]</label>
-<div class="relative">
-<select class="brutalist-input w-full p-sm font-mono text-sm appearance-none cursor-pointer pr-xl">
-<option value="en">EN_US (Default)</option>
-<option value="fr">FR_FR</option>
-<option value="ja">JA_JP</option>
-<option value="bin">01010011</option>
-</select>
-<span class="material-symbols-outlined absolute right-sm top-1/2 transform -translate-y-1/2 pointer-events-none text-outline">arrow_drop_down</span>
-</div>
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-developer">Developer</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-developer" placeholder="e.g. Meta Platforms" type="text"/>
 </div>
 <div class="flex flex-col">
-<label class="font-label-md text-label-md uppercase text-on-background mb-sm">Max Allocation (GB)</label>
-<input class="brutalist-input w-full p-sm font-mono text-sm" max="256" min="16" type="number" value="64"/>
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-package">Package Name</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-package" placeholder="e.g. com.example.app" type="text"/>
 </div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-android-version">Android Version</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-android-version" placeholder="e.g. 5.0+" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-license">License</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-license" placeholder="e.g. Freeware" type="text"/>
+</div>
+<div class="flex flex-col md:col-span-2">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-download-url">Download URL</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-download-url" placeholder="https://..." type="url"/>
 </div>
 </div>
 </section>
-<!-- 2. SECURITY_PROTOCOLS -->
-<section class="brutalist-card p-xl border-l-4 border-l-outline-variant hover:border-l-primary-container transition-colors duration-300">
+<!-- Icon -->
+<section class="brutalist-card p-xl md:col-span-2">
 <h3 class="font-headline-md text-headline-md font-bold text-primary uppercase mb-lg flex items-center">
-<span class="material-symbols-outlined mr-sm text-outline-variant">shield_lock</span>
-                        // SECURITY_PROTOCOLS
+<span class="material-symbols-outlined mr-sm text-outline-variant">image</span>
+                        // APP_ICON
                     </h3>
-<div class="space-y-xl">
-<!-- API Key -->
-<div>
-<label class="font-label-md text-label-md uppercase text-on-background mb-sm flex justify-between">
-<span>Master API Key</span>
-<span class="text-xs font-mono text-outline-variant">Read-only</span>
-</label>
-<div class="flex">
-<input class="brutalist-input flex-1 p-sm font-mono text-sm border-r-0 tracking-widest bg-surface-container" id="api-key" readonly="" type="password" value="sk_live_vmod_998x2_brutalist_auth_token_44a"/>
-<button class="brutalist-input px-md hover:bg-surface-variant transition-colors flex items-center justify-center" onclick="document.getElementById('api-key').type = document.getElementById('api-key').type === 'password' ? 'text' : 'password'">
-<span class="material-symbols-outlined text-sm">visibility</span>
-</button>
-<button class="brutalist-input px-md border-l-0 hover:bg-surface-variant transition-colors flex items-center justify-center">
-<span class="material-symbols-outlined text-sm">content_copy</span>
-</button>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg items-start">
+<div class="flex flex-col gap-md">
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-icon">Upload Icon (max 2MB)</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm file:mr-md file:py-xs file:px-md file:border-2 file:border-outline-variant file:bg-surface-container-highest file:text-primary file:font-label-sm file:uppercase hover:file:border-primary" id="item-icon" accept="image/*" type="file"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-icon-url">...or Icon URL</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-icon-url" placeholder="https://i.ibb.co/xxxxx/image.png" type="url"/>
 </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
-<!-- 2FA Status -->
-<div class="border-2 border-outline-variant p-md">
-<div class="flex justify-between items-start mb-md">
-<span class="font-label-md text-label-md uppercase text-on-background">2FA Enforcement</span>
-<span class="px-2 py-1 bg-primary-container text-on-primary-container text-xs font-bold uppercase tracking-wider font-mono">Active</span>
-</div>
-<p class="font-mono text-xs text-on-surface-variant mb-md">Require Multi-Factor Authentication for all Admin level terminal access.</p>
-<button class="w-full border-2 border-outline hover:border-primary text-primary py-xs font-label-sm text-label-sm uppercase transition-colors">Configure Auth</button>
-</div>
-<!-- IP Whitelist -->
-<div class="border-2 border-outline-variant p-md bg-[#000000]">
-<label class="font-label-md text-label-md uppercase text-on-background mb-sm block">IP Whitelist Rules (CIDR)</label>
-<textarea class="brutalist-input w-full p-sm font-mono text-xs h-24 resize-none mb-sm" placeholder="192.168.1.1/32
-10.0.0.0/8">192.168.1.1/32
-10.0.0.0/8
-2001:db8::/32</textarea>
-<button class="text-primary-container font-mono text-xs hover:underline flex items-center">
-<span class="material-symbols-outlined text-[14px] mr-1">add</span> Add Entry
-                                </button>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md uppercase text-on-background mb-sm">Preview</span>
+<div id="icon-preview-container" class="w-32 h-32 bg-[#000000] border-2 border-outline-variant flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-outline-variant" style="font-size: 48px;">image</span>
 </div>
 </div>
 </div>
 </section>
-<!-- 3. BRAND_ASSETS -->
-<section class="brutalist-card p-xl">
-<h3 class="font-headline-md text-headline-md font-bold text-primary uppercase mb-lg flex items-center">
-<span class="material-symbols-outlined mr-sm text-outline-variant">palette</span>
-                        // BRAND_ASSETS
-                    </h3>
-<div class="flex flex-col md:flex-row gap-xl">
-<!-- Color Picker -->
-<div class="flex-1">
-<label class="font-label-md text-label-md uppercase text-on-background mb-sm block">Primary Terminal Accent</label>
-<div class="flex items-center space-x-sm mb-sm">
-<div class="w-12 h-12 bg-primary-container border-2 border-outline"></div>
-<input class="brutalist-input flex-1 p-sm font-mono text-sm uppercase" type="text" value="#B7FF00"/>
+<!-- Actions -->
+<div class="md:col-span-2 flex flex-col md:flex-row gap-md">
+<button class="brutalist-btn-primary font-label-md text-label-md uppercase px-xl py-md font-bold flex items-center justify-center gap-sm flex-1" type="submit">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+                        DEPLOY ENTRY
+                    </button>
+<button id="delete-btn" onclick="deleteItem()" class="brutalist-btn-destructive font-label-md text-label-md uppercase py-md px-xl font-bold hidden items-center justify-center gap-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">delete_forever</span>
+                        DELETE ENTRY
+                    </button>
 </div>
-<div class="flex gap-2">
-<button class="w-8 h-8 bg-[#B7FF00] border border-outline hover:border-white transition-colors"></button>
-<button class="w-8 h-8 bg-[#FF0055] border border-outline hover:border-white transition-colors"></button>
-<button class="w-8 h-8 bg-[#00E5FF] border border-outline hover:border-white transition-colors"></button>
-<button class="w-8 h-8 bg-[#FFFFFF] border border-outline hover:border-white transition-colors"></button>
-</div>
-</div>
-<!-- Logo Upload -->
-<div class="flex-1">
-<label class="font-label-md text-label-md uppercase text-on-background mb-sm block">Terminal Vector Logo</label>
-<div class="border-2 border-dashed border-outline-variant p-md flex flex-col items-center justify-center hover:border-primary hover:bg-surface-container transition-all cursor-pointer h-32 group">
-<span class="material-symbols-outlined text-outline-variant group-hover:text-primary mb-sm" style="font-size: 32px;">upload_file</span>
-<span class="font-mono text-xs text-on-surface-variant group-hover:text-primary text-center">Drag .SVG payload here<br/>or click to browse</span>
-</div>
-</div>
-</div>
-</section>
-<!-- 4. DATABASE_OPERATIONS (Destructive) -->
-<section class="brutalist-card p-xl border-2 border-outline-variant relative overflow-hidden">
-<!-- Diagonal stripes warning background -->
-<div class="absolute inset-0 opacity-10 pointer-events-none" style="background: repeating-linear-gradient(45deg, transparent, transparent 10px, #ffb4ab 10px, #ffb4ab 20px);"></div>
-<h3 class="font-headline-md text-headline-md font-bold text-error uppercase mb-lg flex items-center relative z-10">
-<span class="material-symbols-outlined mr-sm">dangerous</span>
-                        // DATABASE_OPERATIONS
-                    </h3>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-md relative z-10">
-<div class="border border-outline-variant p-md flex flex-col justify-between bg-[#000000]">
-<div>
-<h4 class="font-label-md text-label-md uppercase text-primary mb-xs">Purge System Cache</h4>
-<p class="font-mono text-xs text-on-surface-variant mb-md">Clears all temporary in-memory structures. May cause temporary latency spike.</p>
-</div>
-<button class="brutalist-btn-destructive font-label-sm text-label-sm uppercase py-sm px-md w-full font-bold">Execute Purge</button>
-</div>
-<div class="border border-outline-variant p-md flex flex-col justify-between bg-[#000000]">
-<div>
-<h4 class="font-label-md text-label-md uppercase text-primary mb-xs">Reset Routing Table</h4>
-<p class="font-mono text-xs text-on-surface-variant mb-md text-error">CRITICAL: Rebuilds index pathways. Potential downtime 3-5s.</p>
-</div>
-<button class="brutalist-btn-destructive font-label-sm text-label-sm uppercase py-sm px-md w-full font-bold flex items-center justify-center">
-<span class="material-symbols-outlined text-sm mr-2">delete_forever</span>
-                                Factory Reset Table
-                            </button>
-</div>
-</div>
-</section>
-</div>
+</form>
 <!-- Footer Divider -->
 <div class="mt-2xl flex items-center justify-center opacity-50 mb-xl">
 <span class="text-primary-container font-mono tracking-widest text-sm">// END_OF_FILE</span>

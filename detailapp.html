@@ -213,10 +213,10 @@
 <!-- Top Navigation from JSON (Context: Transactional/Detail Page, so we hide main nav items, keeping only back/brand) -->
 <nav class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b-2 border-outline-variant flex justify-between items-center px-margin-desktop h-20 mx-auto">
 <div class="flex items-center gap-md">
-<button class="text-primary hover:text-primary-container transition-colors active:scale-95">
+<button onclick="window.history.back()" class="text-primary hover:text-primary-container transition-colors active:scale-95">
 <span class="material-symbols-outlined font-display-lg text-[32px]" data-icon="arrow_back">arrow_back</span>
 </button>
-<div class="font-display-lg text-display-lg font-black text-primary tracking-tighter cursor-pointer">
+<div onclick="window.location.href='home.html'" class="font-display-lg text-display-lg font-black text-primary tracking-tighter cursor-pointer">
                 VAN<span class="text-primary-container">//</span>MOD
             </div>
 </div>
@@ -232,31 +232,32 @@
 <section class="flex flex-col md:flex-row gap-xl items-start mb-2xl">
 <!-- App Icon -->
 <div class="w-32 h-32 md:w-48 md:h-48 flex-shrink-0 neo-brutal-card border-2 border-primary overflow-hidden relative">
-<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" data-alt="High quality, brutalist stylized app icon for Spotify. Dark mode aesthetic with sharp contrasting neon green highlights. The icon sits perfectly centered in a heavy black container. Deep shadows and high contrast. Premium digital craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9mBOWxf8pLpzSkzMw5KP5Znjyx5M-H1pucUIbYnORZUgYWeexl-HMDfzUsYKPoRyvDelend_62fRnA65LJ7SXGB60rxWwCizLOJZ-CQG_gxQcM8K4JWt3xzps8MSxtQj2qYPQwgkYvFRduhE-bW3Ir_59bbPoT834P5Vy4jxPfRJ4bZHi4PEhasWs_aU_zDtgcfSsqD5hzMSiSVsL3WBlyDCjeLfrdnsPrbiySfYe3CFV-J0iMk0r4g"/>
+<img id="app-icon" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" data-alt="High quality, brutalist stylized app icon for Spotify. Dark mode aesthetic with sharp contrasting neon green highlights. The icon sits perfectly centered in a heavy black container. Deep shadows and high contrast. Premium digital craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9mBOWxf8pLpzSkzMw5KP5Znjyx5M-H1pucUIbYnORZUgYWeexl-HMDfzUsYKPoRyvDelend_62fRnA65LJ7SXGB60rxWwCizLOJZ-CQG_gxQcM8K4JWt3xzps8MSxtQj2qYPQwgkYvFRduhE-bW3Ir_59bbPoT834P5Vy4jxPfRJ4bZHi4PEhasWs_aU_zDtgcfSsqD5hzMSiSVsL3WBlyDCjeLfrdnsPrbiySfYe3CFV-J0iMk0r4g"/>
 </div>
 <!-- App Info & Actions -->
 <div class="flex flex-col justify-between h-full w-full">
 <div>
 <h1 class="font-display-lg text-display-lg font-black tracking-tighter uppercase flex items-center gap-sm">
-<span class="divider-slash">//</span> SPOTIFY
+<span class="divider-slash">//</span> <span id="app-title">SPOTIFY</span>
                     </h1>
-<div class="flex items-center gap-md mt-sm mb-lg">
-<span class="bg-surface-variant text-on-surface-variant px-sm py-xs font-label-sm text-label-sm uppercase border border-outline-variant">MUSIC</span>
+<div class="flex items-center gap-md mt-sm mb-lg flex-wrap">
+<span id="app-category" class="bg-surface-variant text-on-surface-variant px-sm py-xs font-label-sm text-label-sm uppercase border border-outline-variant">MUSIC</span>
+<span id="app-version" class="bg-surface-variant text-on-surface-variant px-sm py-xs font-label-sm text-label-sm uppercase border border-outline-variant">v8.8.96</span>
 <div class="flex items-center gap-xs text-primary-container font-label-md text-label-md">
 <span class="material-symbols-outlined" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
-                            4.8
-                        </div>
-<span class="text-on-surface-variant font-label-sm text-label-sm uppercase">12.4K REVIEWS</span>
+<span id="app-rating">4.8</span>
+</div>
+<span class="text-on-surface-variant font-label-sm text-label-sm uppercase"><span id="app-downloads">12.4K</span> DOWNLOADS</span>
 </div>
 </div>
 <div class="flex flex-col sm:flex-row gap-md mt-auto">
-<button class="bg-primary-container text-on-primary-fixed border-2 border-primary-container font-label-md text-label-md uppercase tracking-wider py-md px-xl flex items-center justify-center gap-sm neo-brutal-btn w-full sm:w-auto">
+<button id="download-btn" onclick="downloadApp()" class="bg-primary-container text-on-primary-fixed border-2 border-primary-container font-label-md text-label-md uppercase tracking-wider py-md px-xl flex items-center justify-center gap-sm neo-brutal-btn w-full sm:w-auto">
                         DOWNLOAD APK
                         <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
 </button>
-<button class="bg-transparent text-primary border-2 border-primary font-label-md text-label-md uppercase tracking-wider py-md px-xl hover:bg-surface-container-high transition-colors flex justify-center items-center gap-sm w-full sm:w-auto">
+<button id="save-btn" class="bg-transparent text-primary border-2 border-primary font-label-md text-label-md uppercase tracking-wider py-md px-xl hover:bg-surface-container-high transition-colors flex justify-center items-center gap-sm w-full sm:w-auto">
 <span class="material-symbols-outlined" data-icon="bookmark_add">bookmark_add</span>
-                        SAVE
+<span data-save-label>SAVE</span>
                     </button>
 </div>
 </div>
@@ -266,7 +267,7 @@
 <h2 class="font-headline-sm text-headline-sm font-bold uppercase mb-md flex items-center gap-sm">
 <span class="divider-slash">//</span> SCREENSHOTS
             </h2>
-<div class="flex gap-md overflow-x-auto scrollbar-hide pb-md snap-x">
+<div id="screenshots-container" class="flex gap-md overflow-x-auto scrollbar-hide pb-md snap-x">
 <!-- Screenshot 1 -->
 <div class="snap-center shrink-0 w-[240px] md:w-[320px] aspect-[9/16] neo-brutal-card overflow-hidden">
 <img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" data-alt="High contrast, dark mode UI screenshot of a music streaming app. Brutalist design elements, sharp borders, and neon green highlights showing a currently playing song interface. Professional, sleek, and high-end aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbzlBpMjqAjL0fJk7lxEpr25s-5W31QujUAS_PhuW7rik5he0BD_tr99GC9YeK3GawbagA4LiJgPp-yWU4frwHxFyG3Tl1E-Ny2ca7fqKSNDZgxc_TCobyNVo2_jnKjQVjhgJLrXxAZYodc4I71M0gbPYyv5RbK7Vsdza1bQdyGV30-xVauaiiGGVfFyuc6J9FmKipCEjKgpHwuIslzCOjuTWDimHvpf-CS5h_kHur72xFd8C8gmGtcA"/>
@@ -292,6 +293,7 @@
 <h2 class="font-headline-sm text-headline-sm font-bold uppercase border-b-2 border-outline-variant pb-sm flex items-center gap-sm">
 <span class="divider-slash">//</span> APP INFO
                 </h2>
+<div id="tech-specs-container" class="flex flex-col gap-md">
 <div class="flex justify-between items-center py-xs border-b border-surface-variant">
 <span class="text-on-surface-variant font-label-md text-label-md">VERSION</span>
 <span class="font-body-md font-bold">8.8.96.364</span>
@@ -313,13 +315,14 @@
 <span class="text-primary-container font-label-md text-label-md uppercase font-bold px-sm py-xs border border-primary-container">VERIFIED SECURE</span>
 </div>
 </div>
+</div>
 <!-- MOD Features & Description -->
 <div class="neo-brutal-card p-lg flex flex-col gap-lg lg:col-span-2">
 <div>
 <h2 class="font-headline-sm text-headline-sm font-bold uppercase border-b-2 border-outline-variant pb-sm flex items-center gap-sm mb-md text-primary-container">
 <span class="divider-slash">//</span> MOD FEATURES
                     </h2>
-<ul class="grid grid-cols-1 sm:grid-cols-2 gap-md font-body-md">
+<ul id="app-features" class="grid grid-cols-1 sm:grid-cols-2 gap-md font-body-md">
 <li class="flex items-center gap-sm">
 <span class="material-symbols-outlined text-primary-container" data-icon="check_box" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_box</span>
                             PREMIUM UNLOCKED
@@ -351,6 +354,37 @@
 </div>
 </div>
 </section>
+<!-- Reviews Section -->
+<section class="mb-2xl">
+<h2 class="font-headline-sm text-headline-sm font-bold uppercase mb-md flex items-center gap-sm">
+<span class="divider-slash">//</span> REVIEWS
+<span id="reviews-count" class="text-on-surface-variant font-label-sm text-label-sm ml-2">0 REVIEWS</span>
+</h2>
+<div id="reviews-container" class="flex flex-col gap-md mb-xl">
+<div class="text-center py-lg text-on-surface-variant font-label-md uppercase">
+                No reviews yet. Be the first to review!
+            </div>
+</div>
+<div class="neo-brutal-card p-lg">
+<h3 class="font-label-md text-label-md uppercase text-primary-container mb-md tracking-widest">// SUBMIT REVIEW</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-md">
+<input id="reviewer-name" class="bg-[#000000] border-2 border-outline-variant focus:border-primary-container text-primary font-body-md p-sm outline-none" placeholder="YOUR NAME (OPTIONAL)" type="text"/>
+<div class="flex items-center gap-sm">
+<span class="font-label-md text-label-md uppercase text-on-surface-variant">RATING:</span>
+<label class="flex items-center gap-1 cursor-pointer text-on-surface-variant hover:text-primary-container"><input class="accent-[#b2f800]" name="rating" type="radio" value="5"/> 5</label>
+<label class="flex items-center gap-1 cursor-pointer text-on-surface-variant hover:text-primary-container"><input class="accent-[#b2f800]" name="rating" type="radio" value="4"/> 4</label>
+<label class="flex items-center gap-1 cursor-pointer text-on-surface-variant hover:text-primary-container"><input class="accent-[#b2f800]" name="rating" type="radio" value="3"/> 3</label>
+<label class="flex items-center gap-1 cursor-pointer text-on-surface-variant hover:text-primary-container"><input class="accent-[#b2f800]" name="rating" type="radio" value="2"/> 2</label>
+<label class="flex items-center gap-1 cursor-pointer text-on-surface-variant hover:text-primary-container"><input class="accent-[#b2f800]" name="rating" type="radio" value="1"/> 1</label>
+</div>
+</div>
+<textarea id="review-comment" class="bg-[#000000] border-2 border-outline-variant focus:border-primary-container text-primary font-body-md p-sm outline-none w-full resize-none" placeholder="WRITE YOUR REVIEW..." rows="4"></textarea>
+<button onclick="submitReview()" class="mt-md bg-transparent text-primary border-2 border-primary font-label-md text-label-md uppercase tracking-wider py-sm px-xl hover:bg-surface-container-high transition-colors flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="rate_review">rate_review</span>
+                SUBMIT REVIEW
+            </button>
+</div>
+</section>
 </main>
 <!-- Footer from JSON -->
 <footer class="w-full py-2xl px-margin-desktop bg-background border-t-2 border-outline-variant grid grid-cols-1 md:grid-cols-3 gap-xl mt-3xl">
@@ -364,7 +398,7 @@
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Privacy Policy</a>
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Terms of Service</a>
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">API Documentation</a>
-<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Contact Support</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="contact.html">Contact Support</a>
 </div>
 </footer>
 

@@ -1,0 +1,32 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "flutter-analyze",
+      "severity": "error",
+      "pattern": [
+        {
+          "regexp": "^\\s+(error|warning|info)\\s+•\\s+(.+?)\\s+•\\s+(.+?):(\\d+):(\\d+)\\s+•\\s+(.+)$",
+          "severity": 1,
+          "message": 2,
+          "file": 3,
+          "line": 4,
+          "column": 5,
+          "code": 6
+        }
+      ]
+    },
+    {
+      "owner": "kotlin-errors",
+      "severity": "error",
+      "pattern": [
+        {
+          "regexp": "^e: file:///(.+.kt):(\\d+):(\\d+) (.+)$",
+          "message": 4,
+          "file": 1,
+          "line": 2,
+          "column": 3
+        }
+      ]
+    }
+  ]
+}

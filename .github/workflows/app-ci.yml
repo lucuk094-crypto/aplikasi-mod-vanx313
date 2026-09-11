@@ -1,0 +1,76 @@
+name: VAN MOD App CI
+
+# Build & analyze aplikasi Flutter (Android APK + Windows EXE).
+# Artefak (file APK/ZIP) bisa diunduh dari tab Actions -> run -> Artifacts.
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'app/**'
+      - '.github/**'
+  pull_request:
+    paths:
+      - 'app/**'
+      - '.github/**'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: echo "::add-matcher::${{ github.workspace }}/.github/flutter-analyze-matcher.json"
+      - run: flutter pub get
+        working-directory: app
+      - run: flutter analyze app
+
+  android:
+    name: Build Android APK
+    needs: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+        working-directory: app
+      - run: flutter build apk --release
+        working-directory: app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vanmod-android-apk
+          path: app/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+
+  windows:
+    name: Build Windows EXE
+    needs: analyze
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter config --enable-windows-desktop
+      - run: flutter pub get
+        working-directory: app
+      - run: flutter build windows --release
+        working-directory: app
+      - run: Compress-Archive -Path app\build\windows\x64\runner\Release\* -DestinationPath vanmod-windows.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vanmod-windows
+          path: vanmod-windows.zip
+          if-no-files-found: error

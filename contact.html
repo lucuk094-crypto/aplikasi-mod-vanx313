@@ -278,7 +278,7 @@
 <h2 class="font-headline-sm text-headline-sm font-bold text-primary uppercase tracking-wider">SYSTEM REPORT FORM</h2>
 <span class="material-symbols-outlined text-outline-variant">edit_document</span>
 </div>
-<form class="flex flex-col gap-lg">
+<form id="contact-form" class="flex flex-col gap-lg">
 <!-- Subject Protocol -->
 <div class="flex flex-col gap-sm">
 <label class="font-label-md text-label-md uppercase text-on-surface-variant" for="subject">SUBJECT PROTOCOL</label>
@@ -289,15 +289,38 @@
 <option value="security">SECURITY VULNERABILITY // CRITICAL</option>
 </select>
 </div>
+<!-- User Callsign -->
+<div class="flex flex-col gap-sm">
+<label class="font-label-md text-label-md uppercase text-on-surface-variant" for="name">USER CALLSIGN (NAME)</label>
+<input class="brutalist-input p-md font-body-md" id="name" placeholder="YOUR NAME / ALIAS" required="" type="text"/>
+</div>
 <!-- User Signature -->
 <div class="flex flex-col gap-sm">
 <label class="font-label-md text-label-md uppercase text-on-surface-variant" for="email">USER SIGNATURE (EMAIL)</label>
 <input class="brutalist-input p-md font-body-md" id="email" placeholder="IDENTIFIER@DOMAIN.EXT" required="" type="email"/>
 </div>
+<!-- Priority Level -->
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md uppercase text-on-surface-variant">PRIORITY LEVEL</span>
+<div class="flex flex-wrap gap-md">
+<label class="flex items-center gap-sm cursor-pointer font-label-md text-label-md uppercase text-on-surface-variant hover:text-primary transition-colors">
+<input checked="" class="accent-[#B7FF00] w-4 h-4" name="priority" type="radio" value="low"/> LOW
+                    </label>
+<label class="flex items-center gap-sm cursor-pointer font-label-md text-label-md uppercase text-on-surface-variant hover:text-primary transition-colors">
+<input class="accent-[#B7FF00] w-4 h-4" name="priority" type="radio" value="normal"/> NORMAL
+                    </label>
+<label class="flex items-center gap-sm cursor-pointer font-label-md text-label-md uppercase text-on-surface-variant hover:text-primary transition-colors">
+<input class="accent-[#B7FF00] w-4 h-4" name="priority" type="radio" value="urgent"/> URGENT
+                    </label>
+</div>
+</div>
 <!-- Transmission Content -->
 <div class="flex flex-col gap-sm flex-grow">
 <label class="font-label-md text-label-md uppercase text-on-surface-variant" for="message">TRANSMISSION CONTENT (MESSAGE)</label>
-<textarea class="brutalist-input p-md font-body-md resize-none" id="message" placeholder="ENTER ENCRYPTED DATA PACKET HERE..." required="" rows="8"></textarea>
+<textarea class="brutalist-input p-md font-body-md resize-none" id="message" maxlength="1000" placeholder="ENTER ENCRYPTED DATA PACKET HERE..." required="" rows="8"></textarea>
+<div class="flex justify-end">
+<span id="char-count" class="font-label-sm text-label-sm text-on-surface-variant">0 / 1000</span>
+</div>
 </div>
 <!-- Submit Action -->
 <div class="mt-lg border-t-2 border-outline-variant pt-lg flex justify-end">
@@ -371,7 +394,7 @@
 <a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Privacy Policy</a>
 <a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Terms of Service</a>
 <a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">API Documentation</a>
-<a class="text-primary underline hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Contact Support</a>
+<a class="text-primary underline hover:text-primary-fixed-dim transition-colors cursor-pointer" href="contact.html">Contact Support</a>
 </div>
 <!-- Copyright -->
 <div class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant md:text-right">

@@ -249,7 +249,7 @@
 <div class="flex items-center space-x-4">
 <div class="hidden md:flex items-center bg-black border-2 border-outline-variant focus-within:border-primary-container transition-colors p-1">
 <span class="material-symbols-outlined text-outline p-2" data-icon="search">search</span>
-<input class="bg-transparent border-none text-primary font-label-md uppercase focus:ring-0 w-48 placeholder-on-surface-variant" placeholder="SEARCH GAMES //" type="text"/>
+<input id="search-input" class="bg-transparent border-none text-primary font-label-md uppercase focus:ring-0 w-48 placeholder-on-surface-variant" placeholder="SEARCH GAMES //" type="text"/>
 </div>
 <button class="text-primary hover:bg-surface-container-highest/50 p-2 transition-all duration-200 active:scale-95">
 <span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
@@ -272,11 +272,37 @@
 <!-- Mobile Search (Visible only on small screens) -->
 <div class="md:hidden flex items-center bg-black border-2 border-outline-variant focus-within:border-primary-container transition-colors p-1 w-full mt-4">
 <span class="material-symbols-outlined text-outline p-2" data-icon="search">search</span>
-<input class="bg-transparent border-none text-primary font-label-md uppercase focus:ring-0 w-full placeholder-on-surface-variant" placeholder="SEARCH GAMES //" type="text"/>
+<input class="bg-transparent border-none text-primary font-label-md uppercase focus:ring-0 w-full placeholder-on-surface-variant" placeholder="SEARCH GAMES //" type="text" oninput="document.getElementById('search-input').value=this.value;document.getElementById('search-input').dispatchEvent(new Event('input'))"/>
 </div>
 </header>
+<!-- Filter / Sort / View Toolbar -->
+<div class="flex flex-col lg:flex-row lg:items-center gap-md">
+<div class="flex flex-wrap gap-sm">
+<button data-filter="all" class="border-2 border-primary-container text-primary-container px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary transition-colors">ALL</button>
+<button data-filter="Action" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">ACTION</button>
+<button data-filter="Adventure" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">ADVENTURE</button>
+<button data-filter="RPG" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">RPG</button>
+<button data-filter="Racing" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">RACING</button>
+<button data-filter="Strategy" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">STRATEGY</button>
+<button data-filter="Puzzle" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">PUZZLE</button>
+</div>
+<div class="flex items-center gap-sm lg:ml-auto">
+<select id="sort-select" class="bg-black border-2 border-outline-variant focus:border-primary-container text-primary font-label-sm uppercase px-sm py-2 outline-none cursor-pointer">
+<option value="newest">SORT: NEWEST</option>
+<option value="downloads">SORT: DOWNLOADS</option>
+<option value="rating">SORT: RATING</option>
+<option value="name">SORT: NAME A-Z</option>
+</select>
+<button data-view="grid" onclick="toggleView('grid')" class="bg-primary-container text-on-primary-fixed border-2 border-outline-variant p-2 hover:border-primary transition-colors" title="Grid view">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button data-view="list" onclick="toggleView('list')" class="bg-surface-container-highest text-primary border-2 border-outline-variant p-2 hover:border-primary transition-colors" title="List view">
+<span class="material-symbols-outlined">view_list</span>
+</button>
+</div>
+</div>
 <!-- Bento Grid / Game Cards -->
-<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+<section id="games-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
 <!-- Card 1 -->
 <article class="brutalist-card flex flex-col p-lg relative group overflow-hidden">
 <div class="absolute top-4 right-4 bg-primary-container text-black font-label-sm text-label-sm px-2 py-1 uppercase font-bold z-10 border-2 border-black">
@@ -406,8 +432,8 @@
 </article>
 </section>
 <!-- Load More Action -->
-<div class="flex justify-center mt-xl">
-<button class="group relative px-8 py-4 bg-transparent border-2 border-primary text-primary font-label-md text-label-md uppercase font-bold hover:bg-primary hover:text-black transition-colors duration-300">
+<div id="load-more-container" class="flex justify-center mt-xl">
+<button onclick="loadMore()" class="group relative px-8 py-4 bg-transparent border-2 border-primary text-primary font-label-md text-label-md uppercase font-bold hover:bg-primary hover:text-black transition-colors duration-300">
 <span class="relative z-10 flex items-center gap-2">
                     LOAD MORE GAMES <span class="text-primary-container group-hover:text-black">//</span>
 </span>
@@ -424,7 +450,7 @@
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Privacy Policy</a>
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Terms of Service</a>
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">API Documentation</a>
-<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Contact Support</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="contact.html">Contact Support</a>
 </div>
 <div class="font-label-sm text-label-sm uppercase tracking-widest text-primary md:text-right flex items-end justify-start md:justify-end">
                 © 2024 VAN//MOD. ALL RIGHTS RESERVED. // HIGH-END BRUTALIST ECOSYSTEM

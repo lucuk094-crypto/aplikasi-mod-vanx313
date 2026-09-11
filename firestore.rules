@@ -5,38 +5,47 @@ service cloud.firestore {
     function isAuthenticated() {
       return request.auth != null;
     }
-    
+
     // Helper function to check if user is admin (optional: add admin claim check)
     function isAdmin() {
       return isAuthenticated();
       // Advanced: check custom claims
       // return isAuthenticated() && request.auth.token.admin == true;
     }
-    
-    // Apps collection - read public, write admin only
+
+    // Public visitors may only bump stats fields (download counter,
+    // reviews + rating). All other fields are protected: any attempt to
+    // change them makes affectedKeys() contain more than this allow-list
+    // and the write is rejected.
+    function isPublicStatsUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['downloads', 'reviews', 'rating', 'updatedAt']);
+    }
+
+    // Apps collection - read public, write admin only,
+    // except public stats updates (downloads / reviews)
     match /apps/{appId} {
       allow read: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
-    // Games collection - read public, write admin only
+
+    // Games collection - read public, write admin only,
+    // except public stats updates (downloads / reviews)
     match /games/{gameId} {
       allow read: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
-    // Tools collection - read public, write admin only
+
+    // Tools collection - read public, write admin only,
+    // except public stats updates (downloads / reviews)
     match /tools/{toolId} {
       allow read: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
+
     // Contacts collection - create public, read/update/delete admin only
     match /contacts/{contactId} {
       allow read: if isAdmin();
@@ -44,7 +53,7 @@ service cloud.firestore {
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }
-    
+
     // Stats collection - read public, write admin only
     match /stats/{statId} {
       allow read: if true;

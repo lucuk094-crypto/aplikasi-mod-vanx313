@@ -5,94 +5,119 @@ let currentApp = null;
 let currentAppId = null;
 let currentAppType = null;
 
+const VALID_TYPES = ['apps', 'games', 'tools'];
+
 // ==================== LOAD APP DETAIL ====================
 async function loadAppDetail() {
     // Get app ID and type from URL
     const urlParams = new URLSearchParams(window.location.search);
     currentAppId = urlParams.get('id');
     currentAppType = urlParams.get('type') || 'apps';
-    
+
+    if (!VALID_TYPES.includes(currentAppType)) {
+        currentAppType = 'apps';
+    }
+
     if (!currentAppId) {
-        showError('App ID not found');
+        showPageError('App ID not found in URL.');
         return;
     }
-    
+
+    if (!window.VANMOD) {
+        showPageError('System offline. Failed to initialize. Please try again.');
+        return;
+    }
+
     try {
-        // Show loading
-        showLoading();
-        
+        // Show loading overlay (non-destructive: page content stays intact)
+        showLoadingOverlay();
+
         // Get manager based on type
-        let manager;
-        switch (currentAppType) {
-            case 'games':
-                manager = VANMOD.gamesManager;
-                break;
-            case 'tools':
-                manager = VANMOD.toolsManager;
-                break;
-            default:
-                manager = VANMOD.appsManager;
-        }
-        
+        const manager = VANMOD.getManager(currentAppType);
+
         // Fetch app details
         currentApp = await manager.getById(currentAppId);
-        
+
+        hideLoadingOverlay();
+
         if (!currentApp) {
-            showError('App not found');
+            showPageError('Mod not found. It may have been removed.');
             return;
         }
-        
+
         // Render app details
         renderAppDetails();
         renderScreenshots();
         renderTechnicalSpecs();
         renderReviews();
-        
+        initSaveButton();
+
     } catch (error) {
         console.error('Failed to load app details:', error);
-        showError('Failed to load app details. Please try again.');
+        hideLoadingOverlay();
+        showPageError('Failed to load mod data. Please try again.');
     }
 }
 
 // ==================== RENDER APP DETAILS ====================
 function renderAppDetails() {
+    const esc = VANMOD.escapeHtml;
+
     // Update header
     const headerTitle = document.getElementById('app-title');
     const headerIcon = document.getElementById('app-icon');
     const headerVersion = document.getElementById('app-version');
     const headerRating = document.getElementById('app-rating');
     const headerDownloads = document.getElementById('app-downloads');
-    
-    if (headerTitle) headerTitle.textContent = currentApp.name;
-    if (headerIcon) headerIcon.src = currentApp.icon || 'https://via.placeholder.com/128';
+
+    if (headerTitle) headerTitle.textContent = currentApp.name || 'Untitled';
+    if (headerIcon) {
+        headerIcon.src = currentApp.icon || VANMOD.PLACEHOLDER_ICON;
+        headerIcon.alt = currentApp.name || 'App icon';
+        headerIcon.onerror = function () {
+            this.onerror = null;
+            this.src = VANMOD.PLACEHOLDER_ICON;
+        };
+    }
     if (headerVersion) headerVersion.textContent = `v${currentApp.version || '1.0'}`;
-    if (headerRating) headerRating.textContent = currentApp.rating ? currentApp.rating.toFixed(1) : 'N/A';
+    if (headerRating) headerRating.textContent = currentApp.rating ? Number(currentApp.rating).toFixed(1) : 'N/A';
     if (headerDownloads) headerDownloads.textContent = VANMOD.formatNumber(currentApp.downloads || 0);
-    
+
+    document.title = `// VAN//MOD - ${(currentApp.name || 'DETAIL').toUpperCase()}`;
+
     // Update description
     const descriptionElement = document.getElementById('app-description');
     if (descriptionElement) {
         descriptionElement.textContent = currentApp.description || 'No description available';
     }
-    
-    // Update tags
+
+    // Update tags / mod features (derived from tags; keep static list when empty)
+    const featuresContainer = document.getElementById('app-features');
+    if (featuresContainer && Array.isArray(currentApp.tags) && currentApp.tags.length > 0) {
+        featuresContainer.innerHTML = currentApp.tags.map(tag => `
+            <li class="flex items-center gap-sm">
+                <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">check_box</span>
+                ${esc(String(tag).toUpperCase())}
+            </li>
+        `).join('');
+    }
+
     const tagsContainer = document.getElementById('app-tags');
-    if (tagsContainer && currentApp.tags) {
-        tagsContainer.innerHTML = currentApp.tags.map(tag => 
-            `<span class="border border-outline-variant px-3 py-1 font-label-sm text-on-surface-variant uppercase">${tag}</span>`
+    if (tagsContainer && Array.isArray(currentApp.tags) && currentApp.tags.length > 0) {
+        tagsContainer.innerHTML = currentApp.tags.map(tag =>
+            `<span class="border border-outline-variant px-3 py-1 font-label-sm text-on-surface-variant uppercase">${esc(tag)}</span>`
         ).join('');
     }
-    
+
     // Update metadata
     const sizeElement = document.getElementById('app-size');
     const categoryElement = document.getElementById('app-category');
     const updatedElement = document.getElementById('app-updated');
-    
+
     if (sizeElement) sizeElement.textContent = currentApp.size || 'N/A';
     if (categoryElement) categoryElement.textContent = currentApp.category || 'General';
     if (updatedElement) {
-        const updated = currentApp.updatedAt ? VANMOD.timeAgo(currentApp.updatedAt.toDate()) : 'N/A';
-        updatedElement.textContent = updated;
+        updatedElement.textContent = currentApp.updatedAt ? VANMOD.timeAgo(currentApp.updatedAt) : 'N/A';
     }
 }
 
@@ -100,22 +125,21 @@ function renderAppDetails() {
 function renderScreenshots() {
     const container = document.getElementById('screenshots-container');
     if (!container) return;
-    
-    const screenshots = currentApp.screenshots || [
-        'https://via.placeholder.com/800x450',
-        'https://via.placeholder.com/800x450',
-        'https://via.placeholder.com/800x450'
-    ];
-    
+
+    // No screenshots in data: keep the static gallery already in the HTML
+    const screenshots = currentApp.screenshots;
+    if (!Array.isArray(screenshots) || screenshots.length === 0) return;
+
+    const esc = VANMOD.escapeHtml;
     let html = '';
     screenshots.forEach((screenshot, index) => {
         html += `
-            <div class="border-2 border-outline-variant bg-surface-container-high flex items-center justify-center overflow-hidden h-64 cursor-pointer" onclick="openScreenshot(${index})">
-                <img class="w-full h-full object-cover img-greyscale hover:filter-none transition-all" src="${screenshot}" alt="Screenshot ${index + 1}">
+            <div class="snap-center shrink-0 w-[240px] md:w-[320px] aspect-[9/16] neo-brutal-card overflow-hidden cursor-pointer" onclick="openScreenshot(${index})">
+                <img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" loading="lazy" src="${esc(screenshot)}" alt="Screenshot ${index + 1}" onerror="this.onerror=null;this.src='${VANMOD.PLACEHOLDER_ICON}'">
             </div>
         `;
     });
-    
+
     container.innerHTML = html;
 }
 
@@ -123,7 +147,8 @@ function renderScreenshots() {
 function renderTechnicalSpecs() {
     const container = document.getElementById('tech-specs-container');
     if (!container) return;
-    
+
+    const esc = VANMOD.escapeHtml;
     const specs = [
         { label: 'VERSION', value: currentApp.version || '1.0' },
         { label: 'SIZE', value: currentApp.size || 'N/A' },
@@ -132,19 +157,25 @@ function renderTechnicalSpecs() {
         { label: 'DEVELOPER', value: currentApp.developer || 'Unknown' },
         { label: 'PACKAGE', value: currentApp.packageName || 'N/A' },
         { label: 'LICENSE', value: currentApp.license || 'Freeware' },
-        { label: 'LAST UPDATE', value: currentApp.updatedAt ? VANMOD.timeAgo(currentApp.updatedAt.toDate()) : 'N/A' }
+        { label: 'UPDATED', value: currentApp.updatedAt ? VANMOD.timeAgo(currentApp.updatedAt) : 'N/A' }
     ];
-    
+
     let html = '';
     specs.forEach(spec => {
         html += `
-            <div class="border-l-4 border-primary-container bg-surface-container p-md">
-                <span class="font-label-sm text-primary-container uppercase block mb-1">${spec.label}</span>
-                <span class="font-label-md text-primary">${spec.value}</span>
+            <div class="flex justify-between items-center py-xs border-b border-surface-variant">
+                <span class="text-on-surface-variant font-label-md text-label-md">${esc(spec.label)}</span>
+                <span class="font-body-md font-bold text-right break-all ml-4">${esc(spec.value)}</span>
             </div>
         `;
     });
-    
+    html += `
+        <div class="flex justify-between items-center py-xs mt-auto">
+            <span class="text-on-surface-variant font-label-md text-label-md">MOD STATUS</span>
+            <span class="text-primary-container font-label-md text-label-md uppercase font-bold px-sm py-xs border border-primary-container">VERIFIED SECURE</span>
+        </div>
+    `;
+
     container.innerHTML = html;
 }
 
@@ -152,9 +183,15 @@ function renderTechnicalSpecs() {
 function renderReviews() {
     const container = document.getElementById('reviews-container');
     if (!container) return;
-    
-    const reviews = currentApp.reviews || [];
-    
+
+    const reviews = Array.isArray(currentApp.reviews) ? currentApp.reviews : [];
+
+    // Update review count badge if present
+    const countElement = document.getElementById('reviews-count');
+    if (countElement) {
+        countElement.textContent = `${reviews.length} REVIEW${reviews.length === 1 ? '' : 'S'}`;
+    }
+
     if (reviews.length === 0) {
         container.innerHTML = `
             <div class="text-center py-lg text-on-surface-variant font-label-md uppercase">
@@ -163,29 +200,31 @@ function renderReviews() {
         `;
         return;
     }
-    
+
     let html = '';
     reviews.forEach(review => {
         html += createReviewCard(review);
     });
-    
+
     container.innerHTML = html;
 }
 
 function createReviewCard(review) {
-    const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-    const timeAgo = review.createdAt ? VANMOD.timeAgo(review.createdAt.toDate()) : 'Recently';
-    
+    const esc = VANMOD.escapeHtml;
+    const rating = Math.min(5, Math.max(1, Number(review.rating) || 5));
+    const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+    const time = review.createdAt ? VANMOD.timeAgo(review.createdAt) : 'Recently';
+
     return `
         <div class="bg-surface-container border-l-4 border-primary-container p-lg">
             <div class="flex justify-between items-start mb-md">
                 <div>
-                    <h4 class="font-label-md text-primary uppercase mb-xs">${review.userName || 'Anonymous'}</h4>
+                    <h4 class="font-label-md text-primary uppercase mb-xs">${esc(review.userName || 'Anonymous')}</h4>
                     <div class="text-primary-container text-xl">${stars}</div>
                 </div>
-                <span class="font-label-sm text-on-surface-variant uppercase">${timeAgo}</span>
+                <span class="font-label-sm text-on-surface-variant uppercase">${esc(time)}</span>
             </div>
-            <p class="font-body-md text-on-surface-variant">${review.comment || 'No comment'}</p>
+            <p class="font-body-md text-on-surface-variant">${esc(review.comment || 'No comment')}</p>
         </div>
     `;
 }
@@ -193,57 +232,53 @@ function createReviewCard(review) {
 // ==================== DOWNLOAD ====================
 async function downloadApp() {
     if (!currentApp) return;
-    
+
     const downloadBtn = document.getElementById('download-btn');
-    if (downloadBtn) {
-        const originalHtml = downloadBtn.innerHTML;
-        downloadBtn.disabled = true;
-        downloadBtn.innerHTML = `
-            <span class="relative z-10 flex items-center gap-2">
-                <span class="animate-pulse">PROCESSING...</span>
-            </span>
-        `;
-        
+    if (!downloadBtn) {
+        // Fallback when the button id is missing: open URL directly
+        if (currentApp.downloadUrl) window.open(currentApp.downloadUrl, '_blank');
+        return;
+    }
+
+    const originalHtml = downloadBtn.innerHTML;
+    downloadBtn.disabled = true;
+    downloadBtn.innerHTML = `
+        <span class="relative z-10 flex items-center gap-2">
+            <span class="animate-pulse">PROCESSING...</span>
+        </span>
+    `;
+
+    try {
+        // Best-effort download counter: public visitors may be rejected by
+        // Firestore rules on old deployments — never block the download.
         try {
-            // Increment download count
-            let manager;
-            switch (currentAppType) {
-                case 'games':
-                    manager = VANMOD.gamesManager;
-                    break;
-                case 'tools':
-                    manager = VANMOD.toolsManager;
-                    break;
-                default:
-                    manager = VANMOD.appsManager;
-            }
-            
+            const manager = VANMOD.getManager(currentAppType);
             await manager.incrementDownloads(currentAppId);
-            
-            // Update UI
             currentApp.downloads = (currentApp.downloads || 0) + 1;
             const downloadsElement = document.getElementById('app-downloads');
             if (downloadsElement) {
                 downloadsElement.textContent = VANMOD.formatNumber(currentApp.downloads);
             }
-            
-            // Redirect to download URL or show success
-            if (currentApp.downloadUrl) {
-                window.open(currentApp.downloadUrl, '_blank');
-            } else {
-                alert('Download link will be available soon!');
-            }
-            
+        } catch (counterError) {
+            console.warn('Download counter update skipped:', counterError);
+        }
+
+        // Redirect to download URL or show notice
+        if (currentApp.downloadUrl) {
+            window.open(currentApp.downloadUrl, '_blank');
             // Show success page
             setTimeout(() => {
                 window.location.href = 'transmissionsucces.html';
             }, 1000);
-            
-        } catch (error) {
-            console.error('Download error:', error);
-            alert('Failed to process download. Please try again.');
+        } else {
+            alert('Download link will be available soon!');
+            downloadBtn.disabled = false;
+            downloadBtn.innerHTML = originalHtml;
         }
-        
+
+    } catch (error) {
+        console.error('Download error:', error);
+        alert('Failed to process download. Please try again.');
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalHtml;
     }
@@ -252,54 +287,87 @@ async function downloadApp() {
 // Make downloadApp available globally
 window.downloadApp = downloadApp;
 
+// ==================== SAVE / BOOKMARK ====================
+function getSavedIds() {
+    try {
+        return JSON.parse(localStorage.getItem('vanmod_saved') || '[]');
+    } catch (e) {
+        return [];
+    }
+}
+
+function initSaveButton() {
+    const saveBtn = document.getElementById('save-btn');
+    if (!saveBtn || !currentAppId) return;
+
+    const paint = () => {
+        const saved = getSavedIds().includes(currentAppId);
+        saveBtn.classList.toggle('border-primary-container', saved);
+        saveBtn.classList.toggle('text-primary-container', saved);
+        const label = saveBtn.querySelector('[data-save-label]');
+        if (label) label.textContent = saved ? 'SAVED' : 'SAVE';
+    };
+
+    paint();
+    saveBtn.addEventListener('click', () => {
+        let saved = getSavedIds();
+        if (saved.includes(currentAppId)) {
+            saved = saved.filter(id => id !== currentAppId);
+        } else {
+            saved.push(currentAppId);
+        }
+        try {
+            localStorage.setItem('vanmod_saved', JSON.stringify(saved));
+        } catch (e) {
+            // ignore
+        }
+        paint();
+    });
+}
+
 // ==================== ADD REVIEW ====================
 async function submitReview() {
-    const rating = document.querySelector('input[name="rating"]:checked');
+    const ratingInput = document.querySelector('input[name="rating"]:checked');
     const comment = document.getElementById('review-comment');
-    
-    if (!rating) {
+    const nameInput = document.getElementById('reviewer-name');
+
+    if (!ratingInput) {
         alert('Please select a rating');
         return;
     }
-    
+
     if (!comment || !comment.value.trim()) {
         alert('Please write a review');
         return;
     }
-    
+
+    if (!currentAppId) {
+        alert('App ID not found');
+        return;
+    }
+
     try {
         const reviewData = {
-            rating: parseInt(rating.value),
+            rating: parseInt(ratingInput.value, 10),
             comment: comment.value.trim(),
-            userName: 'Anonymous User', // Replace with actual user name if logged in
-            createdAt: new Date()
+            userName: (nameInput && nameInput.value.trim()) || 'Anonymous'
         };
-        
-        let manager;
-        switch (currentAppType) {
-            case 'games':
-                manager = VANMOD.gamesManager;
-                break;
-            case 'tools':
-                manager = VANMOD.toolsManager;
-                break;
-            default:
-                manager = VANMOD.appsManager;
-        }
-        
+
+        const manager = VANMOD.getManager(currentAppType);
         await manager.addReview(currentAppId, reviewData);
-        
+
         // Clear form
         comment.value = '';
-        rating.checked = false;
-        
+        if (nameInput) nameInput.value = '';
+        ratingInput.checked = false;
+
         // Reload reviews
         currentApp = await manager.getById(currentAppId);
         renderReviews();
         renderAppDetails();
-        
+
         alert('Review submitted successfully!');
-        
+
     } catch (error) {
         console.error('Failed to submit review:', error);
         alert('Failed to submit review. Please try again.');
@@ -311,9 +379,9 @@ window.submitReview = submitReview;
 
 // ==================== SCREENSHOT VIEWER ====================
 function openScreenshot(index) {
-    const screenshots = currentApp.screenshots || [];
+    const screenshots = (currentApp && currentApp.screenshots) || [];
     if (screenshots.length === 0) return;
-    
+
     // Create modal
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-lg';
@@ -322,35 +390,51 @@ function openScreenshot(index) {
             <button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 bg-surface-container border-2 border-outline-variant p-md text-primary-container hover:border-primary-container transition-colors">
                 <span class="material-symbols-outlined">close</span>
             </button>
-            <img src="${screenshots[index]}" class="w-full h-auto border-4 border-outline-variant" alt="Screenshot">
+            <img src="${VANMOD.escapeHtml(screenshots[index])}" class="w-full h-auto border-4 border-outline-variant" alt="Screenshot" onerror="this.onerror=null;this.src='${VANMOD.PLACEHOLDER_ICON}'">
         </div>
     `;
-    
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+
     document.body.appendChild(modal);
 }
 
 // Make openScreenshot available globally
 window.openScreenshot = openScreenshot;
 
-// ==================== UTILITY FUNCTIONS ====================
-function showLoading() {
-    document.body.innerHTML = `
-        <div class="min-h-screen flex items-center justify-center">
-            <div class="text-center">
-                <span class="material-symbols-outlined text-[64px] text-primary-container animate-pulse mb-4 block">downloading</span>
-                <p class="font-label-md text-on-surface-variant uppercase tracking-widest">LOADING MOD DATA...</p>
-            </div>
+// ==================== LOADING & ERROR STATES ====================
+// NOTE: these never wipe document.body (the old code destroyed the whole
+// page, including the elements it was about to render into).
+
+function showLoadingOverlay() {
+    if (document.getElementById('detail-loading')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'detail-loading';
+    overlay.className = 'fixed inset-0 bg-background/90 backdrop-blur-sm z-50 flex items-center justify-center';
+    overlay.innerHTML = `
+        <div class="text-center">
+            <span class="material-symbols-outlined text-[64px] text-primary-container animate-pulse mb-4 block">downloading</span>
+            <p class="font-label-md text-on-surface-variant uppercase tracking-widest">LOADING MOD DATA...</p>
         </div>
     `;
+    document.body.appendChild(overlay);
 }
 
-function showError(message) {
-    document.body.innerHTML = `
-        <div class="min-h-screen flex items-center justify-center p-lg">
-            <div class="bg-surface-container border-2 border-error p-xl text-center max-w-lg">
+function hideLoadingOverlay() {
+    document.getElementById('detail-loading')?.remove();
+}
+
+function showPageError(message) {
+    hideLoadingOverlay();
+    const main = document.querySelector('main');
+    const panel = `
+        <div class="max-w-lg mx-auto my-2xl">
+            <div class="bg-surface-container border-2 border-error p-xl text-center">
                 <span class="material-symbols-outlined text-[64px] text-error mb-4 block">error</span>
                 <h2 class="font-headline-md text-headline-md text-error mb-sm uppercase">ERROR</h2>
-                <p class="font-body-md text-on-surface-variant mb-lg">${message}</p>
+                <p class="font-body-md text-on-surface-variant mb-lg">${VANMOD ? VANMOD.escapeHtml(message) : message}</p>
                 <button onclick="window.history.back()" class="brutalist-button-secondary px-lg py-md">
                     <span class="material-symbols-outlined mr-2">arrow_back</span>
                     GO BACK
@@ -358,6 +442,11 @@ function showError(message) {
             </div>
         </div>
     `;
+    if (main) {
+        main.innerHTML = panel;
+    } else {
+        document.body.innerHTML = panel;
+    }
 }
 
 // ==================== INITIALIZATION ====================

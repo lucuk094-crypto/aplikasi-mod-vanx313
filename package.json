@@ -2,11 +2,13 @@
   "name": "vanmod-web-app",
   "version": "1.0.0",
   "description": "VAN//MOD - High-End Brutalist Mod Ecosystem",
+  "type": "module",
   "main": "index.html",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed": "node scripts/seed.mjs"
   },
   "keywords": [
     "vanmod",
@@ -18,11 +20,7 @@
   "author": "VAN//MOD Team",
   "license": "MIT",
   "devDependencies": {
-    "vite": "^5.0.0"
-  },
-  "dependencies": {
     "firebase": "^10.7.1",
-    "git": "^0.1.5",
-    "node.js": "^0.0.1-security"
+    "vite": "^5.0.0"
   }
 }

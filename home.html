@@ -220,26 +220,26 @@
                 </p>
 </div>
 <div class="w-full max-w-2xl relative">
-<input class="w-full bg-[#000000] border-2 border-[#A1A1AA] focus:border-[#B7FF00] text-primary py-lg px-xl font-label-md text-label-md uppercase outline-none transition-colors" placeholder="SEARCH MODS, APPS, GAMES..." type="text"/>
+<input id="search-input" class="w-full bg-[#000000] border-2 border-[#A1A1AA] focus:border-[#B7FF00] text-primary py-lg px-xl font-label-md text-label-md uppercase outline-none transition-colors" placeholder="SEARCH MODS, APPS, GAMES..." type="text"/>
 <button class="absolute right-md top-1/2 -translate-y-1/2 p-sm text-on-surface-variant hover:text-primary-container transition-colors">
 <span class="material-symbols-outlined">search</span>
 </button>
 </div>
 <!-- Category Chips -->
 <div class="w-full overflow-x-auto category-scroll py-sm flex gap-md justify-center mt-lg">
-<button class="flex items-center gap-sm px-lg py-sm rounded-full bg-primary-container text-on-primary-fixed font-label-sm text-label-sm uppercase font-bold border-2 border-primary-container">
+<button data-category="all" class="flex items-center gap-sm px-lg py-sm rounded-full bg-primary-container text-on-primary-fixed font-label-sm text-label-sm uppercase font-bold border-2 border-primary-container">
 <span class="material-symbols-outlined text-[16px]">grid_view</span> All
                 </button>
-<button class="flex items-center gap-sm px-lg py-sm rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase border-2 border-outline-variant hover:border-primary transition-colors">
+<button data-category="apps" class="flex items-center gap-sm px-lg py-sm rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase border-2 border-outline-variant hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-[16px]">apps</span> Apps
                 </button>
-<button class="flex items-center gap-sm px-lg py-sm rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase border-2 border-outline-variant hover:border-primary transition-colors">
+<button data-category="games" class="flex items-center gap-sm px-lg py-sm rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase border-2 border-outline-variant hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-[16px]">sports_esports</span> Games
                 </button>
-<button class="flex items-center gap-sm px-lg py-sm rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase border-2 border-outline-variant hover:border-primary transition-colors">
+<button data-category="tools" class="flex items-center gap-sm px-lg py-sm rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase border-2 border-outline-variant hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-[16px]">build</span> Tools
                 </button>
-<button class="flex items-center gap-sm px-lg py-sm rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase border-2 border-outline-variant hover:border-primary transition-colors">
+<button data-category="Social" class="flex items-center gap-sm px-lg py-sm rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm uppercase border-2 border-outline-variant hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-[16px]">social_leaderboard</span> Social
                 </button>
 </div>
@@ -250,7 +250,7 @@
 <span class="font-headline-lg text-headline-lg text-primary-container font-black">//</span>
 <h2 class="font-headline-lg text-headline-lg font-bold uppercase tracking-tight">FEATURED MODS</h2>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+<div id="featured-mods" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
 <!-- Card 1 -->
 <div class="brutalist-card p-lg flex flex-col h-full group relative overflow-hidden">
 <div class="absolute top-md right-md bg-primary-container text-on-primary-fixed font-label-sm text-[10px] uppercase font-bold px-sm py-xs z-10 border border-primary-container">PREMIUM UNLOCKED</div>
@@ -337,7 +337,7 @@
 <span class="font-headline-lg text-headline-lg text-primary-container font-black">//</span>
 <h2 class="font-headline-lg text-headline-lg font-bold uppercase tracking-tight">TRENDING NOW</h2>
 </div>
-<div class="flex flex-col gap-md">
+<div id="trending-mods" class="flex flex-col gap-md">
 <!-- Trending Item 1 -->
 <div class="brutalist-card flex flex-col md:flex-row items-center p-md gap-lg">
 <div class="font-display-lg text-[64px] font-black text-outline-variant opacity-50 px-md leading-none w-24 text-center">01</div>
@@ -406,7 +406,7 @@
 <span class="font-headline-lg text-headline-lg text-primary-container font-black">//</span>
 <h2 class="font-headline-lg text-headline-lg font-bold uppercase tracking-tight">LATEST UPDATES</h2>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-md h-auto md:h-[600px]">
+<div id="latest-updates" class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-md h-auto md:h-[600px]">
 <!-- Large Feature Box -->
 <div class="md:col-span-2 md:row-span-2 brutalist-card p-lg flex flex-col justify-end relative overflow-hidden group min-h-[300px]">
 <div class="absolute inset-0 z-0">
@@ -432,7 +432,7 @@
 <div>
 <h4 class="font-headline-sm text-[16px] font-bold mb-xs">Asphalt 9</h4>
 <p class="font-label-sm text-on-surface-variant mb-sm">Unlimited Nitro &amp; Tokens.</p>
-<a class="text-primary-container font-label-sm uppercase hover:underline flex items-center gap-xs" href="#">VIEW <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
+<a class="text-primary-container font-label-sm uppercase hover:underline flex items-center gap-xs" href="apps.html">VIEW <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
 </div>
 </div>
 <!-- Small Box 2 -->
@@ -446,7 +446,7 @@
 <div>
 <h4 class="font-headline-sm text-[16px] font-bold mb-xs">Netflix Mod</h4>
 <p class="font-label-sm text-on-surface-variant mb-sm">4K unlocked, no login required.</p>
-<a class="text-primary-container font-label-sm uppercase hover:underline flex items-center gap-xs" href="#">VIEW <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
+<a class="text-primary-container font-label-sm uppercase hover:underline flex items-center gap-xs" href="apps.html">VIEW <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
 </div>
 </div>
 <!-- Small Box 3 -->
@@ -460,7 +460,7 @@
 <div>
 <h4 class="font-headline-sm text-[16px] font-bold mb-xs">ExpressVPN</h4>
 <p class="font-label-sm text-on-surface-variant mb-sm">Premium cracked, unlimited trials.</p>
-<a class="text-primary-container font-label-sm uppercase hover:underline flex items-center gap-xs" href="#">VIEW <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
+<a class="text-primary-container font-label-sm uppercase hover:underline flex items-center gap-xs" href="apps.html">VIEW <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
 </div>
 </div>
 <!-- Small Box 4 -->
@@ -474,7 +474,7 @@
 <div>
 <h4 class="font-headline-sm text-[16px] font-bold mb-xs">Discord Nitro</h4>
 <p class="font-label-sm text-on-surface-variant mb-sm">V63.1 Features unlocked.</p>
-<a class="text-primary-container font-label-sm uppercase hover:underline flex items-center gap-xs" href="#">VIEW <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
+<a class="text-primary-container font-label-sm uppercase hover:underline flex items-center gap-xs" href="apps.html">VIEW <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
 </div>
 </div>
 </div>

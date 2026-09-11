@@ -160,7 +160,7 @@
 <div class="flex items-center gap-md">
 <div class="relative hidden md:block">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
-<input class="bg-[#000000] border-2 border-outline-variant focus:border-primary-container text-primary font-label-md uppercase pl-10 pr-4 py-2 w-64 transition-colors placeholder:text-on-surface-variant outline-none" placeholder="SEARCH APPS..." type="text"/>
+<input id="search-input" class="bg-[#000000] border-2 border-outline-variant focus:border-primary-container text-primary font-label-md uppercase pl-10 pr-4 py-2 w-64 transition-colors placeholder:text-on-surface-variant outline-none" placeholder="SEARCH APPS..." type="text"/>
 </div>
 <button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 rounded-none active:scale-95">
 <span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
@@ -175,11 +175,37 @@
 <div class="flex flex-col md:flex-row justify-between items-end mb-xl border-b-2 border-outline-variant pb-md">
 <div>
 <h1 class="font-display-lg text-display-lg font-black text-primary mb-sm">// APPS TERMINAL</h1>
-<p class="font-label-md text-label-md uppercase text-on-surface-variant tracking-widest">128 APPS FOUND // HIGH-END MODS</p>
+<p class="font-label-md text-label-md uppercase text-on-surface-variant tracking-widest"><span id="total-apps">128</span> APPS FOUND // HIGH-END MODS</p>
+</div>
+</div>
+<!-- Filter / Sort / View Toolbar -->
+<div class="flex flex-col lg:flex-row lg:items-center gap-md mb-xl">
+<div class="flex flex-wrap gap-sm">
+<button data-filter="all" class="border-2 border-primary-container text-primary-container px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary transition-colors">ALL</button>
+<button data-filter="Social" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">SOCIAL</button>
+<button data-filter="Media" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">MEDIA</button>
+<button data-filter="Photo" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">PHOTO</button>
+<button data-filter="Music" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">MUSIC</button>
+<button data-filter="Video" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">VIDEO</button>
+<button data-filter="Utility" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">UTILITY</button>
+</div>
+<div class="flex items-center gap-sm lg:ml-auto">
+<select id="sort-select" class="bg-[#000000] border-2 border-outline-variant focus:border-primary-container text-primary font-label-sm uppercase px-sm py-2 outline-none cursor-pointer">
+<option value="newest">SORT: NEWEST</option>
+<option value="downloads">SORT: DOWNLOADS</option>
+<option value="rating">SORT: RATING</option>
+<option value="name">SORT: NAME A-Z</option>
+</select>
+<button data-view="grid" onclick="toggleView('grid')" class="bg-primary-container text-on-primary-fixed border-2 border-outline-variant p-2 hover:border-primary transition-colors" title="Grid view">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button data-view="list" onclick="toggleView('list')" class="bg-surface-container-highest text-primary border-2 border-outline-variant p-2 hover:border-primary transition-colors" title="List view">
+<span class="material-symbols-outlined">view_list</span>
+</button>
 </div>
 </div>
 <!-- Bento Grid Layout -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+<div id="apps-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
 <!-- App Card 1 -->
 <article class="group bg-[#111111] border-2 border-[#1F1F1F] p-lg flex flex-col gap-md transition-all duration-300 mod-shadow hover:border-primary-container relative overflow-hidden">
 <div class="flex justify-between items-start">
@@ -253,8 +279,8 @@
 </div>
 </article>
 </div>
-<div class="mt-2xl flex justify-center">
-<button class="bg-primary-container text-[#080808] border-2 border-primary-container font-label-md uppercase tracking-wider py-3 px-8 transition-all duration-300 mod-shadow font-bold">
+<div id="load-more-container" class="mt-2xl flex justify-center">
+<button onclick="loadMore()" class="bg-primary-container text-[#080808] border-2 border-primary-container font-label-md uppercase tracking-wider py-3 px-8 transition-all duration-300 mod-shadow font-bold">
                     LOAD MORE APPS //
                 </button>
 </div>
@@ -271,7 +297,7 @@
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Privacy Policy</a>
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Terms of Service</a>
 <a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">API Documentation</a>
-<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Contact Support</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="contact.html">Contact Support</a>
 </div>
 <p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mt-md">
                     © 2024 VAN//MOD. ALL RIGHTS RESERVED. // HIGH-END BRUTALIST ECOSYSTEM

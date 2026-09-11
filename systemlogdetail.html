@@ -133,13 +133,13 @@
                 VAN//MOD
             </div>
 <div class="hidden md:flex items-center space-x-xl font-label-md text-label-md uppercase tracking-wider">
-<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="#">Home</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="#">Apps</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="#">Games</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="home.html">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="apps.html">Apps</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="games.html">Games</a>
 <!-- Active Item Context: Tools fits best for a diagnostic log view -->
-<a class="text-primary border-b-2 border-primary-container pb-1 hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="#">Tools</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="#">Latest</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="#">Popular</a>
+<a class="text-primary border-b-2 border-primary-container pb-1 hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="tools.html">Tools</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="latest.html">Latest</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 px-sm py-xs active:scale-95 transition-transform" href="popular.html">Popular</a>
 </div>
 <div class="flex items-center">
 <button class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 p-sm active:scale-95 transition-transform flex items-center justify-center">
@@ -156,7 +156,7 @@
 <h1 class="font-display-lg text-display-lg uppercase tracking-tighter text-primary">
                     // SYSTEM_LOG: <span class="text-primary-container">DETAIL_VIEW</span>
 </h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mt-sm uppercase tracking-widest">
+<p id="log-meta" class="font-body-lg text-body-lg text-on-surface-variant mt-sm uppercase tracking-widest">
                     ID: #VM-LOG-8892-A   |   T-STAMP: 2024.11.04-14:22:09 Z
                 </p>
 </div>
@@ -179,7 +179,7 @@
 <span class="w-3 h-3 rounded-full bg-tertiary"></span>
 </div>
 </div>
-<div class="flex-grow overflow-y-auto terminal-scroll font-mono text-sm leading-relaxed p-sm break-all">
+<div id="terminal-output" class="flex-grow overflow-y-auto terminal-scroll font-mono text-sm leading-relaxed p-sm break-all">
 <div class="text-on-surface-variant mb-2">Initialize diagnostic read sequence... OK.</div>
 <div class="text-on-surface-variant mb-2">Connecting to node core... OK.</div>
 <div class="text-surface-tint mb-2"><span class="text-on-surface-variant">[14:22:10]</span> [INFO] Handshake validated. Encryption AES-256 GCM.</div>
@@ -295,15 +295,15 @@
 </div>
 <!-- Actions -->
 <div class="flex flex-col gap-md mt-auto pt-lg">
-<button class="bg-primary-container text-on-primary-container border-2 border-primary-container font-label-md text-label-md uppercase py-md px-lg hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#ffffff] transition-all flex justify-between items-center active:scale-95 group">
+<button id="btn-rescan" class="bg-primary-container text-on-primary-container border-2 border-primary-container font-label-md text-label-md uppercase py-md px-lg hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#ffffff] transition-all flex justify-between items-center active:scale-95 group">
 <span>RESCAN_NODE</span>
 <span class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">sync</span>
 </button>
-<button class="bg-transparent text-primary border-2 border-primary font-label-md text-label-md uppercase py-md px-lg hover:bg-surface-container-highest transition-colors flex justify-between items-center active:scale-95">
+<button id="btn-export" class="bg-transparent text-primary border-2 border-primary font-label-md text-label-md uppercase py-md px-lg hover:bg-surface-container-highest transition-colors flex justify-between items-center active:scale-95">
 <span>EXPORT_LOG</span>
 <span class="material-symbols-outlined">download</span>
 </button>
-<button class="bg-error-container/20 text-error border-2 border-error font-label-md text-label-md uppercase py-md px-lg hover:bg-error hover:text-on-error transition-colors flex justify-between items-center active:scale-95">
+<button id="btn-purge" class="bg-error-container/20 text-error border-2 border-error font-label-md text-label-md uppercase py-md px-lg hover:bg-error hover:text-on-error transition-colors flex justify-between items-center active:scale-95">
 <span>PURGE_BUFFER</span>
 <span class="material-symbols-outlined">delete_forever</span>
 </button>
@@ -324,8 +324,111 @@
 <a class="hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Privacy Policy</a>
 <a class="hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Terms of Service</a>
 <a class="hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">API Documentation</a>
-<a class="hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Contact Support</a>
+<a class="hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="contact.html">Contact Support</a>
 </div>
 </div>
 </footer>
+
+<!-- Firebase and App Scripts -->
+<script type="module" src="src/js/app.js"></script>
+<script type="module">
+// Uses window.VANMOD exposed by src/js/app.js (loaded above)
+const VALID_TYPES = ['apps', 'games', 'tools'];
+
+function esc(s) {
+    return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function stamp() {
+    const d = new Date();
+    return d.toTimeString().slice(0, 8);
+}
+
+function logLine(text, cls = 'text-surface-tint') {
+    const term = document.getElementById('terminal-output');
+    if (!term) return;
+    const div = document.createElement('div');
+    div.className = cls + ' mb-2';
+    div.innerHTML = `<span class="text-on-surface-variant">[${stamp()}]</span> ${esc(text)}`;
+    term.appendChild(div);
+    term.scrollTop = term.scrollHeight;
+}
+
+let currentItem = null;
+
+async function init() {
+    if (!window.VANMOD) {
+        logLine('[WARN] Core offline. Showing sample stream.', 'text-secondary');
+        return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    let type = params.get('type') || 'apps';
+    if (!VALID_TYPES.includes(type)) type = 'apps';
+
+    if (!id) {
+        logLine('[INFO] No target ID in URL. Showing sample stream.', 'text-secondary');
+        return;
+    }
+
+    try {
+        logLine(`[INFO] Resolving target ${type}/${id} ...`);
+        currentItem = await VANMOD.getManager(type).getById(id);
+        if (!currentItem) {
+            logLine('[CRITICAL] Target not found in database.', 'text-error font-bold');
+            return;
+        }
+        const meta = document.getElementById('log-meta');
+        if (meta) {
+            const dl = VANMOD.formatNumber(currentItem.downloads || 0);
+            const rating = currentItem.rating ? Number(currentItem.rating).toFixed(1) : 'N/A';
+            meta.textContent = `ID: ${id} | ${(currentItem.name || 'UNTITLED').toUpperCase()} | DL: ${dl} | RATING: ${rating}`;
+        }
+        document.title = `// SYSTEM_LOG: ${(currentItem.name || id).toUpperCase()}`;
+        logLine(`[INFO] Target locked: ${currentItem.name || id}`);
+        logLine(`[INFO] Version ${currentItem.version || '1.0'} | Size ${currentItem.size || 'N/A'} | Downloads ${currentItem.downloads || 0}`);
+    } catch (error) {
+        console.error(error);
+        logLine('[CRITICAL] Database read failed: ' + (error.message || error), 'text-error font-bold');
+    }
+}
+
+document.getElementById('btn-rescan')?.addEventListener('click', () => {
+    logLine('[INFO] Manual rescan requested. Re-reading target ...');
+    init();
+});
+
+document.getElementById('btn-export')?.addEventListener('click', () => {
+    if (!currentItem) {
+        logLine('[WARN] Nothing to export. No target loaded.', 'text-secondary');
+        return;
+    }
+    const blob = new Blob([JSON.stringify(currentItem, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `vanmod-log-${currentItem.id || 'export'}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    logLine('[INFO] Target snapshot exported as JSON.');
+});
+
+document.getElementById('btn-purge')?.addEventListener('click', () => {
+    if (!confirm('Clear the terminal buffer? (visual only)')) return;
+    const term = document.getElementById('terminal-output');
+    if (term) term.innerHTML = '';
+    logLine('[INFO] Buffer purged. Awaiting input.');
+});
+
+// Auth guard is also enforced by app.js initPage; double-check here.
+document.addEventListener('DOMContentLoaded', () => {
+    if (!window.VANMOD) { init(); return; }
+    VANMOD.checkAuthState((user) => {
+        if (!user) window.location.href = 'adminlogin.html';
+        else init();
+    });
+});
+</script>
 </body></html>

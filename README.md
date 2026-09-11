@@ -69,30 +69,46 @@ Di Firestore Database, buka tab "Rules" dan paste rules berikut:
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Apps collection - read public, write admin only
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isAuthenticated();
+    }
+    // Public visitors may only bump stats fields (download counter,
+    // reviews + rating). Any other field change is rejected.
+    function isPublicStatsUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['downloads', 'reviews', 'rating', 'updatedAt']);
+    }
+
+    // Apps collection - read public, write admin only (+ public stats)
     match /apps/{appId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
-    // Games collection - read public, write admin only
+
+    // Games collection - read public, write admin only (+ public stats)
     match /games/{gameId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
-    // Tools collection - read public, write admin only
+
+    // Tools collection - read public, write admin only (+ public stats)
     match /tools/{toolId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
+
     // Contacts collection - write public, read admin only
     match /contacts/{contactId} {
-      allow read: if request.auth != null;
+      allow read: if isAdmin();
       allow create: if true;
     }
-    
+
     // Stats collection - read public, write admin only
     match /stats/{statId} {
       allow read: if true;
@@ -101,6 +117,11 @@ service cloud.firestore {
   }
 }
 ```
+
+> **Catatan:** aturan `isPublicStatsUpdate` wajib dipakai supaya pengunjung
+> (tanpa login) tetap bisa menambah download counter dan mengirim review.
+> Tanpa itu, tombol download & review untuk publik akan gagal
+> (`permission-denied`). Lihat file `firestore.rules` (sumber utama).
 
 Klik "Publish"
 
@@ -235,6 +256,35 @@ FIREBASE_APP_ID = your_app_id
 
 5. Klik "Save"
 6. Redeploy project
+
+## 📱 Aplikasi Android & Windows (Flutter)
+
+Selain website, repo ini berisi **VAN MOD Store** — aplikasi toko mod ala Play
+Store, satu codebase untuk **Android (APK)** + **Windows (EXE)**:
+
+```bash
+cd app
+flutter pub get
+flutter run -d windows   # atau: flutter run (Android)
+```
+
+APK & EXE otomatis di-build oleh **GitHub Actions** setiap ada push
+(unduh di tab Actions → Artifacts). Dokumentasi lengkap ada di
+[`app/README.md`](app/README.md).
+
+## 🌱 Seed Data Contoh (Opsional)
+
+Supaya website langsung terlihat hidup, isi Firestore dengan 14 data contoh
+(6 apps, 4 games, 4 tools + statistik global) memakai seed script:
+
+```bash
+npm install
+node scripts/seed.mjs --email admin@kamu.com --password rahasia123
+```
+
+Script memakai akun admin Firebase (tidak butuh service-account key) dan otomatis
+berhenti kalau data sudah ada (tambah `--force` untuk memaksa). Detail lengkap +
+skema field yang benar ada di [`SAMPLE_DATA.md`](SAMPLE_DATA.md).
 
 ## 📝 Cara Menggunakan
 

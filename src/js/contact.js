@@ -14,9 +14,11 @@ function initContactForm() {
 
 // ==================== HANDLE SUBMIT ====================
 async function handleSubmit() {
-    const submitBtn = document.querySelector('button[type="submit"]');
+    const submitBtn = document.querySelector('#contact-form button[type="submit"]');
+    if (!submitBtn || !window.VANMOD) return;
+
     const originalHtml = submitBtn.innerHTML;
-    
+
     // Disable button and show loading
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
@@ -24,14 +26,19 @@ async function handleSubmit() {
             <span class="animate-pulse">TRANSMITTING...</span>
         </span>
     `;
-    
+
+    const restoreButton = () => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHtml;
+    };
+
     try {
-        // Collect form data
+        // Collect form data (null-safe: fields may be absent in older HTML)
         const formData = {
-            name: document.getElementById('name').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            subject: document.getElementById('subject').value.trim(),
-            message: document.getElementById('message').value.trim(),
+            name: document.getElementById('name')?.value.trim() || '',
+            email: document.getElementById('email')?.value.trim() || '',
+            subject: document.getElementById('subject')?.value.trim() || '',
+            message: document.getElementById('message')?.value.trim() || '',
             priority: document.querySelector('input[name="priority"]:checked')?.value || 'normal'
         };
         

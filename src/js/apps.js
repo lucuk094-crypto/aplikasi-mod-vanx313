@@ -3,40 +3,46 @@
 
 let currentCategory = 'all';
 let currentSearch = '';
-let lastVisible = null;
+let currentSort = 'newest';
+let visibleCount = 12;
 let isLoading = false;
 
 // ==================== LOAD APPS ====================
-async function loadApps(append = false) {
+async function loadApps() {
     if (isLoading) return;
-    
+
     const container = document.getElementById('apps-container');
-    if (!container) return;
-    
-    if (!append) {
-        VANMOD.showLoading('apps-container');
-        lastVisible = null;
-    }
-    
+    if (!container || !window.VANMOD) return;
+
     isLoading = true;
-    
+
     try {
         const filters = {};
         if (currentCategory !== 'all') {
             filters.category = currentCategory;
         }
-        
+
         let apps = [];
-        
+
         if (currentSearch) {
             // Perform search
             apps = await VANMOD.appsManager.search(currentSearch);
         } else {
-            // Get all apps with pagination
-            apps = await VANMOD.appsManager.getAll(filters, 12, lastVisible);
+            // Get apps (limit-based "load more", no cursor needed)
+            apps = await VANMOD.appsManager.getAll(filters, visibleCount);
         }
-        
-        if (apps.length === 0 && !append) {
+
+        apps = sortItems(apps);
+
+        const hasActiveFilter = currentSearch || currentCategory !== 'all';
+
+        if (apps.length === 0) {
+            if (!hasActiveFilter) {
+                // No data yet: keep the static showcase cards in the HTML
+                updateLoadMoreButton(false);
+                isLoading = false;
+                return;
+            }
             container.innerHTML = `
                 <div class="col-span-full text-center py-20">
                     <span class="material-symbols-outlined text-[64px] text-on-surface-variant mb-4 block">search_off</span>
@@ -44,40 +50,63 @@ async function loadApps(append = false) {
                     <p class="font-body-md text-on-surface-variant">Try adjusting your search or filters</p>
                 </div>
             `;
+            updateLoadMoreButton(false);
             isLoading = false;
             return;
         }
-        
+
         let html = '';
         apps.forEach(app => {
             html += VANMOD.createItemCard(app, 'apps');
         });
-        
-        if (append) {
-            container.innerHTML += html;
-        } else {
-            container.innerHTML = html;
-        }
-        
-        // Update last visible for pagination
-        if (apps.length > 0) {
-            lastVisible = apps[apps.length - 1];
-        }
-        
+
+        container.innerHTML = html;
+
         // Show/hide load more button
-        updateLoadMoreButton(apps.length >= 12);
-        
+        updateLoadMoreButton(!currentSearch && apps.length >= visibleCount);
+
     } catch (error) {
         console.error('Failed to load apps:', error);
-        VANMOD.showError('apps-container', 'Failed to load apps. Please try again.');
+        // Only wipe the container when there is nothing to preserve
+        if (!container.querySelector('article')) {
+            VANMOD.showError('apps-container', 'Failed to load apps. Please try again.');
+        }
     }
-    
+
     isLoading = false;
+}
+
+// ==================== SORT ====================
+function sortItems(items) {
+    const sorted = [...items];
+    switch (currentSort) {
+        case 'downloads':
+            sorted.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
+            break;
+        case 'rating':
+            sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+            break;
+        case 'name':
+            sorted.sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
+            break;
+        case 'newest':
+        default: {
+            // getAll() already returns newest-first; keep stable for search results
+            const toMs = (v) => {
+                const d = VANMOD.toDate(v);
+                return d ? d.getTime() : 0;
+            };
+            sorted.sort((a, b) => toMs(b.createdAt) - toMs(a.createdAt));
+            break;
+        }
+    }
+    return sorted;
 }
 
 // ==================== LOAD MORE ====================
 function loadMore() {
-    loadApps(true);
+    visibleCount += 12;
+    loadApps();
 }
 
 // Make loadMore available globally
@@ -107,19 +136,20 @@ function updateLoadMoreButton(show) {
 function initSearch() {
     const searchInput = document.getElementById('search-input');
     if (!searchInput) return;
-    
+
     let debounceTimer;
-    
+
     searchInput.addEventListener('input', (e) => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
             currentSearch = e.target.value.trim();
             if (currentSearch.length >= 2 || currentSearch.length === 0) {
+                visibleCount = 12;
                 loadApps();
             }
         }, 500);
     });
-    
+
     // Check URL for search parameter
     const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
@@ -132,7 +162,7 @@ function initSearch() {
 // ==================== FILTERS ====================
 function initFilters() {
     const filterButtons = document.querySelectorAll('[data-filter]');
-    
+
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             // Remove active class from all buttons
@@ -140,19 +170,20 @@ function initFilters() {
                 btn.classList.remove('border-primary-container', 'text-primary-container');
                 btn.classList.add('border-outline-variant', 'text-on-surface-variant');
             });
-            
+
             // Add active class to clicked button
             button.classList.remove('border-outline-variant', 'text-on-surface-variant');
             button.classList.add('border-primary-container', 'text-primary-container');
-            
+
             // Update current category
             currentCategory = button.dataset.filter;
-            
+
             // Reload apps
+            visibleCount = 12;
             loadApps();
         });
     });
-    
+
     // Check URL for category parameter
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get('category');
@@ -170,11 +201,9 @@ function initFilters() {
 function initSort() {
     const sortSelect = document.getElementById('sort-select');
     if (!sortSelect) return;
-    
+
     sortSelect.addEventListener('change', (e) => {
-        const sortValue = e.target.value;
-        console.log('Sort by:', sortValue);
-        // TODO: Implement sorting logic
+        currentSort = e.target.value || 'newest';
         loadApps();
     });
 }
@@ -183,10 +212,10 @@ function initSort() {
 function toggleView(view) {
     const container = document.getElementById('apps-container');
     if (!container) return;
-    
+
     const gridBtn = document.querySelector('[data-view="grid"]');
     const listBtn = document.querySelector('[data-view="list"]');
-    
+
     if (view === 'grid') {
         container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-md';
         gridBtn?.classList.add('bg-primary-container', 'text-on-primary-fixed');
@@ -200,8 +229,12 @@ function toggleView(view) {
         gridBtn?.classList.remove('bg-primary-container', 'text-on-primary-fixed');
         gridBtn?.classList.add('bg-surface-container-highest');
     }
-    
-    localStorage.setItem('viewMode', view);
+
+    try {
+        localStorage.setItem('viewMode', view);
+    } catch (e) {
+        // Storage unavailable (private mode) — ignore
+    }
 }
 
 // Make toggleView available globally
@@ -210,12 +243,13 @@ window.toggleView = toggleView;
 // ==================== STATISTICS ====================
 async function updateStats() {
     const statsElement = document.getElementById('total-apps');
-    if (!statsElement) return;
-    
+    if (!statsElement || !window.VANMOD) return;
+
     try {
         const stats = await VANMOD.getGlobalStats();
-        const total = (stats.totalApps || 0) + (stats.totalGames || 0) + (stats.totalTools || 0);
-        statsElement.textContent = total;
+        if (stats.totalApps > 0) {
+            statsElement.textContent = stats.totalApps;
+        }
     } catch (error) {
         console.error('Failed to load stats:', error);
     }
@@ -228,8 +262,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initSort();
     loadApps();
     updateStats();
-    
+
     // Restore view mode
-    const savedView = localStorage.getItem('viewMode') || 'grid';
+    let savedView = 'grid';
+    try {
+        savedView = localStorage.getItem('viewMode') || 'grid';
+    } catch (e) {
+        // ignore
+    }
     toggleView(savedView);
 });

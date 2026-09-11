@@ -1,4 +1,5 @@
 // Firebase Configuration
+// Single source of truth — imported by src/js/app.js
 // Replace with your Firebase project credentials
 const firebaseConfig = {
     apiKey: "AIzaSyB1ccnYtBwYYELE_JYr3AlSVzYf3KRxPU0",
@@ -10,7 +11,13 @@ const firebaseConfig = {
     measurementId: "G-LWKVY3WQK2"
 };
 
-// Export for use in other modules
+// ESM export (used by the site)
+export { firebaseConfig };
+export default firebaseConfig;
+
+// Legacy CommonJS fallback (harmless in browsers)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = firebaseConfig;
+    module.exports.firebaseConfig = firebaseConfig;
+    module.exports.default = firebaseConfig;
 }
