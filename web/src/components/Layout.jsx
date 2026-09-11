@@ -247,6 +247,7 @@ export default function Layout() {
             <Link to="/browse/apps">Aplikasi</Link>
             <Link to="/browse/tools">Tools</Link>
             <Link to="/popular">Top Charts</Link>
+            <Link to="/forum">Forum Chat</Link>
           </nav>
           <nav aria-label="Bantuan">
             <div className="foot-title">Bantuan</div>

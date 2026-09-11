@@ -38,5 +38,12 @@ service firebase.storage {
       allow write: if isAdmin();
       allow delete: if isAdmin();
     }
+
+    // Forum chat - baca publik, upload user login (gambar ≤2MB)
+    match /chat/{imageId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidImage();
+      allow delete: if isAdmin();
+    }
   }
 }

@@ -6,6 +6,7 @@ import Browse from './pages/Browse.jsx';
 import Latest from './pages/Latest.jsx';
 import Popular from './pages/Popular.jsx';
 import Stream from './pages/Stream.jsx';
+import Forum from './pages/Forum.jsx';
 import Detail from './pages/Detail.jsx';
 import Search from './pages/Search.jsx';
 import Wishlist from './pages/Wishlist.jsx';
@@ -45,6 +46,8 @@ function useDocumentTitle() {
       title = 'Popular Mod — VAN MOD';
     } else if (seg[0] === 'stream') {
       title = 'Stream — VAN MOD';
+    } else if (seg[0] === 'forum') {
+      title = 'Forum Chat — VAN MOD';
     } else if (seg[0] === 'search') {
       title = 'Cari Mod — VAN MOD';
     } else if (seg[0] === 'wishlist') {
@@ -76,6 +79,7 @@ export default function App() {
           <Route path="latest" element={<Latest />} />
           <Route path="popular" element={<Popular />} />
           <Route path="stream" element={<Stream />} />
+          <Route path="forum" element={<Forum />} />
           <Route path="detail/:collection/:id" element={<Detail />} />
           <Route path="search" element={<Search />} />
           <Route path="wishlist" element={<Wishlist />} />

@@ -7,6 +7,7 @@ import {
   Award,
   Gamepad,
   LayoutGrid,
+  MessageCircle,
   Shield,
   Smartphone,
   Sliders,
@@ -82,6 +83,9 @@ export default function Home() {
         </Link>
         <Link to="/popular">
           <Award size={16} /> Popular
+        </Link>
+        <Link to="/forum">
+          <MessageCircle size={16} /> Forum
         </Link>
       </nav>
       <div className="hero">
