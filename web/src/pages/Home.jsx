@@ -224,40 +224,6 @@ export default function Home() {
       </Reveal>
 
       <Reveal>
-        <SectionHeader title="Kategori" />
-        <div className="tiles">
-          <Link className="neo tile" to="/browse/apps">
-            <div className="ti">
-              <Smartphone size={26} />
-            </div>
-            <div className="tn">Aplikasi</div>
-            <div className="tc">{items.apps.length} item</div>
-          </Link>
-          <Link className="neo tile" to="/browse/games">
-            <div className="ti">
-              <Gamepad size={26} />
-            </div>
-            <div className="tn">Game</div>
-            <div className="tc">{items.games.length} item</div>
-          </Link>
-          <Link className="neo tile" to="/browse/tools">
-            <div className="ti">
-              <Sliders size={26} />
-            </div>
-            <div className="tn">Tools</div>
-            <div className="tc">{items.tools.length} item</div>
-          </Link>
-          <Link className="neo tile" to="/latest">
-            <div className="ti">
-              <Zap size={26} />
-            </div>
-            <div className="tn">Latest</div>
-            <div className="tc">Baru rilis</div>
-          </Link>
-        </div>
-      </Reveal>
-
-      <Reveal>
         <SectionHeader title="Baru Rilis" actionLabel="Semua" to="/latest" />
         <div className="list">
           {latest.map((it, i) => (
