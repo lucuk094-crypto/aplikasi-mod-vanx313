@@ -8,6 +8,7 @@ import {
   Edit2,
   LayoutGrid,
   LogOut,
+  Mail,
   Plus,
   Trash2,
 } from '../components/icons.jsx';
@@ -67,7 +68,10 @@ export default function Dashboard() {
             Dashboard
           </h1>
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <Link className="btn btn-line btn-sm" to="/admin/inbox">
+            <Mail size={15} /> Inbox
+          </Link>
           <Link className="btn btn-lime btn-sm" to="/admin/new">
             <Plus size={16} /> Tambah Mod
           </Link>

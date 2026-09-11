@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Check, Send } from '../components/icons.jsx';
 import { Kicker } from '../components/ui.jsx';
+import { sendMessage } from '../lib/contact.js';
 
 export default function Contact() {
   const [name, setName] = useState('');
@@ -8,18 +9,29 @@ export default function Contact() {
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState('');
 
-  function submit(e) {
+  async function submit(e) {
     e.preventDefault();
     if (busy) return;
     setBusy(true);
-    setTimeout(() => {
-      setBusy(false);
+    setError('');
+    setSent(false);
+    try {
+      await sendMessage({ name, email, message });
       setSent(true);
       setName('');
       setEmail('');
       setMessage('');
-    }, 900);
+    } catch (err) {
+      setError(
+        err?.code === 'unavailable'
+          ? 'Jaringan bermasalah. Coba lagi sebentar.'
+          : 'Gagal mengirim. Coba lagi.'
+      );
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -29,8 +41,8 @@ export default function Contact() {
       </Kicker>
       <h1>Kontak</h1>
       <p style={{ color: 'var(--muted)' }}>
-        Ada request mod, link rusak, atau kerja sama? Kirim pesan — biasanya
-        dibalas &lt; 24 jam.
+        Request mod, lapor link rusak, atau kerja sama? Pesanmu langsung
+        masuk ke tim VAN MOD — biasanya dibalas &lt; 24 jam.
       </p>
       <form
         onSubmit={submit}
@@ -70,10 +82,11 @@ export default function Contact() {
         </label>
         {sent && (
           <div className="form-ok">
-            <Check size={16} /> Pesan terkirim. Terima kasih sudah menghubungi
-            VAN MOD!
+            <Check size={16} /> Pesan terkirim dan sudah masuk ke tim kami.
+            Terima kasih!
           </div>
         )}
+        {error && <div className="form-error">{error}</div>}
         <button className="btn btn-lime" disabled={busy}>
           <Send size={16} /> {busy ? 'Mengirim…' : 'Kirim Pesan'}
         </button>
