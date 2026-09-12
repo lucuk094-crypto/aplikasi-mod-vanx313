@@ -7,7 +7,7 @@ service cloud.firestore {
     }
 
     // Admin = HANYA email terdaftar di bawah. Kalau mau tambah admin,
-    // daftarkan di sini + samakan dengan ADMIN_EMAILS di web/src/config.js
+    // daftarkan di sini + samakan dengan ADMIN_EMAILS di src/config.js
     // dan adminEmails di app/lib/config/app_config.dart.
     function isAdmin() {
       return isAuthenticated() &&
