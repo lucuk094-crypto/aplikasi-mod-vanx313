@@ -1,26 +1,23 @@
 {
-  "name": "vanmod-web-app",
+  "name": "vanmod-web",
+  "private": true,
   "version": "1.0.0",
-  "description": "VAN//MOD - High-End Brutalist Mod Ecosystem",
   "type": "module",
-  "main": "index.html",
+  "description": "VAN MOD Store - Web (React + Vite + Firebase)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "seed": "node scripts/seed.mjs"
   },
-  "keywords": [
-    "vanmod",
-    "mods",
-    "apps",
-    "games",
-    "tools"
-  ],
-  "author": "VAN//MOD Team",
-  "license": "MIT",
+  "dependencies": {
+    "firebase": "^12.19.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.3"
+  },
   "devDependencies": {
-    "firebase": "^10.7.1",
-    "vite": "^5.0.0"
+    "@vitejs/plugin-react": "^6.1.1",
+    "vite": "^8.3.0"
   }
 }
