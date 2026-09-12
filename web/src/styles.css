@@ -2257,81 +2257,93 @@ a.neo:hover {
   .dm-wrap:not(.chatting) .dm-chat { display: none; }
 }
 
-/* ---------- Kotak aplikasi persegi ala Play Store ---------- */
-/* Hanya daftar berisi kartu aplikasi yang jadi grid
-   (daftar admin/inbox/profil tidak kena). */
-.feed:has(.rowcard), .list:has(.rowcard) {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 14px;
+/* ---------- Kotak aplikasi: rel geser menyamping ala Play Store ---------- */
+/* Daftar aplikasi jadi baris horizontal yang bisa digeser (compact di
+   desktop maupun HP). Daftar admin/inbox/profil tidak kena. */
+.feed:has(.rowcard), .list:has(.rowcard), .grid3 {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 2px 12px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
 }
-/* Kartu vertikal: ikon di atas, nama di tengah */
-.rowcard {
+.feed:has(.rowcard)::-webkit-scrollbar,
+.list:has(.rowcard)::-webkit-scrollbar,
+.grid3::-webkit-scrollbar {
+  height: 8px;
+}
+.feed:has(.rowcard)::-webkit-scrollbar-thumb,
+.list:has(.rowcard)::-webkit-scrollbar-thumb,
+.grid3::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 99px;
+}
+.feed:has(.rowcard) > *,
+.list:has(.rowcard) > *,
+.grid3 > * {
+  flex: 0 0 136px;
+  max-width: 136px;
+  scroll-snap-align: start;
+}
+/* Tile vertikal mungil: ikon atas, nama tengah */
+.rowcard, .gridcard {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   height: 100%;
-  padding: 18px 10px 14px;
+  padding: 14px 8px 12px;
 }
 .rowcard .appicon,
-.rowcard .appicon-fallback {
-  width: 76px !important;
-  height: 76px !important;
-  border-radius: 18px;
-  font-size: 34px !important;
+.rowcard .appicon-fallback,
+.gridcard .appicon,
+.gridcard .appicon-fallback {
+  width: 62px !important;
+  height: 62px !important;
+  border-radius: 15px;
+  font-size: 28px !important;
 }
 .rowcard .rc-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   width: 100%;
 }
+.rowcard .badge { display: none; }
+.rowcard .rc-meta { display: none; }
 .rowcard .rc-name {
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 14.5px;
+  font-size: 13.5px;
   line-height: 1.35;
   min-height: 2.7em;
   margin-top: 0;
 }
-.rowcard .rc-meta { font-size: 12px; }
+.rowcard .rc-sub { font-size: 12px; }
 .rowcard .chev { display: none; }
-/* Kartu grid (Browse) ikut persegi */
-.grid3 {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-}
-.gridcard {
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  padding: 18px 10px 14px;
-}
-.gridcard .appicon,
-.gridcard .appicon-fallback {
-  width: 76px !important;
-  height: 76px !important;
-  border-radius: 18px;
-  font-size: 34px !important;
-}
 .gridcard .gc-name {
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-size: 13.5px;
+  line-height: 1.35;
   min-height: 2.7em;
 }
+.gridcard .gc-sub { font-size: 12px; }
 @media (max-width: 480px) {
-  .feed:has(.rowcard), .list:has(.rowcard), .grid3 {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
+  .feed:has(.rowcard) > *,
+  .list:has(.rowcard) > *,
+  .grid3 > * {
+    flex: 0 0 122px;
+    max-width: 122px;
   }
 }
