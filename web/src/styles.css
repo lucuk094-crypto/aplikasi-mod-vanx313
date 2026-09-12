@@ -2347,3 +2347,95 @@ a.neo:hover {
     max-width: 122px;
   }
 }
+
+/* ---------- Ikon besar + Top Charts & Featured kotak ---------- */
+.rowcard .appicon,
+.rowcard .appicon-fallback,
+.gridcard .appicon,
+.gridcard .appicon-fallback {
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 17px;
+  font-size: 32px !important;
+}
+/* Top Charts: tile vertikal + lencana peringkat */
+.list:has(.rankcard) {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 2px 12px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+.hscroll > .rankcard,
+.list:has(.rankcard) > * {
+  flex: 0 0 136px;
+  max-width: 136px;
+  scroll-snap-align: start;
+}
+.rankcard {
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 14px 8px 12px;
+}
+.rankcard .rank-num {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 13px;
+  background: var(--lime);
+  color: var(--lime-ink);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  padding: 1px 7px;
+}
+.rankcard.top .rank-num { color: var(--lime-ink); }
+.rankcard .appicon,
+.rankcard .appicon-fallback {
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 17px;
+  font-size: 32px !important;
+  margin-top: 8px;
+}
+.rankcard .gc-name {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13.5px;
+  line-height: 1.35;
+  min-height: 2.7em;
+}
+.rankcard .gc-sub { font-size: 12px; }
+/* Featured: kotak sorot vertikal */
+.feat-main {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 26px 18px;
+}
+.feat-main .appicon,
+.feat-main .appicon-fallback {
+  width: 104px !important;
+  height: 104px !important;
+  border-radius: 24px;
+  font-size: 46px !important;
+}
+.feat-main .feat-name { font-size: 26px; }
+.feat-main .feat-meta { justify-content: center; }
+@media (max-width: 480px) {
+  .hscroll > .rankcard,
+  .list:has(.rankcard) > * {
+    flex: 0 0 122px;
+    max-width: 122px;
+  }
+}
