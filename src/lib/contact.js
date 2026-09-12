@@ -1,39 +1,42 @@
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  serverTimestamp,
-  updateDoc,
-} from 'firebase/firestore';
-import { db } from './firebase.js';
+import { supabase } from './supabase.js';
 
-// Kirim pesan kontak (rules: publik boleh create).
+// Kirim pesan kontak (RLS: publik boleh insert).
 export async function sendMessage({ name, email, message }) {
-  await addDoc(collection(db, 'contacts'), {
+  const { error } = await supabase.from('contacts').insert({
     name: name.trim(),
     email: email.trim(),
     message: message.trim(),
     read: false,
-    createdAt: serverTimestamp(),
   });
+  if (error) throw new Error(error.message);
 }
 
 // Baca semua pesan (admin, login wajib).
 export async function fetchContacts() {
-  const snap = await getDocs(
-    query(collection(db, 'contacts'), orderBy('createdAt', 'desc'))
-  );
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  const { data, error } = await supabase
+    .from('contacts')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data || []).map((r) => ({
+    id: r.id,
+    name: r.name,
+    email: r.email,
+    message: r.message,
+    read: !!r.read,
+    createdAt: new Date(r.created_at),
+  }));
 }
 
 export async function markContactRead(id, read = true) {
-  await updateDoc(doc(db, 'contacts', id), { read });
+  const { error } = await supabase
+    .from('contacts')
+    .update({ read })
+    .eq('id', id);
+  if (error) throw new Error(error.message);
 }
 
 export async function deleteContact(id) {
-  await deleteDoc(doc(db, 'contacts', id));
+  const { error } = await supabase.from('contacts').delete().eq('id', id);
+  if (error) throw new Error(error.message);
 }

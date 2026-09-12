@@ -7,14 +7,7 @@ import {
   useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  collection,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-} from 'firebase/firestore';
-import { db } from './firebase.js';
+import { supabase } from './supabase.js';
 import { useAuth } from './auth.jsx';
 import { watchThreads } from './dm.js';
 
@@ -102,14 +95,25 @@ export function NotifyProvider({ children }) {
 
   // Pantau pesan forum terbaru → toast kalau ada yang baru.
   useEffect(() => {
-    const q = query(
-      collection(db, 'messages'),
-      orderBy('createdAt', 'desc'),
-      limit(1)
-    );
-    const unsub = onSnapshot(q, (snap) => {
-      const d = snap.docs[0];
-      const m = d ? { id: d.id, ...d.data() } : null;
+    let alive = true;
+    async function load() {
+      const { data } = await supabase
+        .from('messages')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1);
+      if (!alive) return;
+      const r = (data || [])[0];
+      const m = r
+        ? {
+            id: r.id,
+            text: r.text,
+            imageUrl: r.image_url,
+            uid: r.user_id,
+            name: r.name,
+            createdAt: r.created_at,
+          }
+        : null;
       setLatestForum(m);
       if (firstForum.current) {
         firstForum.current = false;
@@ -122,8 +126,20 @@ export function NotifyProvider({ children }) {
         `💬 ${m.name || 'Anonim'}: ${(m.text || '📷 Gambar').slice(0, 80)}`,
         '/forum'
       );
-    });
-    return unsub;
+    }
+    load();
+    const ch = supabase
+      .channel('notify-forum')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'messages' },
+        () => load()
+      )
+      .subscribe();
+    return () => {
+      alive = false;
+      supabase.removeChannel(ch);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -137,10 +153,10 @@ export function NotifyProvider({ children }) {
     return watchThreads(user.uid, (list) => {
       setThreads(list);
       for (const t of list) {
-        const ts = tsOf(t.updatedAt);
+        const ts = tsOf(t.updated_at);
         const known = dmKnown.current[t.id] || 0;
         dmKnown.current[t.id] = Math.max(known, ts);
-        if (t.lastBy === user.uid) continue;
+        if (t.last_by === user.uid) continue;
         if (ts <= dmMount.current || ts <= known) continue;
         let open = '';
         try {
@@ -150,10 +166,9 @@ export function NotifyProvider({ children }) {
         }
         if (open === t.id) continue;
         const other = (t.members || []).find((m) => m !== user.uid);
-        const nm =
-          (t.names && t.names[other]) || 'Pesan baru';
+        const nm = (t.names && t.names[other]) || 'Pesan baru';
         showToast(
-          `✉️ ${nm}: ${(t.lastText || '').slice(0, 80)}`,
+          `✉️ ${nm}: ${(t.last_text || '').slice(0, 80)}`,
           `/dm?t=${t.id}`
         );
       }
@@ -166,8 +181,8 @@ export function NotifyProvider({ children }) {
     let du = 0;
     for (const t of threads) {
       if (
-        t.lastBy !== (user && user.uid) &&
-        tsOf(t.updatedAt) > (seen[t.id] || 0)
+        t.last_by !== (user && user.uid) &&
+        tsOf(t.updated_at) > (seen[t.id] || 0)
       ) {
         du++;
       }

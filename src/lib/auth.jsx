@@ -1,100 +1,157 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-} from 'firebase/auth';
-import { auth } from './firebase.js';
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { supabase } from './supabase.js';
 import { ADMIN_EMAILS } from '../config.js';
 
-function friendly(code) {
-  switch (code) {
-    case 'auth/email-already-in-use':
-      return 'Email sudah terdaftar. Silakan masuk.';
-    case 'auth/invalid-email':
-      return 'Format email tidak valid.';
-    case 'auth/weak-password':
-      return 'Password minimal 6 karakter.';
-    case 'auth/invalid-credential':
-    case 'auth/user-not-found':
-    case 'auth/wrong-password':
-      return 'Email atau password salah.';
-    case 'auth/too-many-requests':
-      return 'Terlalu banyak percobaan. Coba lagi nanti.';
-    case 'auth/user-disabled':
-      return 'Akun ini dinonaktifkan.';
-    case 'auth/network-request-failed':
-      return 'Tidak ada koneksi internet.';
-    default:
-      return `Gagal: ${code || 'unknown'}`;
-  }
+function friendly(msg) {
+  const m = (msg || '').toLowerCase();
+  if (m.includes('already registered') || m.includes('already exists'))
+    return 'Email sudah terdaftar. Silakan masuk.';
+  if (m.includes('invalid login credentials'))
+    return 'Email atau password salah.';
+  if (m.includes('email not confirmed'))
+    return 'Email belum diverifikasi. Cek inbox lalu masuk lagi.';
+  if (m.includes('password should be') || m.includes('weak password'))
+    return 'Password minimal 6 karakter.';
+  if (m.includes('invalid email') || m.includes('invalid-email'))
+    return 'Format email tidak valid.';
+  if (m.includes('rate limit') || m.includes('too many'))
+    return 'Terlalu banyak percobaan. Coba lagi nanti.';
+  if (m.includes('user not found'))
+    return 'Email atau password salah.';
+  if (m.includes('fetch') || m.includes('network'))
+    return 'Tidak ada koneksi internet.';
+  return `Gagal: ${msg || 'unknown'}`;
 }
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [sbUser, setSbUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [init, setInit] = useState(true);
 
-  useEffect(() => {
-    return onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      setInit(false);
-    });
+  const loadProfile = useCallback(async (id) => {
+    if (!id) {
+      setProfile(null);
+      return;
+    }
+    const { data } = await supabase
+      .from('profiles')
+      .select('display_name, is_admin')
+      .eq('id', id)
+      .maybeSingle();
+    setProfile(data || null);
   }, []);
 
+  useEffect(() => {
+    let alive = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!alive) return;
+      const u = data?.session?.user || null;
+      setSbUser(u);
+      setInit(false);
+      loadProfile(u?.id);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_ev, session) => {
+      if (!alive) return;
+      const u = session?.user || null;
+      setSbUser(u);
+      setInit(false);
+      loadProfile(u?.id);
+    });
+    return () => {
+      alive = false;
+      sub?.subscription?.unsubscribe();
+    };
+  }, [loadProfile]);
+
   const value = useMemo(() => {
-    const email = (user?.email || '').toLowerCase();
+    const email = sbUser?.email || '';
+    const metaName = sbUser?.user_metadata?.display_name || '';
+    const displayName =
+      profile?.display_name ||
+      metaName ||
+      (email ? email.split('@')[0] : '');
+    // Bentuk user dinormalisasi mirip Firebase agar semua halaman tetap jalan.
+    const user = sbUser
+      ? { uid: sbUser.id, email, displayName }
+      : null;
+    const emailLower = email.toLowerCase();
     const isAdmin =
-      !!email && ADMIN_EMAILS.map((e) => e.toLowerCase()).includes(email);
+      !!profile?.is_admin ||
+      (!!emailLower &&
+        ADMIN_EMAILS.map((e) => e.toLowerCase()).includes(emailLower));
     return {
       user,
       init,
       authLoading: init,
-      isAuthed: !!user,
+      isAuthed: !!sbUser,
       isAdmin,
-      displayName: user?.displayName || (user?.email ? user.email.split('@')[0] : ''),
+      displayName,
       async signIn(emailArg, password) {
-        try {
-          await signInWithEmailAndPassword(auth, emailArg.trim(), password);
-          return { ok: true };
-        } catch (e) {
-          return { ok: false, error: friendly(e.code) };
-        }
+        const { error } = await supabase.auth.signInWithPassword({
+          email: emailArg.trim(),
+          password,
+        });
+        if (error) return { ok: false, error: friendly(error.message) };
+        return { ok: true };
       },
       async signUp(name, emailArg, password) {
-        try {
-          const cred = await createUserWithEmailAndPassword(
-            auth,
-            emailArg.trim(),
-            password
-          );
-          try {
-            await updateProfile(cred.user, { displayName: name.trim() });
-          } catch {
-            // abaikan
-          }
-          return { ok: true };
-        } catch (e) {
-          return { ok: false, error: friendly(e.code) };
+        const { data, error } = await supabase.auth.signUp({
+          email: emailArg.trim(),
+          password,
+          options: { data: { display_name: name.trim() } },
+        });
+        if (error) return { ok: false, error: friendly(error.message) };
+        if (!data?.session) {
+          return {
+            ok: false,
+            error: 'Cek email untuk verifikasi, lalu masuk.',
+          };
         }
+        return { ok: true };
       },
       async reset(emailArg) {
-        try {
-          await sendPasswordResetEmail(auth, emailArg.trim());
-          return { ok: true };
-        } catch (e) {
-          return { ok: false, error: friendly(e.code) };
+        const { error } = await supabase.auth.resetPasswordForEmail(
+          emailArg.trim()
+        );
+        if (error) return { ok: false, error: friendly(error.message) };
+        return { ok: true };
+      },
+      async updateName(name) {
+        const v = (name || '').trim().slice(0, 40);
+        if (!v) return { ok: false, error: 'Nama kosong.' };
+        const { error } = await supabase.auth.updateUser({
+          data: { display_name: v },
+        });
+        if (error) return { ok: false, error: friendly(error.message) };
+        if (sbUser) {
+          await supabase
+            .from('profiles')
+            .update({ display_name: v })
+            .eq('id', sbUser.id);
+          loadProfile(sbUser.id);
         }
+        return { ok: true };
+      },
+      async updatePassword(password) {
+        const { error } = await supabase.auth.updateUser({ password });
+        if (error) return { ok: false, error: friendly(error.message) };
+        return { ok: true };
       },
       async signOut() {
-        await signOut(auth);
+        await supabase.auth.signOut();
+        setProfile(null);
       },
     };
-  }, [user, init]);
+  }, [sbUser, profile, init, loadProfile]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

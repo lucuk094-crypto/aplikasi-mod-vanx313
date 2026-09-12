@@ -1,19 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  collection,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-} from 'firebase/firestore';
-import { db } from '../lib/firebase.js';
 import { useAuth } from '../lib/auth.jsx';
 import { ADMIN_EMAILS } from '../config.js';
 import {
   deleteChatMessage,
   sendChatMessage,
   uploadChatImage,
+  watchForumMessages,
 } from '../lib/chat.js';
 import {
   clearTyping,
@@ -75,15 +68,8 @@ export default function Forum() {
 
   // Langganan real-time: pesan baru langsung muncul tanpa refresh.
   useEffect(() => {
-    const q = query(
-      collection(db, 'messages'),
-      orderBy('createdAt', 'asc'),
-      limit(100)
-    );
-    const unsub = onSnapshot(
-      q,
-      (snap) => {
-        const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    return watchForumMessages(
+      (list) => {
         list.sort((a, b) => dateOf(a) - dateOf(b));
         setMessages(list);
         setLoading(false);
@@ -94,7 +80,6 @@ export default function Forum() {
         setLoading(false);
       }
     );
-    return unsub;
   }, []);
 
   // Pantau siapa yang sedang mengetik di forum.

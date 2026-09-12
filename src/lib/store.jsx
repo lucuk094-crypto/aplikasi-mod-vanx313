@@ -7,64 +7,114 @@ import {
   useRef,
   useState,
 } from 'react';
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  serverTimestamp,
-  updateDoc,
-  increment,
-  addDoc,
-} from 'firebase/firestore';
-import { db } from './firebase.js';
+import { supabase } from './supabase.js';
 import { COLLECTIONS, MAX_DOCS } from '../config.js';
 
 function toDate(v) {
   if (!v) return null;
-  if (typeof v.toDate === 'function') return v.toDate();
   const d = new Date(v);
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
-function norm(collectionId, d) {
-  const m = d.data() || {};
+// Baris Postgres (snake_case) → bentuk item aplikasi (camelCase).
+function norm(m) {
   return {
-    id: d.id,
-    key: `${collectionId}/${d.id}`,
-    collection: collectionId,
+    id: m.id,
+    key: `${m.collection}/${m.id}`,
+    collection: m.collection,
     name: m.name ?? 'Untitled',
     description: m.description ?? '',
     category: m.category ?? '',
     version: m.version ?? '',
     size: m.size ?? '',
-    modType: m.modType ?? '',
+    modType: m.mod_type ?? '',
     developer: m.developer ?? '',
-    packageName: m.packageName ?? '',
-    androidVersion: m.androidVersion ?? '',
-    // Fallback ke nama field aplikasi Flutter agar dokumen lama tetap jalan.
-    minAndroid: m.minAndroid ?? m.androidVersion ?? '',
+    packageName: m.package_name ?? '',
+    androidVersion: m.min_android ?? '',
+    minAndroid: m.min_android ?? '',
     license: m.license ?? '',
-    downloadUrl: m.downloadUrl ?? '',
-    file: m.file ?? m.downloadUrl ?? '',
+    downloadUrl: m.download_url ?? '',
+    file: m.download_url ?? '',
     icon: m.icon ?? '',
-    fileKind: m.fileKind ?? 'apk',
+    fileKind: m.file_kind ?? 'apk',
     rating: typeof m.rating === 'number' ? m.rating : 0,
     downloads: typeof m.downloads === 'number' ? m.downloads : 0,
     featured: typeof m.featured === 'number' ? m.featured : 0,
     tags: Array.isArray(m.tags) ? m.tags.map(String) : [],
     screenshots: Array.isArray(m.screenshots) ? m.screenshots.map(String) : [],
     reviews: Array.isArray(m.reviews) ? m.reviews : [],
-    createdAt: toDate(m.createdAt),
-    updatedAt: toDate(m.updatedAt),
+    createdAt: toDate(m.created_at),
+    updatedAt: toDate(m.updated_at),
   };
 }
 
-// Batasi waktu tunggu operasi Firestore agar UI tidak loading selamanya.
+// Form editor → baris Postgres. Saat insert: lengkap + default.
+// Saat update: hanya kolom yang dikirim (rating/downloads/reviews aman).
+function toRow(collectionId, fields, forInsert) {
+  const row = {};
+  const set = (col, val) => {
+    if (val !== undefined || forInsert) row[col] = val;
+  };
+  if (forInsert) {
+    row.collection = collectionId;
+    row.name = fields.name ?? 'Untitled';
+    row.description = fields.description ?? '';
+    row.category = (fields.category ?? '').trim();
+    row.version = fields.version ?? '';
+    row.size = fields.size ?? '';
+    row.mod_type = fields.modType ?? '';
+    row.developer = fields.developer ?? '';
+    row.package_name = fields.packageName ?? '';
+    row.min_android = fields.minAndroid ?? fields.androidVersion ?? '';
+    row.license = fields.license ?? '';
+    row.download_url = fields.downloadUrl ?? fields.file ?? '';
+    row.icon = fields.icon ?? '';
+    row.file_kind = fields.fileKind ?? 'apk';
+    row.rating = Number(fields.rating) || 0;
+    row.downloads = Number(fields.downloads) || 0;
+    row.featured = Number(fields.featured) || 0;
+    row.tags = Array.isArray(fields.tags) ? fields.tags : [];
+    row.screenshots = Array.isArray(fields.screenshots)
+      ? fields.screenshots
+      : [];
+    return row;
+  }
+  row.collection = collectionId;
+  set('name', fields.name);
+  set('description', fields.description);
+  set(
+    'category',
+    fields.category !== undefined ? String(fields.category).trim() : undefined
+  );
+  set('version', fields.version);
+  set('size', fields.size);
+  set('mod_type', fields.modType);
+  set('developer', fields.developer);
+  set('package_name', fields.packageName);
+  set(
+    'min_android',
+    fields.minAndroid !== undefined
+      ? fields.minAndroid
+      : fields.androidVersion
+  );
+  set('license', fields.license);
+  set(
+    'download_url',
+    fields.downloadUrl !== undefined ? fields.downloadUrl : fields.file
+  );
+  set('icon', fields.icon);
+  set('file_kind', fields.fileKind);
+  if (fields.rating !== undefined) row.rating = Number(fields.rating) || 0;
+  if (fields.downloads !== undefined)
+    row.downloads = Number(fields.downloads) || 0;
+  if (fields.featured !== undefined)
+    row.featured = Number(fields.featured) || 0;
+  set('tags', fields.tags);
+  set('screenshots', fields.screenshots);
+  return row;
+}
+
+// Batasi waktu tunggu operasi agar UI tidak loading selamanya.
 function withTimeout(promise, ms = 25000, label = 'Operasi') {
   let timer;
   const timeout = new Promise((_, reject) => {
@@ -85,12 +135,17 @@ function withTimeout(promise, ms = 25000, label = 'Operasi') {
 }
 
 function friendlyError(e, fallback) {
+  const msg = (e?.message || '').toLowerCase();
   const code = e?.code || '';
-  if (code === 'permission-denied')
+  if (
+    code === '42501' ||
+    msg.includes('row-level security') ||
+    msg.includes('permission denied') ||
+    msg.includes('violates row-level')
+  )
     return 'Izin ditolak. Pastikan kamu login sebagai admin.';
-  if (code === 'unavailable' || code === 'deadline-exceeded')
+  if (msg.includes('fetch') || msg.includes('network'))
     return 'Jaringan bermasalah. Coba lagi sebentar.';
-  if (code === 'not-found') return 'Data tidak ditemukan (mungkin sudah dihapus).';
   return e?.message || fallback || 'Terjadi kesalahan.';
 }
 
@@ -110,26 +165,20 @@ export function StoreProvider({ children }) {
       setError(null);
     }
     try {
-      // Paralel: 3 koleksi dimuat bersamaan, bukan satu-satu.
-      const snaps = await withTimeout(
-        Promise.all(
-          COLLECTIONS.map((c) =>
-            getDocs(
-              query(
-                collection(db, c),
-                orderBy('downloads', 'desc'),
-                limit(MAX_DOCS)
-              )
-            )
-          )
-        ),
+      const { data, error: err } = await withTimeout(
+        supabase
+          .from('items')
+          .select('*')
+          .order('downloads', { ascending: false })
+          .limit(MAX_DOCS * COLLECTIONS.length),
         25000,
         'Memuat katalog'
       );
-      const next = {};
-      COLLECTIONS.forEach((c, i) => {
-        next[c] = snaps[i].docs.map((d) => norm(c, d));
-      });
+      if (err) throw err;
+      const next = { apps: [], games: [], tools: [] };
+      for (const row of data || []) {
+        if (next[row.collection]) next[row.collection].push(norm(row));
+      }
       setItems(next);
     } catch (e) {
       if (!silent) setError(friendlyError(e, 'Gagal memuat katalog.'));
@@ -178,15 +227,13 @@ export function StoreProvider({ children }) {
     });
   }, []);
 
-  // Naikkan counter download (rules mengizinkan public stats update).
+  // Naikkan counter download (via rpc aman, boleh publik).
   const bumpDownloads = useCallback(
     async (item) => {
       bumpLocal(item.key);
       try {
         await withTimeout(
-          updateDoc(doc(db, item.collection, item.id), {
-            downloads: increment(1),
-          }),
+          supabase.rpc('bump_downloads', { p_item: item.id }),
           15000,
           'Update counter'
         );
@@ -198,33 +245,18 @@ export function StoreProvider({ children }) {
   );
 
   async function pushReview(item, { user, rating, comment }) {
-    const ref = doc(db, item.collection, item.id);
-    const snap = await withTimeout(getDoc(ref), 25000, 'Mengirim ulasan');
-    if (!snap.exists()) throw new Error('Item tidak ditemukan.');
-    const data = snap.data() || {};
-    const prev = Array.isArray(data.reviews) ? data.reviews : [];
-    const entry = {
-      id: `r-${Date.now()}`,
-      user,
-      rating,
-      comment,
-      createdAt: new Date().toISOString(),
-    };
-    const next = [...prev, entry];
-    const avg =
-      next.reduce((s, r) => s + (Number(r.rating) || 0), 0) /
-      (next.length || 1);
-    const rounded = Math.round(avg * 10) / 10;
-    await withTimeout(
-      updateDoc(ref, {
-        reviews: next,
-        rating: rounded,
-        updatedAt: serverTimestamp(),
+    const { data, error: err } = await withTimeout(
+      supabase.rpc('submit_review', {
+        p_item: item.id,
+        p_user: user,
+        p_rating: rating,
+        p_comment: comment,
       }),
       25000,
       'Mengirim ulasan'
     );
-    return { next, rounded };
+    if (err) throw err;
+    return { next: data.reviews || [], rounded: data.rating || 0 };
   }
 
   const submitReview = useCallback(
@@ -272,66 +304,62 @@ export function StoreProvider({ children }) {
     [items, refresh, upsertLocal]
   );
 
-  // Dipakai Editor (tambah + edit). id null = dokumen baru.
+  // Dipakai Editor (tambah + edit). id null = baris baru.
   const saveItem = useCallback(
     async (collectionId, id, fields) => {
-      // Mirror ke nama field aplikasi Flutter agar dua platform saling cocok.
-      const mirror = {
-        ...(fields.file !== undefined ? { downloadUrl: fields.file } : {}),
-        ...(fields.minAndroid !== undefined
-          ? { androidVersion: fields.minAndroid }
-          : {}),
-      };
       try {
         if (id) {
-          await withTimeout(
-            updateDoc(doc(db, collectionId, id), {
-              ...fields,
-              ...mirror,
-              updatedAt: serverTimestamp(),
-            }),
+          const { error: err } = await withTimeout(
+            supabase
+              .from('items')
+              .update(toRow(collectionId, fields, false))
+              .eq('id', id),
             25000,
             'Menyimpan perubahan'
           );
+          if (err) throw err;
           const current = (items[collectionId] || []).find(
             (it) => it.id === id
           );
           upsertLocal(collectionId, {
-            ...(current || { id, key: `${collectionId}/${id}`, collection: collectionId }),
+            ...(current || {
+              id,
+              key: `${collectionId}/${id}`,
+              collection: collectionId,
+            }),
             ...fields,
             updatedAt: new Date(),
           });
           refresh({ silent: true });
           return { ok: true, id };
         }
-        const ref = await withTimeout(
-          addDoc(collection(db, collectionId), {
-            ...fields,
-            ...mirror,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-          }),
+        const { data, error: err } = await withTimeout(
+          supabase
+            .from('items')
+            .insert(toRow(collectionId, fields, true))
+            .select('id')
+            .single(),
           25000,
           'Menyimpan mod'
         );
+        if (err) throw err;
         const now = new Date();
         upsertLocal(
           collectionId,
-          norm(collectionId, {
-            id: ref.id,
-            data: () => ({
-              ...fields,
-              rating: Number(fields.rating) || 0,
-              downloads: Number(fields.downloads) || 0,
-              featured: Number(fields.featured) || 0,
-              reviews: [],
-              createdAt: now,
-              updatedAt: now,
-            }),
+          norm({
+            id: data.id,
+            collection: collectionId,
+            ...toRow(collectionId, fields, true),
+            rating: Number(fields.rating) || 0,
+            downloads: Number(fields.downloads) || 0,
+            featured: Number(fields.featured) || 0,
+            reviews: [],
+            created_at: now.toISOString(),
+            updated_at: now.toISOString(),
           })
         );
         refresh({ silent: true });
-        return { ok: true, id: ref.id };
+        return { ok: true, id: data.id };
       } catch (e) {
         return { ok: false, error: friendlyError(e, 'Gagal menyimpan.') };
       }
@@ -343,11 +371,12 @@ export function StoreProvider({ children }) {
   const removeItem = useCallback(
     async (collectionId, id) => {
       try {
-        await withTimeout(
-          deleteDoc(doc(db, collectionId, id)),
+        const { error: err } = await withTimeout(
+          supabase.from('items').delete().eq('id', id),
           25000,
           'Menghapus'
         );
+        if (err) throw err;
         removeLocal(collectionId, id);
         refresh({ silent: true });
         return { ok: true };

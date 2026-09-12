@@ -1,19 +1,11 @@
-// Konfigurasi global VAN MOD Store (Web).
-// Backend Firebase SAMA dengan aplikasi mobile & website lama.
+// Konfigurasi global VAN MOD Store (Web). Backend: Supabase.
 
-export const firebaseConfig = {
-  apiKey: 'AIzaSyB1ccnYtBwYYELE_JYr3AlSVzYf3KRxPU0',
-  authDomain: 'vanmod-website.firebaseapp.com',
-  projectId: 'vanmod-website',
-  storageBucket: 'vanmod-website.firebasestorage.app',
-  messagingSenderId: '706013336903',
-  appId: '1:706013336903:web:70053ec43cf8a8c03c6862',
-  measurementId: 'G-LWKVY3WQK2',
-};
+// Kunci ANON bersifat publik (aman di kode) — mirip Firebase apiKey.
+export const SUPABASE_URL = 'https://ruynlsuntjjpbfyoexqx.supabase.co';
+export const SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1eW5sc3VudGpqcGJmeW9leHF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyMjkzODYsImV4cCI6MjEwNDgwNTM4Nn0._Vwb1uS5JsmUyAOD8bOyWT5Et0jr9Osg9OSB0NVSkXY';
 
-// PENTING: daftarkan email admin di sini untuk membuka Admin Panel.
-// 1. Buat user di Firebase Console → Authentication → Add user.
-// 2. Masukkan emailnya ke daftar ini. Selesai.
+// Email admin cadangan (pengecekan utama via flag is_admin di tabel profiles).
 export const ADMIN_EMAILS = ['vanxmod313@gmail.com'];
 
 export const COLLECTIONS = ['apps', 'games', 'tools'];

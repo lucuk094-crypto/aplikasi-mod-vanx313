@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { updatePassword, updateProfile } from 'firebase/auth';
 import { useAuth } from '../lib/auth.jsx';
 import { useStore } from '../lib/store.jsx';
 import { timeAgo } from '../lib/format.js';
@@ -8,7 +7,15 @@ import { Check, LogOut, MessageCircle, User } from '../components/icons.jsx';
 import { EmptyState, Kicker, Stars } from '../components/ui.jsx';
 
 export default function Profil() {
-  const { user, isAuthed, isAdmin, displayName, signOut } = useAuth();
+  const {
+    user,
+    isAuthed,
+    isAdmin,
+    displayName,
+    signOut,
+    updateName,
+    updatePassword,
+  } = useAuth();
   const { all } = useStore();
   const navigate = useNavigate();
 
@@ -72,11 +79,12 @@ export default function Profil() {
     setErr('');
     setMsg('');
     try {
-      await updateProfile(user, { displayName: v });
+      const r = await updateName(v);
+      if (!r.ok) throw new Error(r.error || 'Gagal mengubah nama. Coba lagi.');
       setLocalName(v);
       setMsg('Nama berhasil diubah.');
-    } catch {
-      setErr('Gagal mengubah nama. Coba lagi.');
+    } catch (e2) {
+      setErr(e2.message || 'Gagal mengubah nama. Coba lagi.');
     } finally {
       setBusy('');
     }
@@ -89,14 +97,16 @@ export default function Profil() {
     setErr('');
     setMsg('');
     try {
-      await updatePassword(user, newPass);
+      const r = await updatePassword(newPass);
+      if (!r.ok)
+        throw new Error(r.error || 'Gagal mengubah password. Coba lagi.');
       setNewPass('');
       setMsg('Password berhasil diubah.');
-    } catch (er) {
+    } catch (e2) {
       setErr(
-        er?.code === 'auth/requires-recent-login'
-          ? 'Sesi kedaluwarsa. Keluar lalu masuk lagi, baru ganti password.'
-          : 'Gagal mengubah password. Coba lagi.'
+        e2.message === 'Sesi kedaluwarsa. Keluar lalu masuk lagi.'
+          ? e2.message
+          : e2.message || 'Gagal mengubah password. Coba lagi.'
       );
     } finally {
       setBusy('');
