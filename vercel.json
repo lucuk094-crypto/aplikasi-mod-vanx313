@@ -1,25 +1,4 @@
 {
-  "version": 2,
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/home.html"
-    },
-    {
-      "src": "/index.html",
-      "dest": "/home.html"
-    },
-    {
-      "src": "/admin",
-      "dest": "/adminlogin.html"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/dashbordadmin.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

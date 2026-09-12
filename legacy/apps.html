@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VAN//MOD - Apps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#b2f800",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed": "#131f00",
+                        "primary": "#ffffff",
+                        "on-surface": "#e0e5cf",
+                        "inverse-surface": "#e0e5cf",
+                        "on-secondary-fixed": "#1a1b22",
+                        "surface-container-low": "#191d10",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#486800",
+                        "on-tertiary-fixed": "#0f1c2b",
+                        "inverse-on-surface": "#2d3223",
+                        "on-tertiary-fixed-variant": "#3a4858",
+                        "background": "#101508",
+                        "on-secondary-container": "#b4b4bd",
+                        "surface-tint": "#9bd900",
+                        "surface-variant": "#323728",
+                        "tertiary-fixed": "#d6e4f8",
+                        "tertiary": "#ffffff",
+                        "on-surface-variant": "#c2caad",
+                        "on-primary-fixed-variant": "#364e00",
+                        "on-tertiary": "#243141",
+                        "on-tertiary-container": "#586577",
+                        "on-secondary": "#2f3037",
+                        "tertiary-fixed-dim": "#bac8dc",
+                        "secondary-fixed-dim": "#c6c6cf",
+                        "primary-fixed": "#b2f800",
+                        "secondary": "#c6c6cf",
+                        "surface-container-highest": "#323728",
+                        "outline-variant": "#424a33",
+                        "on-error": "#690005",
+                        "on-primary": "#243600",
+                        "on-secondary-fixed-variant": "#45464e",
+                        "secondary-container": "#45464e",
+                        "surface-container-lowest": "#0b1005",
+                        "secondary-fixed": "#e2e1eb",
+                        "surface-bright": "#363b2c",
+                        "primary-fixed-dim": "#9bd900",
+                        "on-background": "#e0e5cf",
+                        "surface-container": "#1d2114",
+                        "surface-container-high": "#272c1d",
+                        "surface-dim": "#101508",
+                        "tertiary-container": "#d6e4f8",
+                        "outline": "#8c9479",
+                        "surface": "#101508",
+                        "on-primary-container": "#4d6e00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "3xl": "64px",
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "margin-desktop": "40px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "2xl": "48px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #080808;
+            color: #ffffff;
+        }
+        
+        .mod-shadow:hover {
+            box-shadow: 4px 4px 0px 0px #b2f800;
+            transform: translate(-2px, -2px);
+        }
+
+        /* Custom Scrollbar for Brutilist vibe */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101508;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #424a33;
+            border-radius: 0;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b2f800;
+        }
+        
+        .filter-grayscale {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+        .group:hover .filter-grayscale {
+            filter: grayscale(0%);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md bg-background min-h-screen flex flex-col selection:bg-primary-container selection:text-background">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b-2 border-outline-variant">
+<div class="flex justify-between items-center px-margin-desktop h-20 w-full mx-auto">
+<div class="font-display-lg text-display-lg font-black text-primary tracking-tighter">
+                VAN//MOD
+            </div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 p-sm active:scale-95 transition-transform duration-200" href="home.html">Home</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-primary border-b-2 border-primary-container pb-1 p-sm active:scale-95 transition-transform duration-200" href="apps.html">Apps</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 p-sm active:scale-95 transition-transform duration-200" href="games.html">Games</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 p-sm active:scale-95 transition-transform duration-200" href="tools.html">Tools</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 p-sm active:scale-95 transition-transform duration-200" href="latest.html">Latest</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 p-sm active:scale-95 transition-transform duration-200" href="popular.html">Popular</a>
+</nav>
+<div class="flex items-center gap-md">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input id="search-input" class="bg-[#000000] border-2 border-outline-variant focus:border-primary-container text-primary font-label-md uppercase pl-10 pr-4 py-2 w-64 transition-colors placeholder:text-on-surface-variant outline-none" placeholder="SEARCH APPS..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 rounded-none active:scale-95">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-20">
+<!-- Main Content Canvas -->
+<main class="flex-1 p-margin-desktop w-full mx-auto max-w-7xl">
+<!-- Search Header Area -->
+<div class="flex flex-col md:flex-row justify-between items-end mb-xl border-b-2 border-outline-variant pb-md">
+<div>
+<h1 class="font-display-lg text-display-lg font-black text-primary mb-sm">// APPS TERMINAL</h1>
+<p class="font-label-md text-label-md uppercase text-on-surface-variant tracking-widest"><span id="total-apps">128</span> APPS FOUND // HIGH-END MODS</p>
+</div>
+</div>
+<!-- Filter / Sort / View Toolbar -->
+<div class="flex flex-col lg:flex-row lg:items-center gap-md mb-xl">
+<div class="flex flex-wrap gap-sm">
+<button data-filter="all" class="border-2 border-primary-container text-primary-container px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary transition-colors">ALL</button>
+<button data-filter="Social" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">SOCIAL</button>
+<button data-filter="Media" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">MEDIA</button>
+<button data-filter="Photo" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">PHOTO</button>
+<button data-filter="Music" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">MUSIC</button>
+<button data-filter="Video" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">VIDEO</button>
+<button data-filter="Utility" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">UTILITY</button>
+</div>
+<div class="flex items-center gap-sm lg:ml-auto">
+<select id="sort-select" class="bg-[#000000] border-2 border-outline-variant focus:border-primary-container text-primary font-label-sm uppercase px-sm py-2 outline-none cursor-pointer">
+<option value="newest">SORT: NEWEST</option>
+<option value="downloads">SORT: DOWNLOADS</option>
+<option value="rating">SORT: RATING</option>
+<option value="name">SORT: NAME A-Z</option>
+</select>
+<button data-view="grid" onclick="toggleView('grid')" class="bg-primary-container text-on-primary-fixed border-2 border-outline-variant p-2 hover:border-primary transition-colors" title="Grid view">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button data-view="list" onclick="toggleView('list')" class="bg-surface-container-highest text-primary border-2 border-outline-variant p-2 hover:border-primary transition-colors" title="List view">
+<span class="material-symbols-outlined">view_list</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div id="apps-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+<!-- App Card 1 -->
+<article class="group bg-[#111111] border-2 border-[#1F1F1F] p-lg flex flex-col gap-md transition-all duration-300 mod-shadow hover:border-primary-container relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="w-16 h-16 bg-surface-container-highest border border-outline-variant flex items-center justify-center filter-grayscale overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A highly detailed app icon featuring a neon green cyberpunk skull symbol on a dark gritty metallic background. The icon is square with sharp corners, adhering to a neo-brutalist tech aesthetic. The lighting is harsh and directional, creating deep shadows and highlighting the glowing green elements against deep blacks." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB72iqmwj9Bbvpu5dmXvGi66Q0u9oSCYisvff3FjJM-aQU7F7Sd0qrNmwF0sh76GIxERQmjvshwSgi_CgN6GGovaojWW9AWjvDYchMZodp3hymR03vMl5vSjV6cM5Zd8N7q_VDAERyJAdLdlDdocL5sLocrvlSJoS2FzNk1twrhwH9y4s68gkBeCUreIfzxH8oMZeZgAXV_mIK9qvtfNI8IOhSVPvN6GQUyegjKjma7LgmSADYO5WXA2A"/>
+</div>
+<span class="bg-primary-container text-[#080808] font-label-sm px-2 py-1 uppercase tracking-wider font-bold">MOD</span>
+</div>
+<div class="border-t-2 border-outline-variant/50 pt-md mt-sm flex-1">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-1 truncate">Spotify Premium Plus</h2>
+<div class="flex items-center gap-2 font-label-sm text-on-surface-variant uppercase mb-4">
+<span class="material-symbols-outlined text-[16px] text-surface-tint" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+<span>//</span>
+<span>v8.8.8</span>
+<span>//</span>
+<span>124MB</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="border border-outline-variant px-2 py-1 font-label-sm text-xs text-on-surface-variant uppercase">MEDIA</span>
+<span class="border border-outline-variant px-2 py-1 font-label-sm text-xs text-on-surface-variant uppercase">AUDIO</span>
+</div>
+</article>
+<!-- App Card 2 -->
+<article class="group bg-[#111111] border-2 border-[#1F1F1F] p-lg flex flex-col gap-md transition-all duration-300 mod-shadow hover:border-primary-container relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="w-16 h-16 bg-surface-container-highest border border-outline-variant flex items-center justify-center filter-grayscale overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-end app icon showing a minimalist, abstract geometrical camera lens in stark white and deep black, with a single bright neon purple accent line. The design is raw and brutalist, perfectly square, resembling a piece of modern digital hardware in a dark studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCctDYbU1yEH6K3aV0TOcLuN3Nle4CtHEFRBIK1QnVtr75ugxopHqVhnS77D3GTNwOYK31NyvmpAps-k-BdRu8xf8OrM-bkMkiVSi6tcUdJJTKvcKosxaQL3sFFQHq3xomp39gk2dx2V_KIg0OmuGYsU1K9WhXxgkis_LFGIdQjdLrXK69QkLZ4G4yn9niD4vYWseMwxhjDoYg64Chht5GB8KFye-6JOKGlG9spPkyvkldI_Bkp_kJ3sw"/>
+</div>
+<span class="bg-primary-container text-[#080808] font-label-sm px-2 py-1 uppercase tracking-wider font-bold">MOD</span>
+</div>
+<div class="border-t-2 border-outline-variant/50 pt-md mt-sm flex-1">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-1 truncate">VSCO Studio Pro</h2>
+<div class="flex items-center gap-2 font-label-sm text-on-surface-variant uppercase mb-4">
+<span class="material-symbols-outlined text-[16px] text-surface-tint" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.7</span>
+<span>//</span>
+<span>v320.0</span>
+<span>//</span>
+<span>89MB</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="border border-outline-variant px-2 py-1 font-label-sm text-xs text-on-surface-variant uppercase">PHOTO</span>
+<span class="border border-outline-variant px-2 py-1 font-label-sm text-xs text-on-surface-variant uppercase">EDITOR</span>
+</div>
+</article>
+<!-- App Card 3 -->
+<article class="group bg-[#111111] border-2 border-[#1F1F1F] p-lg flex flex-col gap-md transition-all duration-300 mod-shadow hover:border-primary-container relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="w-16 h-16 bg-surface-container-highest border border-outline-variant flex items-center justify-center filter-grayscale overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A stylized app icon representing a shield with a lightning bolt, designed with aggressive, sharp vectors. The color scheme is strictly black and white with a stark, high-contrast neon green lightning bolt. It feels like a piece of secure, underground hacker software, presented in a crisp, high-resolution brutalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCggmfolhZFL6HaADDhIQad3YRsSWwYH3ZkyJHwXYi6g8dfR23JQXtd1pk-iIjBUTFYDxxOOWOU7iOiSju0rKxcpDggeMpEji5YmoizxlN8WdceLE0VG40Lh1jwRY3hEwmJkxocu46lMXTml622vnRNE5TLuZLb0y5Q_pVAzYgZA-E2K-qZuB2w1r4-AfY2KKjMLFOSSCRnNb9BDcqUfMf1FO5EcGa49l0Gf8uh1tkmTeyAHn2IQB7muA"/>
+</div>
+<span class="border border-on-surface-variant text-on-surface-variant font-label-sm px-2 py-1 uppercase tracking-wider">LITE</span>
+</div>
+<div class="border-t-2 border-outline-variant/50 pt-md mt-sm flex-1">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-1 truncate">AdGuard Ultra</h2>
+<div class="flex items-center gap-2 font-label-sm text-on-surface-variant uppercase mb-4">
+<span class="material-symbols-outlined text-[16px] text-surface-tint" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.8</span>
+<span>//</span>
+<span>v4.2.1</span>
+<span>//</span>
+<span>45MB</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="border border-outline-variant px-2 py-1 font-label-sm text-xs text-on-surface-variant uppercase">UTILITY</span>
+<span class="border border-outline-variant px-2 py-1 font-label-sm text-xs text-on-surface-variant uppercase">SECURITY</span>
+</div>
+</article>
+</div>
+<div id="load-more-container" class="mt-2xl flex justify-center">
+<button onclick="loadMore()" class="bg-primary-container text-[#080808] border-2 border-primary-container font-label-md uppercase tracking-wider py-3 px-8 transition-all duration-300 mod-shadow font-bold">
+                    LOAD MORE APPS //
+                </button>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-2xl px-margin-desktop bg-background border-t-2 border-outline-variant mt-3xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl max-w-7xl mx-auto">
+<div class="font-display-lg text-display-lg font-black text-primary-container">
+                VAN//MOD
+            </div>
+<div class="flex flex-col gap-sm md:col-span-2 md:items-end justify-center">
+<div class="flex gap-lg flex-wrap">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">API Documentation</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer" href="contact.html">Contact Support</a>
+</div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mt-md">
+                    © 2024 VAN//MOD. ALL RIGHTS RESERVED. // HIGH-END BRUTALIST ECOSYSTEM
+                </p>
+</div>
+</div>
+</footer>
+
+<!-- Firebase and App Scripts -->
+<script type="module" src="src/js/app.js"></script>
+<script type="module" src="src/js/apps.js"></script>
+</body></html>

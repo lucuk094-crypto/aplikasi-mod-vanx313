@@ -5,38 +5,48 @@ service cloud.firestore {
     function isAuthenticated() {
       return request.auth != null;
     }
-    
-    // Helper function to check if user is admin (optional: add admin claim check)
+
+    // Admin = HANYA email terdaftar di bawah. Kalau mau tambah admin,
+    // daftarkan di sini + samakan dengan ADMIN_EMAILS di src/config.js
+    // dan adminEmails di app/lib/config/app_config.dart.
     function isAdmin() {
-      return isAuthenticated();
-      // Advanced: check custom claims
-      // return isAuthenticated() && request.auth.token.admin == true;
+      return isAuthenticated() &&
+        request.auth.token.email == 'vanxmod313@gmail.com';
     }
-    
-    // Apps collection - read public, write admin only
+
+    // Public visitors may only bump stats fields (download counter,
+    // reviews + rating). All other fields are protected: any attempt to
+    // change them makes affectedKeys() contain more than this allow-list
+    // and the write is rejected.
+    function isPublicStatsUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['downloads', 'reviews', 'rating', 'updatedAt']);
+    }
+
+    // Apps collection - read public, write admin only,
+    // except public stats updates (downloads / reviews)
     match /apps/{appId} {
       allow read: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
-    // Games collection - read public, write admin only
+
+    // Games collection - read public, write admin only,
+    // except public stats updates (downloads / reviews)
     match /games/{gameId} {
       allow read: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
-    // Tools collection - read public, write admin only
+
+    // Tools collection - read public, write admin only,
+    // except public stats updates (downloads / reviews)
     match /tools/{toolId} {
       allow read: if true;
-      allow create: if isAdmin();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || isPublicStatsUpdate();
     }
-    
+
     // Contacts collection - create public, read/update/delete admin only
     match /contacts/{contactId} {
       allow read: if isAdmin();
@@ -44,7 +54,46 @@ service cloud.firestore {
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }
-    
+
+    // Forum chat - baca publik, kirim wajib login (uid+email dicek),
+    // hapus hanya pemilik pesan atau admin
+    match /messages/{messageId} {
+      allow read: if true;
+      allow create: if isAuthenticated() &&
+        request.resource.data.uid == request.auth.uid &&
+        request.resource.data.email == request.auth.token.email;
+      allow update: if false;
+      allow delete: if isAdmin() ||
+        (isAuthenticated() && request.auth.uid == resource.data.uid);
+    }
+
+    // Indikator mengetik (data sementara, baca publik)
+    match /typing/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAuthenticated();
+    }
+
+    // Chat privat: thread + pesan hanya untuk anggota (dicek via members)
+    match /dmThreads/{threadId} {
+      allow read: if isAuthenticated() &&
+        request.auth.uid in resource.data.members;
+      allow create, update: if isAuthenticated() &&
+        request.auth.uid in request.resource.data.members;
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        allow read: if isAuthenticated() &&
+          request.auth.uid in resource.data.members;
+        allow create: if isAuthenticated() &&
+          request.auth.uid in request.resource.data.members &&
+          request.resource.data.uid == request.auth.uid &&
+          request.resource.data.email == request.auth.token.email;
+        allow update: if false;
+        allow delete: if isAdmin() ||
+          (isAuthenticated() && request.auth.uid == resource.data.uid);
+      }
+    }
+
     // Stats collection - read public, write admin only
     match /stats/{statId} {
       allow read: if true;

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VAN//MOD - Admin Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#364e00",
+                        "tertiary": "#ffffff",
+                        "outline-variant": "#424a33",
+                        "on-surface-variant": "#c2caad",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#243141",
+                        "surface-container-high": "#272c1d",
+                        "on-tertiary-fixed-variant": "#3a4858",
+                        "on-background": "#e0e5cf",
+                        "on-secondary-container": "#b4b4bd",
+                        "secondary-fixed": "#e2e1eb",
+                        "secondary-container": "#45464e",
+                        "surface": "#101508",
+                        "surface-bright": "#363b2c",
+                        "primary-fixed-dim": "#9bd900",
+                        "surface-container-low": "#191d10",
+                        "on-secondary": "#2f3037",
+                        "on-primary-fixed": "#131f00",
+                        "surface-container-highest": "#323728",
+                        "background": "#101508",
+                        "surface-variant": "#323728",
+                        "primary-fixed": "#b2f800",
+                        "tertiary-fixed": "#d6e4f8",
+                        "on-tertiary-fixed": "#0f1c2b",
+                        "on-tertiary-container": "#586577",
+                        "surface-container": "#1d2114",
+                        "on-primary": "#243600",
+                        "outline": "#8c9479",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#2d3223",
+                        "primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#45464e",
+                        "surface-tint": "#9bd900",
+                        "tertiary-fixed-dim": "#bac8dc",
+                        "secondary": "#c6c6cf",
+                        "on-error": "#690005",
+                        "on-primary-container": "#4d6e00",
+                        "inverse-primary": "#486800",
+                        "inverse-surface": "#e0e5cf",
+                        "error-container": "#93000a",
+                        "surface-dim": "#101508",
+                        "on-secondary-fixed": "#1a1b22",
+                        "surface-container-lowest": "#0b1005",
+                        "secondary-fixed-dim": "#c6c6cf",
+                        "on-surface": "#e0e5cf",
+                        "tertiary-container": "#d6e4f8",
+                        "primary-container": "#b2f800"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "3xl": "64px",
+                        "base": "4px",
+                        "md": "16px",
+                        "margin-mobile": "16px",
+                        "2xl": "48px",
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "mono": ["'JetBrains Mono'", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #080808;
+            color: #e0e5cf;
+        }
+        .brutalist-input {
+            background-color: #000000;
+            border: 2px solid #A1A1AA;
+            color: white;
+            transition: border-color 0.2s ease-in-out;
+        }
+        .brutalist-input:focus {
+            border-color: #B7FF00;
+            outline: none;
+        }
+        .brutalist-card {
+            background-color: #111111;
+            border: 1px solid #1F1F1F;
+        }
+        .brutalist-btn-primary {
+            background-color: #B7FF00;
+            color: #080808;
+            border: 2px solid #B7FF00;
+            transition: all 0.2s ease-in-out;
+        }
+        .brutalist-btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px 0px #B7FF00;
+        }
+        .brutalist-btn-destructive {
+            background-color: transparent;
+            color: #ffb4ab;
+            border: 2px solid #ffb4ab;
+            transition: all 0.2s ease-in-out;
+        }
+        .brutalist-btn-destructive:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px 0px #ffb4ab;
+            background-color: rgba(255, 180, 171, 0.1);
+        }
+        
+        /* Custom Toggle */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #B7FF00;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #B7FF00;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+            border-color: #080808;
+        }
+        .toggle-label {
+            width: 48px;
+            height: 24px;
+            background-color: #323728;
+            border-radius: 9999px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            border: 2px solid #8c9479;
+        }
+        .toggle-label:after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease-in-out;
+        }
+        .toggle-checkbox {
+            display: none;
+        }
+
+        /* Loading Slashes Animation */
+        @keyframes slashes {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(4px); }
+            100% { transform: translateX(0); }
+        }
+        .loading-slashes {
+            display: inline-block;
+            animation: slashes 1s infinite linear;
+            color: #B7FF00;
+        }
+
+        /* Scanline effect */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 9999;
+            position: absolute;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            animation: scanline 10s linear infinite;
+            opacity: 0.1;
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased">
+<div class="scanline"></div>
+<!-- SideNavBar -->
+<nav class="h-screen w-64 border-r-2 border-outline-variant bg-surface-container-lowest flex flex-col py-lg space-y-md flex-shrink-0 z-10 relative">
+<div class="px-md mb-xl">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary-container tracking-tighter uppercase">// ADMIN</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant font-mono mt-xs">MANAGEMENT TERMINAL</p>
+</div>
+<div class="flex flex-col flex-grow w-full">
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="dashbordadmin.html">
+<span class="material-symbols-outlined mr-md text-on-surface-variant group-hover:text-primary">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="apps.html">
+<span class="material-symbols-outlined mr-md text-on-surface-variant group-hover:text-primary">apps</span>
+                Apps
+            </a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="adminsettings.html">
+<span class="material-symbols-outlined mr-md text-on-surface-variant group-hover:text-primary">add_box</span>
+                Add App
+            </a>
+<a class="flex items-center px-md py-sm text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase group" href="dashbordadmin.html">
+<span class="material-symbols-outlined mr-md text-on-surface-variant group-hover:text-primary">rate_review</span>
+                Reviews
+            </a>
+<a class="flex items-center px-md py-sm bg-primary-container text-on-primary-container font-bold border-l-4 border-primary hover:translate-x-1 transition-transform active:scale-98 font-label-md text-label-md uppercase" href="adminsettings.html">
+<span class="material-symbols-outlined mr-md text-on-primary-container" style="font-variation-settings: 'FILL' 1;">settings</span>
+                Settings
+            </a>
+</div>
+<div class="px-md mt-auto mb-lg">
+<div class="text-xs font-mono text-outline-variant flex items-center">
+<span class="loading-slashes mr-2">//</span> STATUS: ONLINE
+            </div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto bg-[#080808] p-margin-desktop relative">
+<div class="max-w-5xl mx-auto">
+<header class="mb-2xl border-b-2 border-outline-variant pb-md flex flex-col md:flex-row justify-between md:items-end gap-md">
+<div>
+<h2 id="form-title" class="font-display-lg text-display-lg font-black text-primary tracking-tighter uppercase">
+<span class="text-primary-container mr-2">//</span>ADD_NEW_ENTRY
+                    </h2>
+<p id="form-subtitle" class="font-body-md text-body-md text-on-surface-variant font-mono mt-sm">Deploy a new mod entry to the ecosystem.</p>
+</div>
+<button onclick="cancelEdit()" class="border-2 border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-md text-label-md uppercase px-xl py-sm font-bold transition-colors">
+                    CANCEL
+                </button>
+</header>
+<!-- Entry type selector -->
+<div class="flex flex-wrap gap-sm mb-xl">
+<button type="button" data-type="apps" class="border-2 border-primary-container text-primary-container px-xl py-sm font-label-md text-label-md uppercase font-bold hover:border-primary transition-colors">APPS</button>
+<button type="button" data-type="games" class="border-2 border-outline-variant text-on-surface-variant px-xl py-sm font-label-md text-label-md uppercase font-bold hover:border-primary hover:text-primary transition-colors">GAMES</button>
+<button type="button" data-type="tools" class="border-2 border-outline-variant text-on-surface-variant px-xl py-sm font-label-md text-label-md uppercase font-bold hover:border-primary hover:text-primary transition-colors">TOOLS</button>
+</div>
+<form id="item-form" class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+<!-- Core info -->
+<section class="brutalist-card p-xl md:col-span-2">
+<h3 class="font-headline-md text-headline-md font-bold text-primary uppercase mb-lg flex items-center">
+<span class="material-symbols-outlined mr-sm text-outline-variant">info</span>
+                        // CORE_INFO
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="flex flex-col md:col-span-2">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-name">Name *</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-name" placeholder="e.g. Spotify Premium Plus" required="" type="text"/>
+</div>
+<div class="flex flex-col md:col-span-2">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-description">Description</label>
+<textarea class="brutalist-input w-full p-sm font-body-md resize-none" id="item-description" placeholder="Full description of the mod..." rows="4"></textarea>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-version">Version</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-version" placeholder="e.g. 8.8.8" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-size">Size</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-size" placeholder="e.g. 45MB" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-category">Category</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-category" placeholder="e.g. Social, Action, Utility" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-mod-type">Mod Type</label>
+<input class="brutalist-input w-full p-sm font-body-md uppercase" id="item-mod-type" placeholder="e.g. PREMIUM, MOD, MODDED" type="text"/>
+</div>
+<div class="flex flex-col md:col-span-2">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-tags">Tags (comma separated)</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-tags" placeholder="e.g. premium, unlocked, ad-free" type="text"/>
+</div>
+</div>
+</section>
+<!-- Technical -->
+<section class="brutalist-card p-xl md:col-span-2">
+<h3 class="font-headline-md text-headline-md font-bold text-primary uppercase mb-lg flex items-center">
+<span class="material-symbols-outlined mr-sm text-outline-variant">memory</span>
+                        // TECHNICAL_SPECS
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-developer">Developer</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-developer" placeholder="e.g. Meta Platforms" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-package">Package Name</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-package" placeholder="e.g. com.example.app" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-android-version">Android Version</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-android-version" placeholder="e.g. 5.0+" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-license">License</label>
+<input class="brutalist-input w-full p-sm font-body-md" id="item-license" placeholder="e.g. Freeware" type="text"/>
+</div>
+<div class="flex flex-col md:col-span-2">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-download-url">Download URL</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-download-url" placeholder="https://..." type="url"/>
+</div>
+</div>
+</section>
+<!-- Icon -->
+<section class="brutalist-card p-xl md:col-span-2">
+<h3 class="font-headline-md text-headline-md font-bold text-primary uppercase mb-lg flex items-center">
+<span class="material-symbols-outlined mr-sm text-outline-variant">image</span>
+                        // APP_ICON
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg items-start">
+<div class="flex flex-col gap-md">
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-icon">Upload Icon (max 2MB)</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm file:mr-md file:py-xs file:px-md file:border-2 file:border-outline-variant file:bg-surface-container-highest file:text-primary file:font-label-sm file:uppercase hover:file:border-primary" id="item-icon" accept="image/*" type="file"/>
+</div>
+<div class="flex flex-col">
+<label class="font-label-md text-label-md uppercase text-on-background mb-sm" for="item-icon-url">...or Icon URL</label>
+<input class="brutalist-input w-full p-sm font-mono text-sm" id="item-icon-url" placeholder="https://i.ibb.co/xxxxx/image.png" type="url"/>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md uppercase text-on-background mb-sm">Preview</span>
+<div id="icon-preview-container" class="w-32 h-32 bg-[#000000] border-2 border-outline-variant flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-outline-variant" style="font-size: 48px;">image</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<div class="md:col-span-2 flex flex-col md:flex-row gap-md">
+<button class="brutalist-btn-primary font-label-md text-label-md uppercase px-xl py-md font-bold flex items-center justify-center gap-sm flex-1" type="submit">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+                        DEPLOY ENTRY
+                    </button>
+<button id="delete-btn" onclick="deleteItem()" class="brutalist-btn-destructive font-label-md text-label-md uppercase py-md px-xl font-bold hidden items-center justify-center gap-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">delete_forever</span>
+                        DELETE ENTRY
+                    </button>
+</div>
+</form>
+<!-- Footer Divider -->
+<div class="mt-2xl flex items-center justify-center opacity-50 mb-xl">
+<span class="text-primary-container font-mono tracking-widest text-sm">// END_OF_FILE</span>
+</div>
+</div>
+</main>
+
+<!-- Firebase and App Scripts -->
+<script type="module" src="src/js/app.js"></script>
+<script type="module" src="src/js/adminSettings.js"></script>
+</body></html>

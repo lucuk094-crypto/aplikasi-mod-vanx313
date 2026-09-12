@@ -1,387 +1,158 @@
 # 📊 Sample Data untuk Firestore
 
-## 🔥 **Cara Upload Data ke Firestore**
+## ⚡ Cara Termudah: Seed Script (Recommended)
 
-### **Step 1: Buka Firebase Console**
+Jangan input manual — pakai script seed yang sudah disediakan. Script ini memakai
+skema field yang **benar** (sesuai kode website) dan otomatis mengisi `stats/global`.
+
+```bash
+# 1. Install dependencies (sekali saja)
+npm install
+
+# 2. Jalankan seed dengan akun admin Firebase kamu
+node scripts/seed.mjs --email admin@kamu.com --password rahasia123
+
+# Alternatif via environment variable:
+SEED_EMAIL=admin@kamu.com SEED_PASSWORD=rahasia123 npm run seed
+```
+
+Script akan mengisi:
+
+| Collection | Jumlah | Contoh |
+|------------|--------|--------|
+| `apps` | 6 | Spotify Premium Plus, InstaMod Pro, CapCut Pro Mod, ... |
+| `games` | 4 | PUBG Mobile MOD, Minecraft PE Premium, ... |
+| `tools` | 4 | Lucky Patcher Pro, APK Editor Pro, ... |
+| `stats/global` | 1 | Total apps/games/tools/downloads/reviews |
+
+> Script otomatis **berhenti** kalau koleksi sudah ada isinya (biar tidak dobel).
+> Tambahkan `--force` untuk tetap menambah data baru.
+
+---
+
+## ✍️ Cara Manual: via Firebase Console
+
+Kalau ingin input manual, buka:
+
 ```
 https://console.firebase.google.com/project/vanmod-website/firestore
 ```
 
-### **Step 2: Buat Collection**
-1. Klik **"Start collection"**
-2. Collection ID: `apps`
-3. Klik **"Next"**
+1. Klik **"Start collection"** → Collection ID: `apps` (atau `games` / `tools`)
+2. Klik **"Add document"** → **Auto-ID** → isi field sesuai skema di bawah
+3. Ulangi untuk dokumen lain
 
-### **Step 3: Add Document**
-Gunakan data sample di bawah ini:
+### ⚠️ PENTING: Nama field harus persis seperti ini
+
+Website membaca field `name`, `icon`, `androidVersion`, `tags` (BUKAN `title`,
+`imageUrl`, `minAndroid`, atau `modFeatures`). Dokumen dengan nama field yang
+salah akan tampil sebagai "Untitled" / kosong.
 
 ---
 
-## 📱 **Sample Data: APPS Collection**
+## 📱 Contoh Dokumen Lengkap (Collection `apps`)
 
-### **Document 1: Spotify Premium**
 ```json
 {
-  "id": "spotify-premium-mod",
-  "title": "Spotify Premium Plus",
-  "description": "Listen to unlimited music with no ads, offline mode, and premium features unlocked. High-quality audio streaming up to 320kbps.",
-  "category": "Media",
-  "subcategory": "Audio",
+  "name": "Spotify Premium Plus",
+  "description": "Listen to unlimited music with no ads, offline mode, and premium features unlocked.",
+  "category": "Music",
   "version": "8.8.8",
   "size": "124MB",
   "rating": 4.9,
   "downloads": 45230,
   "modType": "MOD",
-  "modFeatures": [
-    "Premium Unlocked",
-    "No Ads",
-    "Offline Download",
-    "High Quality Audio",
-    "Skip Unlimited"
-  ],
-  "imageUrl": "https://i.ibb.co/example1.png",
+  "tags": ["premium", "no-ads", "offline"],
+  "icon": "https://i.ibb.co/xxxxx/spotify.png",
   "screenshots": [
-    "https://i.ibb.co/example1-1.png",
-    "https://i.ibb.co/example1-2.png",
-    "https://i.ibb.co/example1-3.png"
+    "https://i.ibb.co/xxxxx/shot1.png",
+    "https://i.ibb.co/xxxxx/shot2.png"
   ],
-  "downloadUrl": "https://example.com/download/spotify-mod.apk",
-  "developer": "Spotify Inc. (Modified)",
-  "packageName": "com.spotify.music.mod",
-  "minAndroid": "5.0",
-  "featured": true,
-  "trending": true,
+  "downloadUrl": "https://example.com/downloads/spotify-premium-plus.apk",
+  "developer": "Spotify AB (Mod)",
+  "packageName": "com.spotify.music",
+  "androidVersion": "5.0+",
+  "license": "Freeware",
+  "reviews": [
+    {
+      "id": "r-sp-1",
+      "userName": "Andini",
+      "rating": 5,
+      "comment": "Works flawlessly, no ads at all!",
+      "createdAt": "2024-01-15T10:30:00Z"
+    }
+  ],
   "createdAt": "2024-01-15T10:30:00Z",
   "updatedAt": "2024-01-15T10:30:00Z"
 }
 ```
 
-### **Document 2: Instagram Pro**
-```json
-{
-  "id": "instagram-pro-mod",
-  "title": "Instagram Pro",
-  "description": "Enhanced Instagram with download capabilities, ghost mode, and premium features. Save stories, posts, and reels easily.",
-  "category": "Social",
-  "subcategory": "Photo Sharing",
-  "version": "275.0.0.24",
-  "size": "68MB",
-  "rating": 4.7,
-  "downloads": 89450,
-  "modType": "MOD",
-  "modFeatures": [
-    "Download Stories",
-    "Download Posts & Reels",
-    "Ghost Mode",
-    "No Ads",
-    "HD Profile Picture"
-  ],
-  "imageUrl": "https://i.ibb.co/example2.png",
-  "screenshots": [
-    "https://i.ibb.co/example2-1.png",
-    "https://i.ibb.co/example2-2.png"
-  ],
-  "downloadUrl": "https://example.com/download/instagram-pro.apk",
-  "developer": "Meta (Modified)",
-  "packageName": "com.instagram.android.mod",
-  "minAndroid": "6.0",
-  "featured": true,
-  "trending": false,
-  "createdAt": "2024-01-14T15:20:00Z",
-  "updatedAt": "2024-01-14T15:20:00Z"
-}
-```
+Struktur yang **sama persis** berlaku untuk collection `games` dan `tools`.
 
-### **Document 3: WhatsApp Plus**
-```json
-{
-  "id": "whatsapp-plus-mod",
-  "title": "WhatsApp Plus 2024",
-  "description": "WhatsApp with extra features including themes, privacy options, and customization. More than 1000+ themes available.",
-  "category": "Communication",
-  "subcategory": "Messaging",
-  "version": "18.20.0",
-  "size": "55MB",
-  "rating": 4.8,
-  "downloads": 125670,
-  "modType": "MOD",
-  "modFeatures": [
-    "1000+ Themes",
-    "Hide Blue Tick",
-    "Hide Last Seen",
-    "Send 100+ Images",
-    "Anti Delete Messages"
-  ],
-  "imageUrl": "https://i.ibb.co/example3.png",
-  "screenshots": [
-    "https://i.ibb.co/example3-1.png",
-    "https://i.ibb.co/example3-2.png"
-  ],
-  "downloadUrl": "https://example.com/download/whatsapp-plus.apk",
-  "developer": "WhatsApp Inc. (Modified)",
-  "packageName": "com.whatsapp.mod",
-  "minAndroid": "4.4",
-  "featured": false,
-  "trending": true,
-  "createdAt": "2024-01-13T09:10:00Z",
-  "updatedAt": "2024-01-13T09:10:00Z"
-}
-```
+## 📋 Penjelasan Field
+
+| Field | Tipe | Wajib | Keterangan |
+|-------|------|-------|------------|
+| `name` | string | ✅ | Nama aplikasi/game/tool |
+| `description` | string | — | Deskripsi lengkap (100–200 karakter) |
+| `category` | string | — | Kategori (Social, Action, Utility, ...) |
+| `version` | string | — | Nomor versi |
+| `size` | string | — | Ukuran file (MB/GB) |
+| `rating` | number | — | Rating 1–5 (desimal, dihitung dari reviews) |
+| `downloads` | number | — | Total download (otomatis bertambah) |
+| `modType` | string | — | "MOD", "PRO", "LITE", "PREMIUM" |
+| `tags` | array | — | Daftar tag, mis. `["premium", "no-ads"]` |
+| `icon` | string | — | URL ikon aplikasi |
+| `screenshots` | array | — | Array URL screenshot |
+| `downloadUrl` | string | — | Link download APK |
+| `developer` | string | — | Nama developer |
+| `packageName` | string | — | Package name Android |
+| `androidVersion` | string | — | Minimum Android, mis. "5.0+" |
+| `license` | string | — | Tipe lisensi, mis. "Freeware" |
+| `reviews` | array | — | Array review `{id, userName, rating, comment, createdAt}` |
+| `createdAt` | timestamp | — | Otomatis saat create via admin |
+| `updatedAt` | timestamp | — | Otomatis saat create/update via admin |
 
 ---
 
-## 🎮 **Sample Data: GAMES Collection**
+## 🖼️ Cara Upload Gambar ke ImgBB (untuk `icon` / `screenshots`)
 
-### **Document 1: PUBG Mobile MOD**
-```json
-{
-  "id": "pubg-mobile-mod",
-  "title": "PUBG Mobile MOD",
-  "description": "Battle Royale game with unlimited UC, skins unlocked, and anti-ban protection. 100 players drop on an island.",
-  "category": "Action",
-  "subcategory": "Battle Royale",
-  "version": "2.9.0",
-  "size": "896MB",
-  "rating": 4.6,
-  "downloads": 234560,
-  "modType": "MOD",
-  "modFeatures": [
-    "Unlimited UC",
-    "All Skins Unlocked",
-    "Aimbot",
-    "ESP Hack",
-    "Anti Ban"
-  ],
-  "imageUrl": "https://i.ibb.co/example4.png",
-  "screenshots": [
-    "https://i.ibb.co/example4-1.png",
-    "https://i.ibb.co/example4-2.png",
-    "https://i.ibb.co/example4-3.png"
-  ],
-  "downloadUrl": "https://example.com/download/pubg-mod.apk",
-  "developer": "Tencent Games (Modified)",
-  "packageName": "com.tencent.ig.mod",
-  "minAndroid": "5.1",
-  "featured": true,
-  "trending": true,
-  "createdAt": "2024-01-12T14:30:00Z",
-  "updatedAt": "2024-01-12T14:30:00Z"
-}
-```
-
-### **Document 2: Minecraft PE MOD**
-```json
-{
-  "id": "minecraft-pe-mod",
-  "title": "Minecraft PE Premium",
-  "description": "Sandbox game with unlimited resources, all items unlocked, and premium features. Build anything you imagine.",
-  "category": "Adventure",
-  "subcategory": "Sandbox",
-  "version": "1.20.50",
-  "size": "145MB",
-  "rating": 4.9,
-  "downloads": 456780,
-  "modType": "MOD",
-  "modFeatures": [
-    "Premium Unlocked",
-    "Unlimited Resources",
-    "All Skins",
-    "All Textures",
-    "Multiplayer Support"
-  ],
-  "imageUrl": "https://i.ibb.co/example5.png",
-  "screenshots": [
-    "https://i.ibb.co/example5-1.png",
-    "https://i.ibb.co/example5-2.png"
-  ],
-  "downloadUrl": "https://example.com/download/minecraft-mod.apk",
-  "developer": "Mojang (Modified)",
-  "packageName": "com.mojang.minecraftpe.mod",
-  "minAndroid": "5.0",
-  "featured": true,
-  "trending": false,
-  "createdAt": "2024-01-11T11:45:00Z",
-  "updatedAt": "2024-01-11T11:45:00Z"
-}
-```
-
----
-
-## 🔧 **Sample Data: TOOLS Collection**
-
-### **Document 1: Lucky Patcher**
-```json
-{
-  "id": "lucky-patcher-mod",
-  "title": "Lucky Patcher Pro",
-  "description": "Patch Android apps, remove ads, modify permissions, and bypass license verification. Advanced patching tool.",
-  "category": "Utility",
-  "subcategory": "Tools",
-  "version": "10.5.8",
-  "size": "12MB",
-  "rating": 4.7,
-  "downloads": 678920,
-  "modType": "PRO",
-  "modFeatures": [
-    "Remove Ads",
-    "Bypass License",
-    "Modify Permissions",
-    "Custom Patches",
-    "Backup APK"
-  ],
-  "imageUrl": "https://i.ibb.co/example6.png",
-  "screenshots": [
-    "https://i.ibb.co/example6-1.png",
-    "https://i.ibb.co/example6-2.png"
-  ],
-  "downloadUrl": "https://example.com/download/lucky-patcher.apk",
-  "developer": "ChelpuS",
-  "packageName": "com.chelpus.luckypatcher",
-  "minAndroid": "4.0",
-  "featured": false,
-  "trending": true,
-  "createdAt": "2024-01-10T08:20:00Z",
-  "updatedAt": "2024-01-10T08:20:00Z"
-}
-```
-
-### **Document 2: APK Editor Pro**
-```json
-{
-  "id": "apk-editor-pro",
-  "title": "APK Editor Pro",
-  "description": "Edit APK files directly on your device. Change app name, icon, permissions, and resources. Professional APK editor.",
-  "category": "Utility",
-  "subcategory": "Developer Tools",
-  "version": "2.1.8",
-  "size": "18MB",
-  "rating": 4.5,
-  "downloads": 345120,
-  "modType": "PRO",
-  "modFeatures": [
-    "Edit APK Resources",
-    "Change App Icon",
-    "Modify Manifest",
-    "Sign APK",
-    "Extract Resources"
-  ],
-  "imageUrl": "https://i.ibb.co/example7.png",
-  "screenshots": [
-    "https://i.ibb.co/example7-1.png"
-  ],
-  "downloadUrl": "https://example.com/download/apk-editor-pro.apk",
-  "developer": "SteelWorks",
-  "packageName": "com.gmail.heagoo.apkeditor.pro",
-  "minAndroid": "4.4",
-  "featured": false,
-  "trending": false,
-  "createdAt": "2024-01-09T16:55:00Z",
-  "updatedAt": "2024-01-09T16:55:00Z"
-}
-```
-
----
-
-## 📋 **Field Explanations**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | Unique identifier (slug format) |
-| `title` | string | App/Game name |
-| `description` | string | Full description (100-200 chars) |
-| `category` | string | Main category |
-| `subcategory` | string | Sub category |
-| `version` | string | Version number |
-| `size` | string | File size (MB/GB) |
-| `rating` | number | Rating 1-5 (decimal) |
-| `downloads` | number | Total downloads count |
-| `modType` | string | "MOD", "PRO", "LITE", "PREMIUM" |
-| `modFeatures` | array | List of modded features |
-| `imageUrl` | string | Main app icon URL |
-| `screenshots` | array | Array of screenshot URLs |
-| `downloadUrl` | string | APK download link |
-| `developer` | string | Developer name |
-| `packageName` | string | Android package name |
-| `minAndroid` | string | Minimum Android version |
-| `featured` | boolean | Show in featured section |
-| `trending` | boolean | Show in trending section |
-| `createdAt` | string | ISO date string |
-| `updatedAt` | string | ISO date string |
-
----
-
-## 🖼️ **How to Upload Images to ImgBB**
-
-### **Step 1: Sign Up**
 ```
 https://imgbb.com
 ```
 
-### **Step 2: Upload Image**
 1. Klik **"Start uploading"**
-2. Drag & drop image atau browse file
-3. Tunggu upload selesai
-4. Copy **"Direct link"** URL
+2. Drag & drop gambar atau browse file
+3. Tunggu upload selesai, copy **"Direct link"** URL
+4. Paste URL ke field `icon` atau ke dalam array `screenshots`
+   (atau langsung ke field **Icon URL** di halaman admin)
 
-### **Step 3: Use in Firestore**
-Paste URL ke field `imageUrl` atau dalam array `screenshots`
+**Ukuran yang disarankan:**
+- App Icon: 512x512px (kotak)
+- Screenshots: 1080x1920px (portrait) atau 1920x1080px (landscape)
+- Format: PNG atau JPG, maksimal 2MB per gambar (mengikuti `storage.rules`)
 
-**Recommended Image Sizes:**
-- App Icon: 512x512px (square)
-- Screenshots: 1080x1920px (portrait) or 1920x1080px (landscape)
-- Format: PNG or JPG
-- Max size: 5MB per image
-
----
-
-## 🔄 **Auto-populate with JavaScript (Advanced)**
-
-Jika ingin upload banyak data sekaligus, bisa menggunakan script ini di browser console (F12) saat buka website:
-
-```javascript
-// Import Firebase modules
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { db } from './config/firebaseConfig.js';
-
-// Sample data
-const sampleApps = [
-  { /* data dari atas */ },
-  { /* data dari atas */ },
-  // ... dst
-];
-
-// Upload to Firestore
-async function uploadSampleData() {
-  for (const app of sampleApps) {
-    try {
-      await addDoc(collection(db, "apps"), app);
-      console.log("✅ Uploaded:", app.title);
-    } catch (error) {
-      console.error("❌ Error:", error);
-    }
-  }
-}
-
-uploadSampleData();
-```
+> Alternatif: upload langsung lewat field **Upload Icon** di halaman admin —
+> file otomatis tersimpan ke Firebase Storage (perlu Storage diaktifkan).
 
 ---
 
-## ✅ **Verification**
+## ✅ Verifikasi
 
-Setelah upload data, verifikasi di:
-1. Firebase Console → Firestore Database
-2. Website → Apps/Games/Tools page
-3. Check apakah cards tampil dengan benar
+Setelah seed / input manual:
+
+1. Firebase Console → Firestore Database → cek dokumen `apps`/`games`/`tools`
+2. Buka website → halaman Apps/Games/Tools/Latest/Popular → kartu harus tampil
+3. Buka salah satu detail → cek screenshot, specs, dan review tampil
+4. Login admin → dashboard menampilkan data
 
 ---
 
-## 📝 **Notes**
+## 📝 Catatan
 
-- Untuk production, gunakan real download links
-- Upload real app icons & screenshots
-- Update version numbers secara berkala
-- Monitor download counts via Firebase Analytics
-- Backup Firestore data secara rutin
+- Untuk production, ganti `downloadUrl` contoh (`example.com`) dengan link asli
+- Upload ikon & screenshot asli untuk tampilan terbaik
+- Update nomor versi secara berkala
+- Backup data Firestore secara rutin (Export di Firebase Console)
 
 **Happy uploading! 🎉**

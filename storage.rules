@@ -5,32 +5,45 @@ service firebase.storage {
     function isAuthenticated() {
       return request.auth != null;
     }
-    
+
+    // Admin = HANYA email terdaftar di bawah (samakan dengan firestore.rules).
+    function isAdmin() {
+      return isAuthenticated() &&
+        request.auth.token.email == 'vanxmod313@gmail.com';
+    }
+
     // Helper function to validate image file
     function isValidImage() {
       return request.resource.size < 2 * 1024 * 1024 // 2MB max
           && request.resource.contentType.matches('image/.*');
     }
-    
+
     // Icons folder - read public, write admin only with validation
     match /icons/{iconId} {
       allow read: if true;
-      allow write: if isAuthenticated() && isValidImage();
-      allow delete: if isAuthenticated();
+      allow write: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
     }
-    
+
     // Screenshots folder - read public, write admin only with validation
     match /screenshots/{screenshotId} {
       allow read: if true;
-      allow write: if isAuthenticated() && isValidImage();
-      allow delete: if isAuthenticated();
+      allow write: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
     }
-    
+
     // APK files folder - read public, write admin only
     match /apks/{apkId} {
       allow read: if true;
-      allow write: if isAuthenticated();
-      allow delete: if isAuthenticated();
+      allow write: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Forum chat - baca publik, upload user login (gambar ≤2MB)
+    match /chat/{imageId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidImage();
+      allow delete: if isAdmin();
     }
   }
 }

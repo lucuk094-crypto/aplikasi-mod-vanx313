@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VAN//MOD - Tools Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e2e1eb",
+                        "on-secondary-container": "#b4b4bd",
+                        "inverse-surface": "#e0e5cf",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#424a33",
+                        "on-primary-fixed": "#131f00",
+                        "tertiary-fixed": "#d6e4f8",
+                        "on-primary-container": "#4d6e00",
+                        "on-tertiary-container": "#586577",
+                        "background": "#101508",
+                        "surface": "#101508",
+                        "outline": "#8c9479",
+                        "surface-container": "#1d2114",
+                        "secondary": "#c6c6cf",
+                        "on-surface": "#e0e5cf",
+                        "on-tertiary-fixed": "#0f1c2b",
+                        "on-secondary-fixed": "#1a1b22",
+                        "inverse-on-surface": "#2d3223",
+                        "on-secondary": "#2f3037",
+                        "primary-container": "#b2f800",
+                        "on-tertiary-fixed-variant": "#3a4858",
+                        "on-primary-fixed-variant": "#364e00",
+                        "on-primary": "#243600",
+                        "surface-bright": "#363b2c",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#c2caad",
+                        "on-background": "#e0e5cf",
+                        "tertiary-fixed-dim": "#bac8dc",
+                        "secondary-fixed-dim": "#c6c6cf",
+                        "surface-tint": "#9bd900",
+                        "inverse-primary": "#486800",
+                        "primary-fixed-dim": "#9bd900",
+                        "surface-dim": "#101508",
+                        "surface-container-high": "#272c1d",
+                        "tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#45464e",
+                        "surface-container-lowest": "#0b1005",
+                        "secondary-container": "#45464e",
+                        "tertiary-container": "#d6e4f8",
+                        "primary": "#ffffff",
+                        "error-container": "#93000a",
+                        "surface-variant": "#323728",
+                        "surface-container-highest": "#323728",
+                        "on-tertiary": "#243141",
+                        "primary-fixed": "#b2f800",
+                        "surface-container-low": "#191d10",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "3xl": "64px",
+                        "margin-mobile": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "margin-desktop": "40px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "2xl": "48px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #101508;
+            background-image: 
+                linear-gradient(to right, rgba(183, 255, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(183, 255, 0, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .brutalist-btn {
+            box-shadow: 4px 4px 0px 0px #b7ff00;
+        }
+        .brutalist-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #b7ff00;
+        }
+        .brutalist-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #b7ff00;
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 9999;
+            position: fixed;
+            pointer-events: none;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(183,255,0,0.1) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1;
+            animation: scanline 10s linear infinite;
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body class="text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden relative">
+<div class="scanline"></div>
+<!-- TopNavBar Component -->
+<nav class="bg-background/80 backdrop-blur-xl fixed top-0 w-full z-50 border-b-2 border-outline-variant">
+<div class="flex justify-between items-center px-margin-desktop h-20 w-full mx-auto">
+<div class="font-display-lg text-display-lg font-black text-primary tracking-tighter">
+                VAN//MOD
+            </div>
+<div class="hidden md:flex space-x-lg font-label-md text-label-md uppercase tracking-wider">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 active:scale-95 px-sm py-xs" href="home.html">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 active:scale-95 px-sm py-xs" href="apps.html">Apps</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 active:scale-95 px-sm py-xs" href="games.html">Games</a>
+<a class="text-primary border-b-2 border-primary-container pb-1 hover:bg-surface-container-highest/50 transition-all duration-200 active:scale-95 px-sm" href="tools.html">Tools</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 active:scale-95 px-sm py-xs" href="latest.html">Latest</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 transition-all duration-200 active:scale-95 px-sm py-xs" href="popular.html">Popular</a>
+</div>
+<div class="flex items-center space-x-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 p-xs active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="dark_mode" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dark_mode</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-3xl mt-3xl px-margin-mobile md:px-margin-desktop pb-3xl max-w-[1600px] mx-auto w-full">
+<!-- Header -->
+<header class="mb-2xl border-b-2 border-outline-variant pb-md">
+<h1 class="font-display-lg text-display-lg font-black text-primary uppercase tracking-tighter mb-xs">
+                // TOOLS TERMINAL
+            </h1>
+<p class="font-label-md text-label-md text-on-surface-variant tracking-widest uppercase">
+                SYSTEM OPTIMIZATION &amp; MODDING UTILITIES
+            </p>
+</header>
+<!-- Search + Filter / Sort / View Toolbar -->
+<div class="flex items-center bg-black border-2 border-outline-variant focus-within:border-primary-container transition-colors p-1 w-full md:max-w-md mb-xl">
+<span class="material-symbols-outlined text-outline p-2">search</span>
+<input id="search-input" class="bg-transparent border-none text-primary font-label-md uppercase focus:ring-0 w-full placeholder-on-surface-variant" placeholder="SEARCH TOOLS //" type="text"/>
+</div>
+<div class="flex flex-col lg:flex-row lg:items-center gap-md mb-xl">
+<div class="flex flex-wrap gap-sm">
+<button data-filter="all" class="border-2 border-primary-container text-primary-container px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary transition-colors">ALL</button>
+<button data-filter="System" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">SYSTEM</button>
+<button data-filter="Network" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">NETWORK</button>
+<button data-filter="Security" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">SECURITY</button>
+<button data-filter="Cleaner" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">CLEANER</button>
+<button data-filter="Utility" class="border-2 border-outline-variant text-on-surface-variant px-md py-xs font-label-sm text-label-sm uppercase tracking-wider hover:border-primary hover:text-primary transition-colors">UTILITY</button>
+</div>
+<div class="flex items-center gap-sm lg:ml-auto">
+<select id="sort-select" class="bg-black border-2 border-outline-variant focus:border-primary-container text-primary font-label-sm uppercase px-sm py-2 outline-none cursor-pointer">
+<option value="newest">SORT: NEWEST</option>
+<option value="downloads">SORT: DOWNLOADS</option>
+<option value="rating">SORT: RATING</option>
+<option value="name">SORT: NAME A-Z</option>
+</select>
+<button data-view="grid" onclick="toggleView('grid')" class="bg-primary-container text-on-primary-fixed border-2 border-outline-variant p-2 hover:border-primary transition-colors" title="Grid view">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button data-view="list" onclick="toggleView('list')" class="bg-surface-container-highest text-primary border-2 border-outline-variant p-2 hover:border-primary transition-colors" title="List view">
+<span class="material-symbols-outlined">view_list</span>
+</button>
+</div>
+</div>
+<!-- Tools Grid -->
+<div id="tools-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-xl">
+<!-- Tool Card 1 -->
+<article class="bg-[#111111] border-2 border-outline-variant p-lg flex flex-col relative group transition-all duration-300 hover:border-primary-container">
+<div class="absolute top-0 right-0 bg-surface-container-highest px-sm py-xs border-l-2 border-b-2 border-outline-variant font-label-sm text-label-sm text-on-surface-variant">
+                    v2.1.0
+                </div>
+<div class="flex items-center space-x-sm mb-md mt-sm">
+<span class="material-symbols-outlined text-primary-container text-[32px]" data-icon="memory">memory</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary uppercase">SYSTEM INJECTOR</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg flex-grow">
+                    Advanced kernel-level memory manipulation utility. Bypasses standard integrity checks for deep system optimization.
+                </p>
+<div class="bg-[#080808] border-2 border-outline-variant p-md mb-lg font-label-sm text-label-sm uppercase">
+<div class="flex justify-between mb-xs">
+<span class="text-on-tertiary-container">Latency</span>
+<span class="text-primary-container font-bold">0.2ms</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 mb-md">
+<div class="bg-primary-container h-1 w-[98%]"></div>
+</div>
+<div class="flex justify-between mb-xs">
+<span class="text-on-tertiary-container">Success Rate</span>
+<span class="text-primary font-bold">99.9%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-primary h-1 w-[99%]"></div>
+</div>
+</div>
+<button class="bg-[#B7FF00] text-[#080808] border-2 border-[#B7FF00] font-label-md text-label-md uppercase py-sm px-md w-full font-bold brutalist-btn transition-all flex items-center justify-center space-x-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+<span>LAUNCH TOOL</span>
+</button>
+</article>
+<!-- Tool Card 2 -->
+<article class="bg-[#111111] border-2 border-outline-variant p-lg flex flex-col relative group transition-all duration-300 hover:border-primary-container">
+<div class="absolute top-0 right-0 bg-surface-container-highest px-sm py-xs border-l-2 border-b-2 border-outline-variant font-label-sm text-label-sm text-on-surface-variant">
+                    v1.4.5
+                </div>
+<div class="flex items-center space-x-sm mb-md mt-sm">
+<span class="material-symbols-outlined text-primary-container text-[32px]" data-icon="aspect_ratio">aspect_ratio</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary uppercase">DPI SCALER</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg flex-grow">
+                    Force custom resolution and DPI scaling profiles on restricted applications. Supports dynamic hot-swapping.
+                </p>
+<div class="bg-[#080808] border-2 border-outline-variant p-md mb-lg font-label-sm text-label-sm uppercase">
+<div class="flex justify-between mb-xs">
+<span class="text-on-tertiary-container">Render Delay</span>
+<span class="text-primary-container font-bold">1.5ms</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 mb-md">
+<div class="bg-primary-container h-1 w-[85%]"></div>
+</div>
+<div class="flex justify-between mb-xs">
+<span class="text-on-tertiary-container">Stability</span>
+<span class="text-primary font-bold">95.0%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-primary h-1 w-[95%]"></div>
+</div>
+</div>
+<button class="bg-[#B7FF00] text-[#080808] border-2 border-[#B7FF00] font-label-md text-label-md uppercase py-sm px-md w-full font-bold brutalist-btn transition-all flex items-center justify-center space-x-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+<span>LAUNCH TOOL</span>
+</button>
+</article>
+<!-- Tool Card 3 -->
+<article class="bg-[#111111] border-2 border-outline-variant p-lg flex flex-col relative group transition-all duration-300 hover:border-primary-container">
+<div class="absolute top-0 right-0 bg-surface-container-highest px-sm py-xs border-l-2 border-b-2 border-outline-variant font-label-sm text-label-sm text-on-surface-variant">
+                    v3.0.1
+                </div>
+<div class="flex items-center space-x-sm mb-md mt-sm">
+<span class="material-symbols-outlined text-primary-container text-[32px]" data-icon="shield_off">format_image_left</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary uppercase">SCRIPT BYPASS</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg flex-grow">
+                    Automated sandbox evasion and signature spoofing. Obfuscates local processes from heuristic analysis engines.
+                </p>
+<div class="bg-[#080808] border-2 border-outline-variant p-md mb-lg font-label-sm text-label-sm uppercase">
+<div class="flex justify-between mb-xs">
+<span class="text-on-tertiary-container">Detection Risk</span>
+<span class="text-primary-container font-bold">Low</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 mb-md">
+<div class="bg-primary-container h-1 w-[15%]"></div>
+</div>
+<div class="flex justify-between mb-xs">
+<span class="text-on-tertiary-container">Success Rate</span>
+<span class="text-primary font-bold">98.2%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-primary h-1 w-[98%]"></div>
+</div>
+</div>
+<button class="bg-[#B7FF00] text-[#080808] border-2 border-[#B7FF00] font-label-md text-label-md uppercase py-sm px-md w-full font-bold brutalist-btn transition-all flex items-center justify-center space-x-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+<span>LAUNCH TOOL</span>
+</button>
+</article>
+<!-- Tool Card 4 -->
+<article class="bg-[#111111] border-2 border-outline-variant p-lg flex flex-col relative group transition-all duration-300 hover:border-primary-container">
+<div class="absolute top-0 right-0 bg-surface-container-highest px-sm py-xs border-l-2 border-b-2 border-outline-variant font-label-sm text-label-sm text-on-surface-variant">
+                    v0.9.8b
+                </div>
+<div class="flex items-center space-x-sm mb-md mt-sm">
+<span class="material-symbols-outlined text-primary-container text-[32px]" data-icon="cleaning_services">cleaning_services</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary uppercase">LOG CLEANER</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg flex-grow">
+                    Deep system scrubbing utility. Removes temporary files, crash dumps, and telemetry data left by external applications.
+                </p>
+<div class="bg-[#080808] border-2 border-outline-variant p-md mb-lg font-label-sm text-label-sm uppercase">
+<div class="flex justify-between mb-xs">
+<span class="text-on-tertiary-container">Scan Time</span>
+<span class="text-primary-container font-bold">1.2s</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 mb-md">
+<div class="bg-primary-container h-1 w-[90%]"></div>
+</div>
+<div class="flex justify-between mb-xs">
+<span class="text-on-tertiary-container">Efficiency</span>
+<span class="text-primary font-bold">100%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-primary h-1 w-[100%]"></div>
+</div>
+</div>
+<button class="bg-[#B7FF00] text-[#080808] border-2 border-[#B7FF00] font-label-md text-label-md uppercase py-sm px-md w-full font-bold brutalist-btn transition-all flex items-center justify-center space-x-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+<span>LAUNCH TOOL</span>
+</button>
+</article>
+</div>
+<div id="load-more-container" class="mt-2xl flex justify-center">
+<button onclick="loadMore()" class="font-label-md text-label-md uppercase px-xl py-md bg-transparent text-primary border-2 border-primary hover:bg-surface-container-high transition-colors">
+                    LOAD MORE TOOLS //
+                </button>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="bg-background w-full py-2xl px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-xl border-t-2 border-outline-variant mt-3xl">
+<div>
+<div class="font-display-lg text-display-lg font-black text-primary-container mb-md">
+                VAN//MOD
+            </div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">
+                © 2024 VAN//MOD. ALL RIGHTS RESERVED. // HIGH-END BRUTALIST ECOSYSTEM
+            </p>
+</div>
+<div class="flex flex-col space-y-md font-label-sm text-label-sm uppercase tracking-widest">
+<a class="text-on-surface-variant hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col space-y-md font-label-sm text-label-sm uppercase tracking-widest">
+<a class="text-on-surface-variant hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">API Documentation</a>
+<a class="text-on-surface-variant hover:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer" href="contact.html">Contact Support</a>
+</div>
+</footer>
+
+<!-- Firebase and App Scripts -->
+<script type="module" src="src/js/app.js"></script>
+<script type="module" src="src/js/tools.js"></script>
+</body></html>
