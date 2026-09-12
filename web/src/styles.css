@@ -2256,3 +2256,82 @@ a.neo:hover {
   .dm-wrap.chatting .dm-list { display: none; }
   .dm-wrap:not(.chatting) .dm-chat { display: none; }
 }
+
+/* ---------- Kotak aplikasi persegi ala Play Store ---------- */
+/* Hanya daftar berisi kartu aplikasi yang jadi grid
+   (daftar admin/inbox/profil tidak kena). */
+.feed:has(.rowcard), .list:has(.rowcard) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+/* Kartu vertikal: ikon di atas, nama di tengah */
+.rowcard {
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 18px 10px 14px;
+}
+.rowcard .appicon,
+.rowcard .appicon-fallback {
+  width: 76px !important;
+  height: 76px !important;
+  border-radius: 18px;
+  font-size: 34px !important;
+}
+.rowcard .rc-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+.rowcard .rc-name {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 14.5px;
+  line-height: 1.35;
+  min-height: 2.7em;
+  margin-top: 0;
+}
+.rowcard .rc-meta { font-size: 12px; }
+.rowcard .chev { display: none; }
+/* Kartu grid (Browse) ikut persegi */
+.grid3 {
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+.gridcard {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 18px 10px 14px;
+}
+.gridcard .appicon,
+.gridcard .appicon-fallback {
+  width: 76px !important;
+  height: 76px !important;
+  border-radius: 18px;
+  font-size: 34px !important;
+}
+.gridcard .gc-name {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.7em;
+}
+@media (max-width: 480px) {
+  .feed:has(.rowcard), .list:has(.rowcard), .grid3 {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+}
